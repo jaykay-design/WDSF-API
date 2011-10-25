@@ -41,7 +41,6 @@ namespace Wdsf.Api.Client
         public Client(string username, string password, WdsfEndpoint endPoint)
         {
             apiUriBase = endPoint == WdsfEndpoint.Services ? "https://services.worlddancesport.org/API/1/" : "https://sandbox.worlddancesport.org/API/1/";
-//            apiUriBase = "https://wdsservices/api/1";
 
             this.username = username;
             this.password = password;

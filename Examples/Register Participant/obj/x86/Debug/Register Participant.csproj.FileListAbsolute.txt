@@ -1,0 +1,8 @@
+C:\Users\john\Documents\dev\Visual Studio Projects\web\WDSF API\Examples\Register Participant\bin\Debug\Example.exe.config
+C:\Users\john\Documents\dev\Visual Studio Projects\web\WDSF API\Examples\Register Participant\bin\Debug\Example.exe
+C:\Users\john\Documents\dev\Visual Studio Projects\web\WDSF API\Examples\Register Participant\bin\Debug\Example.pdb
+C:\Users\john\Documents\dev\Visual Studio Projects\web\WDSF API\Examples\Register Participant\bin\Debug\Wdsf.Api.Client.dll
+C:\Users\john\Documents\dev\Visual Studio Projects\web\WDSF API\Examples\Register Participant\bin\Debug\Wdsf.Api.Client.pdb
+C:\Users\john\Documents\dev\Visual Studio Projects\web\WDSF API\Examples\Register Participant\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\john\Documents\dev\Visual Studio Projects\web\WDSF API\Examples\Register Participant\obj\x86\Debug\Example.exe
+C:\Users\john\Documents\dev\Visual Studio Projects\web\WDSF API\Examples\Register Participant\obj\x86\Debug\Example.pdb

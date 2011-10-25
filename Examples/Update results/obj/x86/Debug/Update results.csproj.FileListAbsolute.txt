@@ -1,0 +1,8 @@
+C:\Users\john\Documents\dev\Visual Studio Projects\web\WDSF API\Update results\bin\Debug\Update results.exe.config
+C:\Users\john\Documents\dev\Visual Studio Projects\web\WDSF API\Update results\bin\Debug\Update results.exe
+C:\Users\john\Documents\dev\Visual Studio Projects\web\WDSF API\Update results\bin\Debug\Update results.pdb
+C:\Users\john\Documents\dev\Visual Studio Projects\web\WDSF API\Update results\bin\Debug\Wdsf.Api.Client.dll
+C:\Users\john\Documents\dev\Visual Studio Projects\web\WDSF API\Update results\bin\Debug\Wdsf.Api.Client.pdb
+C:\Users\john\Documents\dev\Visual Studio Projects\web\WDSF API\Update results\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\john\Documents\dev\Visual Studio Projects\web\WDSF API\Update results\obj\x86\Debug\Update results.exe
+C:\Users\john\Documents\dev\Visual Studio Projects\web\WDSF API\Update results\obj\x86\Debug\Update results.pdb

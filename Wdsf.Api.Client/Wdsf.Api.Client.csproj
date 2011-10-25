@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{EB80C37C-ADC8-4B97-87B8-D2026CC36542}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Wdsf.Api.Client</RootNamespace>
+    <AssemblyName>Wdsf.Api.Client</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>Wdsf.Api.Client.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Attributes\MediaTypeAttribute.cs" />
+    <Compile Include="Client.cs" />
+    <Compile Include="Exceptions\ApiException.cs" />
+    <Compile Include="Exceptions\BusyException.cs" />
+    <Compile Include="Exceptions\UnexpectedMediaTypeException.cs" />
+    <Compile Include="Exceptions\RestException.cs" />
+    <Compile Include="Exceptions\UnknownMediaTypeException.cs" />
+    <Compile Include="Interfaces\IClient.cs" />
+    <Compile Include="Models\AgeClass.cs" />
+    <Compile Include="Models\CompetitionDetail.cs" />
+    <Compile Include="Models\Competition.cs" />
+    <Compile Include="Models\Country.cs" />
+    <Compile Include="Models\CoupleBase.cs" />
+    <Compile Include="Models\CoupleDetail.cs" />
+    <Compile Include="Models\Couple.cs" />
+    <Compile Include="Models\Dance.cs" />
+    <Compile Include="Models\FinalScore.cs" />
+    <Compile Include="Models\Link.cs" />
+    <Compile Include="Models\ListOfAgeClass.cs" />
+    <Compile Include="Models\ListOfCompetition.cs" />
+    <Compile Include="Models\ListOfCountry.cs" />
+    <Compile Include="Models\ListOfCoupleParticipant.cs" />
+    <Compile Include="Models\ListOfCouple.cs" />
+    <Compile Include="Models\ListOfOfficial.cs" />
+    <Compile Include="Models\ListOfPerson.cs" />
+    <Compile Include="Models\ListOfRanking.cs" />
+    <Compile Include="Models\ListOfTeamParticipant.cs" />
+    <Compile Include="Models\MarkScore.cs" />
+    <Compile Include="Models\OfficialDetail.cs" />
+    <Compile Include="Models\Official.cs" />
+    <Compile Include="Models\OnScaleScore.cs" />
+    <Compile Include="Models\ParticipantBaseDetail.cs" />
+    <Compile Include="Models\ParticipantBase.cs" />
+    <Compile Include="Models\ParticipantCoupleDetail.cs" />
+    <Compile Include="Models\ParticipantCouple.cs" />
+    <Compile Include="Models\ParticipantTeamDetail.cs" />
+    <Compile Include="Models\ParticipantTeam.cs" />
+    <Compile Include="Models\PersonDetail.cs" />
+    <Compile Include="Models\Person.cs" />
+    <Compile Include="Models\Ranking.cs" />
+    <Compile Include="Models\Round.cs" />
+    <Compile Include="Models\Score.cs" />
+    <Compile Include="Models\StatusMessage.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Relations.cs" />
+    <Compile Include="RestAdapter.cs" />
+    <Compile Include="TypeHelper.cs" />
+    <Compile Include="WdsfEndPoint.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Wdsf.Api.Client.snk" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,10 @@
+C:\Users\john\Documents\dev\Visual Studio Projects\web\IDSF\Wdsf.Api.Client\bin\Debug\Wdsf.Api.Client.dll
+C:\Users\john\Documents\dev\Visual Studio Projects\web\IDSF\Wdsf.Api.Client\bin\Debug\Wdsf.Api.Client.pdb
+C:\Users\john\Documents\dev\Visual Studio Projects\web\IDSF\Wdsf.Api.Client\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\john\Documents\dev\Visual Studio Projects\web\IDSF\Wdsf.Api.Client\obj\Debug\Wdsf.Api.Client.dll
+C:\Users\john\Documents\dev\Visual Studio Projects\web\IDSF\Wdsf.Api.Client\obj\Debug\Wdsf.Api.Client.pdb
+C:\Users\john\Documents\dev\Visual Studio Projects\web\WDSF API\Wdsf.Api.Client\bin\Debug\Wdsf.Api.Client.dll
+C:\Users\john\Documents\dev\Visual Studio Projects\web\WDSF API\Wdsf.Api.Client\bin\Debug\Wdsf.Api.Client.pdb
+C:\Users\john\Documents\dev\Visual Studio Projects\web\WDSF API\Wdsf.Api.Client\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\john\Documents\dev\Visual Studio Projects\web\WDSF API\Wdsf.Api.Client\obj\Debug\Wdsf.Api.Client.dll
+C:\Users\john\Documents\dev\Visual Studio Projects\web\WDSF API\Wdsf.Api.Client\obj\Debug\Wdsf.Api.Client.pdb

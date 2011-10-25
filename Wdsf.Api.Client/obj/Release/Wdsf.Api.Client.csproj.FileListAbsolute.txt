@@ -1,5 +1,0 @@
-C:\Users\john\Documents\dev\Visual Studio Projects\web\IDSF\Wdsf.Api.Client\obj\Release\ResolveAssemblyReference.cache
-C:\Users\john\Documents\dev\Visual Studio Projects\web\IDSF\Wdsf.Api.Client\bin\Release\Wdsf.Api.Client.dll
-C:\Users\john\Documents\dev\Visual Studio Projects\web\IDSF\Wdsf.Api.Client\bin\Release\Wdsf.Api.Client.pdb
-C:\Users\john\Documents\dev\Visual Studio Projects\web\IDSF\Wdsf.Api.Client\obj\Release\Wdsf.Api.Client.dll
-C:\Users\john\Documents\dev\Visual Studio Projects\web\IDSF\Wdsf.Api.Client\obj\Release\Wdsf.Api.Client.pdb

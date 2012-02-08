@@ -26,7 +26,7 @@ namespace Wdsf.Api.Client
     public static class TypeHelper
     {
         private static Dictionary<string, Type> mediaTypeTypeMap =
-            Assembly.Load("Wdsf.Api.Client")
+            Assembly.GetExecutingAssembly()
             .GetTypes()
             .Where(t => t.Namespace == "Wdsf.Api.Client.Models")
             .Where<Type>(t => t.GetCustomAttributes(typeof(MediaTypeAttribute), false).Length != 0)

@@ -20,9 +20,16 @@
             // prepare the client for access
             apiClient = new Client("guest", "guest", WdsfEndpoint.Sandbox);
 
-            // the competition ID used here is an example. 
-            // Find further possible competition IDs by going to : https://sandbox.worlddancesport.org/api/1/competition?status=PreRegistration
-            CompetitionDetail competition = apiClient.GetCompetition(41077);
+            Console.Write("Enter competition ID:");
+            int competitionId;
+            if (!int.TryParse(Console.ReadLine(), out competitionId))
+            {
+                Console.WriteLine("Not a valid competition ID");
+                Console.ReadKey();
+                return;
+            }
+            
+            CompetitionDetail competition = apiClient.GetCompetition(competitionId);
 
             Console.WriteLine(
                 "Registering for competition {0} {1} {2} in {3}-{4} on {5}",
@@ -33,15 +40,24 @@
                 competition.Country,
                 competition.Date);
 
+            Console.WriteLine("Starting registration.");
+            competition.Status = "Registering";
+            if (!apiClient.UpdateCompetition(competition))
+            {
+                Console.WriteLine(string.Format("Failed to start registration. {0}", apiClient.LastApiMessage));
+                Console.ReadKey();
+                return;
+            }
+
             // we want to list only couples that are allowed to participate in this competition
             string allAllowedAgeGroups = GetAllowedAgeGroups(competition);
 
             // prepare the couple filter
             Dictionary<string,string> coupleFilter = new Dictionary<string,string>()
             {
-                { "name", string.Empty} ,
-                { "division", competition.Division },
-                { "ageGroup", allAllowedAgeGroups }
+                { FilterNames.Couple.NameOrMin, string.Empty} ,
+                { FilterNames.Couple.Division, competition.Division },
+                { FilterNames.Couple.AgeGroup, allAllowedAgeGroups }
             };
 
             do
@@ -62,6 +78,15 @@
                 Console.Write("An more? [Y]es/[N]o :");
 
             } while (Console.ReadKey().Key == ConsoleKey.Y);
+
+            Console.WriteLine("Closing registration.");
+            competition.Status = "RegistrationClosed";
+            if (!apiClient.UpdateCompetition(competition))
+            {
+                Console.WriteLine(string.Format("Failed to close registration. {0}", apiClient.LastApiMessage));
+                Console.ReadKey();
+                return;
+            }
 
             // show all registered participants of this competition
             ListAllParticipants(competition);
@@ -89,8 +114,8 @@
             do
             {
                 Console.Write("Enter name or MIN of athlete: ");
-                string athelteName = Console.ReadLine();
-                coupleFilter["name"] = athelteName;
+                string athleteName = Console.ReadLine();
+                coupleFilter[FilterNames.Couple.NameOrMin] = athleteName;
 
                 candidates = apiClient.GetCouples(coupleFilter);
 
@@ -170,7 +195,7 @@
         {
             // show list of all registered participants
             Uri allParticipantsUri = competition.Links
-                .Where(l => l.Rel == ResourceRelation.CompetitionParticipants)
+                .Where(l => l.Rel.StartsWith(ResourceRelation.CompetitionParticipants))
                 .Select(l => new Uri(l.HRef))
                 .FirstOrDefault();
 

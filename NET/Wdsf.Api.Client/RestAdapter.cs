@@ -269,7 +269,10 @@ namespace Wdsf.Api.Client
             ns.Add("xlink", "http://www.w3.org/1999/xlink");
 
             Stream requestStream = request.GetRequestStream();
+
             serializer.Serialize(requestStream, model, ns);
+
+            requestStream.Flush();
             requestStream.Close();
         }
 

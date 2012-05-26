@@ -19,42 +19,108 @@
             // prepare the client for access
             apiClient = new Client("guest", "guest", WdsfEndpoint.Sandbox);
 
-            // the participant ID used here is an example. 
-            // create a participant ID by using the "Register Participant" example.
-            Console.WriteLine("Loading participant.");
-            ParticipantCoupleDetail participant = apiClient.GetCoupleParticipant(1373892);
+            Console.Write("Enter competition ID:");
+            int competitionId;
+            if (!int.TryParse(Console.ReadLine(), out competitionId))
+            {
+                Console.WriteLine("Not a valid competition ID");
+                Console.ReadKey();
+                return;
+            }
 
-            // the competition must have adjudicators registered for this to work
-            // register adjudicators as in the "Register Officials" example
+            CompetitionDetail competition = apiClient.GetCompetition(competitionId);
+
             Console.WriteLine("Loading officials.");
-            List<Official> adjudicators = GetAllAdjudicators(participant);
+            List<Official> adjudicators = GetAllAdjudicators(competition);
+            if (adjudicators.Count == 0)
+            {
+                Console.WriteLine("No officials found. Can not add results!");
+                Console.ReadKey();
+                return;
+            }
 
-            FillResults(participant, adjudicators);
+            Console.WriteLine("Loading participants.");
+            List<ParticipantCouple> participants = GetAllParticipants(competition);
+            if (participants.Count == 0)
+            {
+                Console.WriteLine("No participants found. Can not add results!");
+                Console.ReadKey();
+                return;
+            }
 
+
+            // one couple did not show up so we set it to "Noshow"
+            ParticipantCouple missingParticipant = participants.First();
+            Console.WriteLine(string.Format("Setting 'No-Show' for participant: {0}", missingParticipant.Couple));
+            ParticipantCoupleDetail missing = apiClient.GetCoupleParticipant(missingParticipant.Id);
+            missing.Status = "Noshow";
             try
             {
                 Console.WriteLine("Saving participant.");
-                bool isSuccess = apiClient.UpdateCoupleParticipant(participant);
-                Console.WriteLine("Done.");
+                if (!apiClient.UpdateCoupleParticipant(missing))
+                {
+                    Console.WriteLine(string.Format("Could not update participant: {0}", apiClient.LastApiMessage));
+                }
             }
             catch (ApiException ex)
             {
                 Console.WriteLine(ex.InnerException.Message);
+                Console.ReadKey();
+                return;
             }
 
+            // we just simulate the ranking here. Your application would follow the scating rules to determine the ranking
+            int rank = 1;
+            foreach (ParticipantCouple participant in participants.Skip(1))
+            {
+                Console.WriteLine(string.Format("Setting scores for participant: {0}", participant.Couple));
+                ParticipantCoupleDetail coupleParticipant = apiClient.GetCoupleParticipant(participant.Id);
+                FillResults(coupleParticipant, adjudicators);
+                coupleParticipant.Rank = rank.ToString();
+
+                try
+                {
+                    Console.WriteLine("Saving participant.");
+                    if (!apiClient.UpdateCoupleParticipant(coupleParticipant))
+                    {
+                        Console.WriteLine(string.Format("Could not update participant: {0}", apiClient.LastApiMessage));
+                    }
+                }
+                catch (ApiException ex)
+                {
+                    Console.WriteLine(ex.InnerException.Message);
+                    Console.ReadKey();
+                    return;
+                }
+
+                rank++;
+            }
+
+            Console.WriteLine("Setting competition status to processing.");
+            competition.Status = "Processing";
+            apiClient.UpdateCompetition(competition);
+
+            Console.WriteLine("Done.");
             Console.ReadKey();
         }
 
-        private static List<Official> GetAllAdjudicators(ParticipantCoupleDetail participant)
+        private static List<ParticipantCouple> GetAllParticipants(CompetitionDetail competition)
         {
-            // get a list of adjudicators for the competition this participant is part of.
+            // get the url for a list of participants of the competition.
 
-            Uri competitionUri = participant.Link
-                .Where(l => l.Rel == ResourceRelation.ParticipantCompetition)
+            Uri officialsUri = competition.Links
+                .Where(l => l.Rel.StartsWith(ResourceRelation.CompetitionParticipants))
                 .Select(l => new Uri(l.HRef))
                 .FirstOrDefault();
 
-            CompetitionDetail competition = apiClient.Get<CompetitionDetail>(competitionUri);
+            ListOfCoupleParticpant allParticipants = apiClient.Get<ListOfCoupleParticpant>(officialsUri);
+
+            return new List<ParticipantCouple>(allParticipants);
+        }
+
+        private static List<Official> GetAllAdjudicators(CompetitionDetail competition)
+        {
+            // get the url for the list of adjudicators of the competition.
 
             Uri officialsUri = competition.Links
                 .Where(l => l.Rel == ResourceRelation.CompetitionOfficials)
@@ -71,14 +137,14 @@
             Random random = new Random();
 
             // as we have loeded the participant from the API it may contain results from previous rounds.
-            // clear them depending on how you intend to update results.
+            // always upload the entire mark/score set!
 
             participant.Rounds.Clear();
 
             string[] danceNames = new string[] { "SAMBA", "CHA CHA CHA", "RUMBA", "PASO DOBLE", "JIVE" };
 
             // results for round 1
-            // couple has got a star, this means a mark from every adjudicator for every dance.
+            // couple has got a star, this means a mark from every adjudicator for every dance with IsSet = true
             Round round1 = new Round() { Name = "1" };
             participant.Rounds.Add(round1);
 

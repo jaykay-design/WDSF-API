@@ -15,7 +15,7 @@
         public int StartNumber { get; set; }
 
         /// <summary>
-        /// attended/missing/disqualified/etc
+        /// Present, Noshow, Excused, Disqualified
         /// </summary>
         [XmlElement("status")]
         public string Status { get; set; }

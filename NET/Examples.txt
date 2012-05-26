@@ -1,0 +1,17 @@
+To use the examples prepare the following:
+
+- Competition ID. 
+	It can be found by browsing https://sandbox.worlddancesport.org/api/1/competition?status=PreRegistration. Pick any one you like. 
+	Preferably one that is part of the WDS World Ranking System so you can see the points given to a couple in example 4.
+
+Allmost all examples start by requesting this ID.
+
+The general work flow of a competition is the following:
+
+1. Register officials -> use "Register Officials" example
+2. Register participants -> use "Register Participants" example
+3. Upload the results of a competition -> use the "Update results" example
+4. Close the competition ->use the "Close competition" example
+	This example will close the competition and retreive the coefficient and participant points.
+
+The "Remove results" example shows how to remove results. This is not part of a usual work flow but might be helpfull during testing.

@@ -38,9 +38,20 @@ namespace Wdsf.Api.Client
         private List<RestAdapter> adapters;
         private object adapterLock = new object();
 
+        public string LastApiMessage { get; private set; }
+
         public Client(string username, string password, WdsfEndpoint endPoint)
         {
             apiUriBase = endPoint == WdsfEndpoint.Services ? "https://services.worlddancesport.org/API/1/" : "https://sandbox.worlddancesport.org/API/1/";
+
+            this.username = username;
+            this.password = password;
+
+            this.adapters = new List<RestAdapter>() { new RestAdapter(username, password) };
+        }
+        public Client(string username, string password, string baseUrl)
+        {
+            apiUriBase = baseUrl;
 
             this.username = username;
             this.password = password;
@@ -111,9 +122,6 @@ namespace Wdsf.Api.Client
         public bool UpdateCompetition(CompetitionDetail competition)
         {
             Uri resourceUri = new Uri(string.Format("{0}competition/{1}", this.apiUriBase, competition.Id));
-
-            // not used for updating
-            competition.Links = null;
 
             return UpdateResource<CompetitionDetail>(competition, resourceUri);
         }
@@ -461,6 +469,7 @@ namespace Wdsf.Api.Client
                 throw new ApiException(ex);
             }
 
+            this.LastApiMessage = message.Message;
             return message.Code == (int)HttpStatusCode.OK;
         }
         private Uri SaveResource<T>(T participant, Uri resourceUri) where T : class
@@ -480,6 +489,7 @@ namespace Wdsf.Api.Client
                 throw new ApiException(new RestException(message));
             }
 
+            this.LastApiMessage = message.Message;
             return new Uri(message.Link.HRef);
         }
         private bool DeleteResource(Uri resourceUri)
@@ -494,6 +504,7 @@ namespace Wdsf.Api.Client
                 throw new ApiException(ex);
             }
 
+            this.LastApiMessage = message.Message;
             return message.Code == (int)HttpStatusCode.OK;
         }
 

@@ -8,6 +8,8 @@
     [XmlType("dance", Namespace = "http://services.worlddancesport.org/api")]
     public class Dance
     {
+        private List<Score> scores = new List<Score>();
+
         [XmlAttribute("name")]
         public string Name { get; set; }
 
@@ -23,20 +25,24 @@
         {
             get
             {
-                return Scores == null ? null : Scores.ToArray();
+                return scores.Count == 0 ? null : scores.ToArray();
             }
             set
             {
-                Scores = new List<Score>(value);
+                if (value == null)
+                    throw new ArgumentNullException("value");
+
+                scores = new List<Score>(value);
             }
         }
 
         [XmlIgnore]
-        public List<Score> Scores { get; set; }
-
-        public Dance()
+        public IList<Score> Scores
         {
-            this.Scores = new List<Score>();
+            get
+            {
+                return scores;
+            }
         }
     }
 }

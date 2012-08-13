@@ -7,6 +7,8 @@
     [XmlType("round", Namespace = "http://services.worlddancesport.org/api")]
     public class Round
     {
+        private List<Dance> dances = new List<Dance>();
+
         [XmlAttribute("name")]
         public string Name { get; set; }
 
@@ -19,20 +21,24 @@
         {
             get
             {
-                return Dances == null ? null : Dances.ToArray();
+                return dances.Count == 0 ? null : dances.ToArray();
             }
             set
             {
-                Dances = new List<Dance>(value);
+                if (value == null)
+                    throw new ArgumentNullException("value");
+
+                dances = new List<Dance>(value);
             }
         }
 
         [XmlIgnore]
-        public List<Dance> Dances { get; set; }
-
-        public Round()
+        public IList<Dance> Dances
         {
-            this.Dances = new List<Dance>();
+            get
+            {
+                return dances;
+            }
         }
     }
 }

@@ -1,10 +1,13 @@
 ﻿namespace Wdsf.Api.Client.Models
 {
+    using System;
     using System.Collections.Generic;
     using System.Xml.Serialization;
 
     public class ParticipantBaseDetail
     {
+        private List<Round> rounds = new List<Round>();
+
         [XmlElement("link")]
         public virtual Link[] Link { get; set; }
 
@@ -41,11 +44,14 @@
         {
             get
             {
-                return Rounds == null ? null : Rounds.ToArray();
+                return rounds.Count == 0 ? null : rounds.ToArray();
             }
             set
             {
-                Rounds = new List<Round>(value);
+                if (value == null)
+                    throw new ArgumentNullException("value");
+
+                rounds = new List<Round>(value);
             }
         }
 
@@ -53,7 +59,12 @@
         /// Contains the scores. Set to null if the scores shall not be updated.
         /// </summary>
         [XmlIgnore]
-        public List<Round> Rounds { get; set; }
-
+        public IList<Round> Rounds
+        {
+            get
+            {
+                return rounds;
+            }
+        }
     }
 }

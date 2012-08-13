@@ -20,21 +20,37 @@ namespace Wdsf.Api.Client
     using System;
     using System.IO;
     using System.Net;
+    using System.Security;
+    using System.Runtime.InteropServices;
     using System.Xml.Serialization;
     using Wdsf.Api.Client.Exceptions;
     using Wdsf.Api.Client.Models;
 
-    public class RestAdapter : IDisposable
+    internal class RestAdapter : IDisposable
     {
         public bool IsBusy { get; private set; }
         private object busyLock = new object();
 
-        private WebClient client = new WebClient();
-        private ICredentials credentials;
+        private readonly WebClient client = new WebClient();
+        private readonly ICredentials credentials;
 
-        public RestAdapter(string username, string password)
+        public RestAdapter(string username, SecureString password)
         {
-            this.credentials = new NetworkCredential(username, password);
+            IntPtr strPointer = IntPtr.Zero;
+            try
+            {
+                strPointer = Marshal.SecureStringToBSTR(password);
+                this.credentials = new NetworkCredential(username, Marshal.PtrToStringBSTR(strPointer));
+            }
+            finally
+            {
+                if (IntPtr.Zero != strPointer)
+                {
+                    Marshal.ZeroFreeBSTR(strPointer);
+                    strPointer = IntPtr.Zero;
+                }
+            }
+
         }
 
         /// <summary>
@@ -184,6 +200,9 @@ namespace Wdsf.Api.Client
 
             if (receivedType == null)
             {
+                if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    throw new UnauthorizedAccessException();
+
                 throw new UnknownMediaTypeException(response.ContentType);
             }
 

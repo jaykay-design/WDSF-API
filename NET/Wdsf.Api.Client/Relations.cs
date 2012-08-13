@@ -22,71 +22,71 @@ namespace Wdsf.Api.Client
         /// <summary>
         /// The resource itself
         /// </summary>
-        public static readonly string Self = "self";
+        public const string Self = "self";
         /// <summary>
         /// A competition
         /// </summary>
-        public static readonly string Competition = "http://services.worlddancesport.org/rel/competition";
+        public const string Competition = "http://services.worlddancesport.org/rel/competition";
         /// <summary>
         /// The participants of a competition.
         /// </summary>
-        public static readonly string CompetitionParticipants = "http://services.worlddancesport.org/rel/competition/participants";
+        public const string CompetitionParticipants = "http://services.worlddancesport.org/rel/competition/participants";
         /// <summary>
         /// The officials of a competition
         /// </summary>
-        public static readonly string CompetitionOfficials = "http://services.worlddancesport.org/rel/competition/officials";
+        public const string CompetitionOfficials = "http://services.worlddancesport.org/rel/competition/officials";
         /// <summary>
         /// A participant
         /// </summary>
-        public static readonly string Particiapnt = "http://services.worlddancesport.org/rel/participant";
+        public const string Particiapnt = "http://services.worlddancesport.org/rel/participant";
         /// <summary>
         /// The competition a participant has taken part at
         /// </summary>
-        public static readonly string ParticipantCompetition = "http://services.worlddancesport.org/rel/participant/competition";
+        public const string ParticipantCompetition = "http://services.worlddancesport.org/rel/participant/competition";
         /// <summary>
         /// The couple related to this participant
         /// </summary>
-        public static readonly string ParticipantCouple = "http://services.worlddancesport.org/rel/participant/couple";
+        public const string ParticipantCouple = "http://services.worlddancesport.org/rel/participant/couple";
         /// <summary>
         /// The team related to this participant
         /// </summary>
-        public static readonly string ParticipantTeam = "http://services.worlddancesport.org/rel/participant/team";
+        public const string ParticipantTeam = "http://services.worlddancesport.org/rel/participant/team";
         /// <summary>
         /// A couple
         /// </summary>
-        public static readonly string Couple = "http://services.worlddancesport.org/rel/couple";
+        public const string Couple = "http://services.worlddancesport.org/rel/couple";
         /// <summary>
         /// The man of a couple
         /// </summary>
-        public static readonly string Man = "http://services.worlddancesport.org/rel/couple/man";
+        public const string Man = "http://services.worlddancesport.org/rel/couple/man";
         /// <summary>
         /// The woman of a couple
         /// </summary>
-        public static readonly string Woman = "http://services.worlddancesport.org/rel/couple/woman";
+        public const string Woman = "http://services.worlddancesport.org/rel/couple/woman";
         /// <summary>
         /// A team
         /// </summary>
-        public static readonly string Team = "http://services.worlddancesport.org/rel/team";
+        public const string Team = "http://services.worlddancesport.org/rel/team";
         /// <summary>
         /// A person
         /// </summary>
-        public static readonly string Person = "http://services.worlddancesport.org/rel/person";
+        public const string Person = "http://services.worlddancesport.org/rel/person";
         /// <summary>
         /// The current partner of a person.
         /// </summary>
-        public static readonly string PersonPartner = "http://services.worlddancesport.org/rel/person/partner";
+        public const string PersonPartner = "http://services.worlddancesport.org/rel/person/partner";
         /// <summary>
         /// An official
         /// </summary>
-        public static readonly string Official = "http://services.worlddancesport.org/rel/official";
+        public const string Official = "http://services.worlddancesport.org/rel/official";
         /// <summary>
         /// The Person acting as an official
         /// </summary>
-        public static readonly string OfficialPerson = "http://services.worlddancesport.org/rel/official/person";
+        public const string OfficialPerson = "http://services.worlddancesport.org/rel/official/person";
         /// <summary>
         /// The competition an official acts at
         /// </summary>
-        public static readonly string OfficialCompetition = "http://services.worlddancesport.org/rel/official/competition";
+        public const string OfficialCompetition = "http://services.worlddancesport.org/rel/official/competition";
 
     }
 }

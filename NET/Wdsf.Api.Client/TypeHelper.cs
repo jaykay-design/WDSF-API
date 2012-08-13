@@ -23,7 +23,7 @@ namespace Wdsf.Api.Client
     using System.Reflection;
     using Wdsf.Api.Client.Attributes;
 
-    public static class TypeHelper
+    internal static class TypeHelper
     {
         private static Dictionary<string, Type> mediaTypeTypeMap =
             Assembly.GetExecutingAssembly()

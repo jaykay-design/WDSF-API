@@ -1,5 +1,5 @@
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Register participant", "Examples\Register Participant\Register participant.csproj", "{4A4C6B8F-F700-4990-961B-47B700ED5D23}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wdsf.Api.Client", "Wdsf.Api.Client\Wdsf.Api.Client.csproj", "{EB80C37C-ADC8-4B97-87B8-D2026CC36542}"

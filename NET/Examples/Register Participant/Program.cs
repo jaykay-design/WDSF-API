@@ -193,13 +193,7 @@
 
         private static void ListAllParticipants(CompetitionDetail competition)
         {
-            // show list of all registered participants
-            Uri allParticipantsUri = competition.Links
-                .Where(l => l.Rel.StartsWith(ResourceRelation.CompetitionParticipants))
-                .Select(l => new Uri(l.HRef))
-                .FirstOrDefault();
-
-            ListOfCoupleParticpant allParticipants = apiClient.Get(allParticipantsUri) as ListOfCoupleParticpant;
+            IList<ParticipantCouple> allParticipants = apiClient.GetCoupleParticipants(competition.Id);
             if (allParticipants.Count != 0)
             {
                 Console.WriteLine();

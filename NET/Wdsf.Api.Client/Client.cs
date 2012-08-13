@@ -21,6 +21,7 @@ namespace Wdsf.Api.Client
     using System.Collections.Generic;
     using System.Linq;
     using System.Net;
+    using System.Security;
     using Wdsf.Api.Client.Exceptions;
     using Wdsf.Api.Client.Interfaces;
     using Wdsf.Api.Client.Models;
@@ -31,26 +32,40 @@ namespace Wdsf.Api.Client
     /// </summary>
     public class Client : IDisposable, IClient
     {
-        private string username;
-        private string password;
-        private string apiUriBase;
+        private readonly string username;
+        private readonly SecureString password;
+        private readonly string apiUriBase;
 
         private List<RestAdapter> adapters;
-        private object adapterLock = new object();
+        private readonly object adapterLock = new object();
 
         public string LastApiMessage { get; private set; }
 
-        public Client(string username, string password, WdsfEndpoint endPoint)
+
+        public Client(string username, string password, WdsfEndpoint endPoint) :
+            this(username, MakeSecureString(password), endPoint)
         {
-            apiUriBase = endPoint == WdsfEndpoint.Services ? "https://services.worlddancesport.org/API/1/" : "https://sandbox.worlddancesport.org/API/1/";
-
-            this.username = username;
-            this.password = password;
-
-            this.adapters = new List<RestAdapter>() { new RestAdapter(username, password) };
         }
-        public Client(string username, string password, string baseUrl)
+
+        public Client(string username, SecureString password, WdsfEndpoint endPoint) :
+            this(username, password, endPoint == WdsfEndpoint.Services ? "https://services.worlddancesport.org/API/1/" : "https://sandbox.worlddancesport.org/API/1/")
         {
+        }
+
+        public Client(string username, string password, string baseUrl) :
+            this(username, MakeSecureString(password), baseUrl)
+        {
+        }
+
+        public Client(string username, SecureString password, string baseUrl)
+        {
+            if (username == null)
+                throw new ArgumentNullException("username");
+            if (password == null)
+                throw new ArgumentNullException("password");
+            if (baseUrl == null)
+                throw new ArgumentNullException("baseUrl");
+
             apiUriBase = baseUrl;
 
             this.username = username;
@@ -59,18 +74,38 @@ namespace Wdsf.Api.Client
             this.adapters = new List<RestAdapter>() { new RestAdapter(username, password) };
         }
 
+        private static SecureString MakeSecureString(string val)
+        {
+            if (val == null)
+                return null;
+
+            SecureString retVal = new SecureString();
+
+            if (val.Length == 0)
+                return retVal;
+
+            for (int i = 0; i < val.Length; i++)
+                retVal.AppendChar(val[i]);
+
+            retVal.MakeReadOnly();
+            return retVal;
+        }
+
+
         /// <summary>
         /// Gets a list of persons.
         /// </summary>
         /// <param name="filter">A dictionaly containing filter parameters. See API documentation for details.</param>
         /// <exception cref="ApiException">The request failed. See inner exception for details.</exception>
         /// <returns>A list of persons</returns>
-        public IList<Person> GetPersons(IDictionary<string,string> filter)
+        public IList<Person> GetPersons(IDictionary<string, string> filter)
         {
-            string query = string.Join("&", filter.Select(e => string.Format("{0}={1}", e.Key, e.Value)).ToArray());
-            Uri resourceUri = new Uri(string.Format("{0}person?{1}", this.apiUriBase, query));
+            if (filter == null)
+                throw new ArgumentNullException("filter");
 
-            return GetResourceList<ListOfPerson, Person>(resourceUri);
+            string query = string.Join("&", filter.Select(e => string.Format("{0}={1}", e.Key, e.Value)).ToArray());
+
+            return GetResourceList<ListOfPerson, Person>(string.Format("person?{0}", query));
         }
 
         /// <summary>
@@ -81,9 +116,7 @@ namespace Wdsf.Api.Client
         /// <returns>The person model.</returns>
         public PersonDetail GetPerson(int min)
         {
-            Uri resourceUri = new Uri(string.Format("{0}person/{1}", this.apiUriBase, min));
-
-            return GetResource<PersonDetail>(resourceUri);
+            return GetResource<PersonDetail>(string.Format("person/{0}", min));
         }
 
 
@@ -95,10 +128,12 @@ namespace Wdsf.Api.Client
         /// <returns>A list of competitions.</returns>
         public IList<Competition> GetCompetitions(IDictionary<string, string> filter)
         {
-            string query = string.Join("&", filter.Select(e => string.Format("{0}={1}", e.Key, e.Value)).ToArray());
-            Uri resourceUri = new Uri(string.Format("{0}competition?{1}", this.apiUriBase, query));
+            if (filter == null)
+                throw new ArgumentNullException("filter");
 
-            return GetResourceList<ListOfCompetition, Competition>(resourceUri);
+            string query = string.Join("&", filter.Select(e => string.Format("{0}={1}", e.Key, e.Value)).ToArray());
+
+            return GetResourceList<ListOfCompetition, Competition>(string.Format("competition?{0}", query));
         }
 
         /// <summary>
@@ -109,9 +144,7 @@ namespace Wdsf.Api.Client
         /// <returns>The competition</returns>
         public CompetitionDetail GetCompetition(int id)
         {
-            Uri resourceUri = new Uri(string.Format("{0}competition/{1}", this.apiUriBase, id));
-
-            return GetResource<CompetitionDetail>(resourceUri);
+            return GetResource<CompetitionDetail>(string.Format("competition/{0}", id));
         }
 
         /// <summary>
@@ -121,9 +154,13 @@ namespace Wdsf.Api.Client
         /// <exception cref="ApiException">The request failed. See inner exception for details.</exception>
         public bool UpdateCompetition(CompetitionDetail competition)
         {
-            Uri resourceUri = new Uri(string.Format("{0}competition/{1}", this.apiUriBase, competition.Id));
+            if (competition == null)
+                throw new ArgumentNullException("competition");
 
-            return UpdateResource<CompetitionDetail>(competition, resourceUri);
+            // not used for updating
+            competition.Links = null;
+
+            return UpdateResource<CompetitionDetail>(competition, string.Format("competition/{0}", competition.Id));
         }
 
 
@@ -135,9 +172,19 @@ namespace Wdsf.Api.Client
         /// <returns>The participant (couple)</returns>
         public ParticipantCoupleDetail GetCoupleParticipant(int id)
         {
-            Uri resourceUri = new Uri(string.Format("{0}participant/{1}", this.apiUriBase, id));
+            return GetResource<ParticipantCoupleDetail>(string.Format("participant/{0}", id));
+        }
 
-            return GetResource<ParticipantCoupleDetail>(resourceUri);
+        /// <summary>
+        /// Get all participiants (couples) for specified competition
+        /// </summary>
+        /// <param name="competitionId">The competition ID</param>
+        /// <returns>The list of participants (couples)</returns>
+        public IList<ParticipantCouple> GetCoupleParticipants(int competitionId)
+        {
+            return GetResourceList<ListOfCoupleParticpant, ParticipantCouple>(
+                string.Format("participant?competitionId={0}", competitionId)
+            );
         }
 
         /// <summary>
@@ -147,11 +194,12 @@ namespace Wdsf.Api.Client
         /// <exception cref="ApiException">The request failed. See inner exception for details.</exception>
         public bool UpdateCoupleParticipant(ParticipantCoupleDetail participant)
         {
-            Uri resourceUri = new Uri(string.Format("{0}participant/{1}", this.apiUriBase, participant.Id));
+            if (participant == null)
+                throw new ArgumentNullException("participant");
 
             ClearLinks(participant);
 
-            return UpdateResource<ParticipantCoupleDetail>(participant, resourceUri);
+            return UpdateResource<ParticipantCoupleDetail>(participant, string.Format("participant/{0}", participant.Id));
         }
 
         /// <summary>
@@ -162,11 +210,12 @@ namespace Wdsf.Api.Client
         /// <returns>The Uri to the newly created resource</returns>
         public Uri SaveCoupleParticipant(ParticipantCoupleDetail participant)
         {
-            Uri resourceUri = new Uri(string.Format("{0}participant", this.apiUriBase));
+            if (participant == null)
+                throw new ArgumentNullException("participant");
 
             ClearLinks(participant);
 
-            return SaveResource<ParticipantCoupleDetail>(participant, resourceUri);
+            return SaveResource<ParticipantCoupleDetail>(participant, "participant");
         }
 
         /// <summary>
@@ -177,9 +226,7 @@ namespace Wdsf.Api.Client
         /// <returns>true on success.</returns>
         public bool DeleteCoupleParticipant(int id)
         {
-            Uri resourceUri = new Uri(string.Format("{0}participant/{1}", this.apiUriBase, id));
-
-            return DeleteResource(resourceUri);
+            return DeleteResource(string.Format("participant/{0}", id));
         }
 
 
@@ -191,9 +238,7 @@ namespace Wdsf.Api.Client
         /// <returns>The participant (team)</returns>
         public ParticipantTeamDetail GetTeamParticipant(int id)
         {
-            Uri resourceUri = new Uri(string.Format("{0}participant/{1}", this.apiUriBase, id));
-
-            return GetResource<ParticipantTeamDetail>(resourceUri);
+            return GetResource<ParticipantTeamDetail>(string.Format("participant/{0}", id));
         }
 
         /// <summary>
@@ -204,11 +249,12 @@ namespace Wdsf.Api.Client
         /// <exception cref="UnexpectedMediaTypeException">The received resource type was not expected.</exception>
         public bool UpdateTeamParticipant(ParticipantTeamDetail participant)
         {
-            Uri resourceUri = new Uri(string.Format("{0}participant/{1}", this.apiUriBase, participant.Id));
+            if (participant == null)
+                throw new ArgumentNullException("participant");
 
             ClearLinks(participant);
 
-            return UpdateResource<ParticipantTeamDetail>(participant, resourceUri);
+            return UpdateResource<ParticipantTeamDetail>(participant, string.Format("participant/{0}", participant.Id));
         }
 
         /// <summary>
@@ -219,11 +265,12 @@ namespace Wdsf.Api.Client
         /// <returns>The Uri to the newly created resource</returns>
         public Uri SaveTeamParticipant(ParticipantTeamDetail participant)
         {
-            Uri resourceUri = new Uri(string.Format("{0}participant", this.apiUriBase));
+            if (participant == null)
+                throw new ArgumentNullException("participant");
 
             ClearLinks(participant);
 
-            return SaveResource<ParticipantTeamDetail>(participant, resourceUri);
+            return SaveResource<ParticipantTeamDetail>(participant, "participant");
         }
 
         /// <summary>
@@ -234,9 +281,7 @@ namespace Wdsf.Api.Client
         /// <returns>true on success.</returns>
         public bool DeleteTeamParticipant(int id)
         {
-            Uri resourceUri = new Uri(string.Format("{0}participant/{1}", this.apiUriBase, id));
-
-            return DeleteResource(resourceUri);
+            return DeleteResource(string.Format("participant/{0}", id));
         }
 
 
@@ -248,9 +293,19 @@ namespace Wdsf.Api.Client
         /// <returns>The official</returns>
         public OfficialDetail GetOfficial(int id)
         {
-            Uri resourceUri = new Uri(string.Format("{0}official/{1}", this.apiUriBase, id));
+            return GetResource<OfficialDetail>(string.Format("official/{0}", id));
+        }
 
-            return GetResource<OfficialDetail>(resourceUri);
+        /// <summary>
+        /// Gets officials of specified competition
+        /// </summary>
+        /// <param name="competitionId">The competition ID</param>
+        /// <returns>The list of officials</returns>
+        public IList<Official> GetOfficials(int competitionId)
+        {
+            return GetResourceList<ListOfOfficial, Official>(
+                string.Format("official?competitionId={0}", competitionId)
+            );
         }
 
         /// <summary>
@@ -260,9 +315,10 @@ namespace Wdsf.Api.Client
         /// <exception cref="ApiException">The request failed. See inner exception for details.</exception>
         public bool UpdateOfficial(OfficialDetail official)
         {
-            Uri resourceUri = new Uri(string.Format("{0}official/{1}", this.apiUriBase, official.Id));
+            if (official == null)
+                throw new ArgumentNullException("official");
 
-            return UpdateResource<OfficialDetail>(official, resourceUri);
+            return UpdateResource<OfficialDetail>(official, string.Format("official/{0}", official.Id));
         }
 
         /// <summary>
@@ -273,9 +329,10 @@ namespace Wdsf.Api.Client
         /// <returns>The Uri to the newly created official</returns>
         public Uri SaveOfficial(OfficialDetail official)
         {
-            Uri resourceUri = new Uri(string.Format("{0}official", this.apiUriBase));
+            if (official == null)
+                throw new ArgumentNullException("official");
 
-            return SaveResource<OfficialDetail>(official, resourceUri);
+            return SaveResource<OfficialDetail>(official, "official");
         }
 
         /// <summary>
@@ -286,9 +343,7 @@ namespace Wdsf.Api.Client
         /// <returns>true on success.</returns>
         public bool DeleteOfficial(int id)
         {
-            Uri resourceUri = new Uri(string.Format("{0}offcial/{1}", this.apiUriBase, id));
-
-            return DeleteResource(resourceUri);
+            return DeleteResource(string.Format("offcial/{0}", id));
         }
 
 
@@ -300,10 +355,12 @@ namespace Wdsf.Api.Client
         /// <returns>A list of couples</returns>
         public IList<Couple> GetCouples(IDictionary<string, string> filter)
         {
-            string query = string.Join("&", filter.Select(e => string.Format("{0}={1}", e.Key, e.Value)).ToArray());
-            Uri resourceUri = new Uri(string.Format("{0}couple?{1}", this.apiUriBase, query));
+            if (filter == null)
+                throw new ArgumentNullException("filter");
 
-            return GetResourceList<ListOfCouple, Couple>(resourceUri);
+            string query = string.Join("&", filter.Select(e => string.Format("{0}={1}", e.Key, e.Value)).ToArray());
+
+            return GetResourceList<ListOfCouple, Couple>(string.Format("couple?{0}", query));
         }
 
         /// <summary>
@@ -314,9 +371,10 @@ namespace Wdsf.Api.Client
         /// <returns>The couple</returns>
         public CoupleDetail GetCouple(string id)
         {
-            Uri resourceUri = new Uri(string.Format("{0}couple/{1}", this.apiUriBase, id));
+            if (string.IsNullOrEmpty(id))
+                throw new ArgumentException("Couple ID must be specified.", "id");
 
-            return GetResource<CoupleDetail>(resourceUri);
+            return GetResource<CoupleDetail>(string.Format("couple/{0}", id));
         }
 
         /// <summary>
@@ -326,9 +384,10 @@ namespace Wdsf.Api.Client
         /// <exception cref="ApiException">The request failed. See inner exception for details.</exception>
         public bool UpdateCouple(CoupleDetail couple)
         {
-            Uri resourceUri = new Uri(string.Format("{0}couple/{1}", this.apiUriBase, couple.Id));
+            if (couple == null)
+                throw new ArgumentNullException("couple");
 
-            return UpdateResource<CoupleDetail>(couple, resourceUri);
+            return UpdateResource<CoupleDetail>(couple, string.Format("couple/{0}", couple.Id));
         }
 
         /// <summary>
@@ -339,9 +398,10 @@ namespace Wdsf.Api.Client
         /// <returns>The Uri to the newly created couple</returns>
         public Uri SaveCouple(CoupleDetail couple)
         {
-            Uri resourceUri = new Uri(string.Format("{0}couple", this.apiUriBase));
+            if (couple == null)
+                throw new ArgumentNullException("couple");
 
-            return SaveResource<CoupleDetail>(couple, resourceUri);
+            return SaveResource<CoupleDetail>(couple, "couple");
         }
 
 
@@ -371,9 +431,9 @@ namespace Wdsf.Api.Client
                 throw new ArgumentException("Division must be set.", "division");
             }
 
-            Uri resourceUri = new Uri(string.Format("{0}ranking?agegroup={1}&discipline={2}&division={3}", this.apiUriBase, ageGroup, discipline, division));
-
-            return GetResourceList<ListOfRanking, Ranking>(resourceUri);
+            return GetResourceList<ListOfRanking, Ranking>(
+                string.Format("ranking?agegroup={0}&discipline={1}&division={2}", ageGroup, discipline, division)
+            );
         }
 
         /// <summary>
@@ -383,9 +443,7 @@ namespace Wdsf.Api.Client
         /// <returns>The age groups</returns>
         public IList<AgeClass> GetAges()
         {
-            Uri resourceUri = new Uri(string.Format("{0}age", this.apiUriBase));
-
-            return GetResourceList<ListOfAgeClass,AgeClass>(resourceUri);
+            return GetResourceList<ListOfAgeClass, AgeClass>("age");
         }
 
         /// <summary>
@@ -395,9 +453,7 @@ namespace Wdsf.Api.Client
         /// <returns>The countries</returns>
         public IList<Country> GetCountries()
         {
-            Uri resourceUri = new Uri(string.Format("{0}country", this.apiUriBase));
-
-            return GetResourceList<ListOfCountry, Country>(resourceUri);
+            return GetResourceList<ListOfCountry, Country>("country");
         }
 
 
@@ -410,7 +466,17 @@ namespace Wdsf.Api.Client
         /// <returns>The resource</returns>
         public T Get<T>(Uri resourceUri) where T:class
         {
-            return GetResource<T>(resourceUri);
+            if (null == resourceUri)
+                throw new ArgumentNullException("resourceUri");
+
+            try
+            {
+                return GetAdapter().Get<T>(resourceUri);
+            }
+            catch (Exception ex)
+            {
+                throw new ApiException(ex);
+            }
         }
 
         /// <summary>
@@ -421,6 +487,9 @@ namespace Wdsf.Api.Client
         /// <returns>The resource</returns>
         public object Get(Uri resourceUri)
         {
+            if (null == resourceUri)
+                throw new ArgumentNullException("resourceUri");
+
             try
             {
                 return GetAdapter().Get(resourceUri);
@@ -431,25 +500,48 @@ namespace Wdsf.Api.Client
             }
         }
 
-        private T GetResource<T>(Uri resourceUri) where T : class
+        private T Get<T>(string resourceUri) where T : class
         {
+            if (null == resourceUri)
+                throw new ArgumentNullException("resourceUri");
+
+            return GetResource<T>(resourceUri);
+        }
+
+        private object Get(string resourceUri)
+        {
+            if (null == resourceUri)
+                throw new ArgumentNullException("resourceUri");
+
             try
             {
-                return GetAdapter().Get<T>(resourceUri);
+                return GetAdapter().Get(new Uri(this.apiUriBase + resourceUri));
             }
             catch (Exception ex)
             {
                 throw new ApiException(ex);
             }
         }
-        private IList<TItem> GetResourceList<TContainer, TItem>(Uri resourceUri)
+
+        private T GetResource<T>(string resourceUri) where T : class
+        {
+            try
+            {
+                return GetAdapter().Get<T>(new Uri(this.apiUriBase + resourceUri));
+            }
+            catch (Exception ex)
+            {
+                throw new ApiException(ex);
+            }
+        }
+        private IList<TItem> GetResourceList<TContainer, TItem>(string resourceUri)
             where TContainer : class, IEnumerable<TItem>
             where TItem : class
         {
 
             try
             {
-                TContainer items = GetAdapter().Get<TContainer>(resourceUri);
+                TContainer items = GetAdapter().Get<TContainer>(new Uri(this.apiUriBase + resourceUri));
                 return new List<TItem>(items);
             }
             catch (Exception ex)
@@ -457,12 +549,12 @@ namespace Wdsf.Api.Client
                 throw new ApiException(ex);
             }
         }
-        private bool UpdateResource<T>(T competition, Uri resourceUri) where T : class
+        private bool UpdateResource<T>(T competition, string resourceUri) where T : class
         {
             StatusMessage message;
             try
             {
-                message = GetAdapter().Put<T>(resourceUri, competition);
+                message = GetAdapter().Put<T>(new Uri(this.apiUriBase + resourceUri), competition);
             }
             catch (Exception ex)
             {
@@ -472,12 +564,12 @@ namespace Wdsf.Api.Client
             this.LastApiMessage = message.Message;
             return message.Code == (int)HttpStatusCode.OK;
         }
-        private Uri SaveResource<T>(T participant, Uri resourceUri) where T : class
+        private Uri SaveResource<T>(T participant, string resourceUri) where T : class
         {
             StatusMessage message;
             try
             {
-                message = GetAdapter().Post<T>(resourceUri, participant);
+                message = GetAdapter().Post<T>(new Uri(this.apiUriBase + resourceUri), participant);
             }
             catch (Exception ex)
             {
@@ -492,12 +584,12 @@ namespace Wdsf.Api.Client
             this.LastApiMessage = message.Message;
             return new Uri(message.Link.HRef);
         }
-        private bool DeleteResource(Uri resourceUri)
+        private bool DeleteResource(string resourceUri)
         {
             StatusMessage message;
             try
             {
-                message = GetAdapter().Delete(resourceUri);
+                message = GetAdapter().Delete(new Uri(this.apiUriBase + resourceUri));
             }
             catch (Exception ex)
             {
@@ -537,6 +629,9 @@ namespace Wdsf.Api.Client
         {
             lock (adapterLock)
             {
+                if (null == this.adapters)
+                    throw new ObjectDisposedException(GetType().FullName);
+
                 RestAdapter adapter = this.adapters.FirstOrDefault(a => a.IsBusy == false);
                 if (adapter == null)
                 {
@@ -552,20 +647,29 @@ namespace Wdsf.Api.Client
 
         public void Dispose()
         {
-            lock (this.adapterLock)
-            {
-                if (this.adapters != null)
-                {
-                    foreach (RestAdapter adapter in this.adapters)
-                    {
-                        adapter.Dispose();
-                    }
-
-                    this.adapters = null;
-                }
-            }
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         #endregion
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                lock (this.adapterLock)
+                {
+                    if (this.adapters != null)
+                    {
+                        foreach (RestAdapter adapter in this.adapters)
+                        {
+                            adapter.Dispose();
+                        }
+
+                        this.adapters = null;
+                    }
+                }
+            }
+        }
     }
 }

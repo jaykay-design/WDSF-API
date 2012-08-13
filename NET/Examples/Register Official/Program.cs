@@ -171,13 +171,7 @@
 
         private static void ListAllOfficials(CompetitionDetail competition)
         {
-            // show list of all registered officials
-            Uri allOfficialsUri = competition.Links
-                .Where(l => l.Rel.StartsWith(ResourceRelation.CompetitionOfficials))
-                .Select(l => new Uri(l.HRef))
-                .FirstOrDefault();
-
-            ListOfOfficial allOfficials = apiClient.Get(allOfficialsUri) as ListOfOfficial;
+            IList<Official> allOfficials = apiClient.GetOfficials(competition.Id);
             if (allOfficials.Count != 0)
             {
                 Console.WriteLine();

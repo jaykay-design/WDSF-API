@@ -1,0 +1,6 @@
+﻿# X;Y;Width;Font-Size;Element
+# X,Y,Width are in cm (decimal format can be used)
+4;2;19;60;This is a static text
+6;2;19;20;<Number>
+8;2;19;20;<Couple>
+10;2;19;20;<Competition>

@@ -25,6 +25,7 @@
         bool UpdateOfficial(OfficialDetail official);
         bool DeleteOfficial(int id);
 
+        IList<CoupleExport> GetCouples();
         IList<Couple> GetCouples(IDictionary<string, string> filter);
         Uri SaveCouple(CoupleDetail couple);
         CoupleDetail GetCouple(string id);

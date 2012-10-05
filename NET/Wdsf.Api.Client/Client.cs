@@ -348,6 +348,16 @@ namespace Wdsf.Api.Client
 
 
         /// <summary>
+        /// Gets a list of all active couples. This list contains all neccesary information for off-line usage.
+        /// </summary>
+        /// <exception cref="ApiException">The request failed. See inner exception for details.</exception>
+        /// <returns>A list of couples</returns>
+        public IList<CoupleExport> GetCouples()
+        {
+            return GetResourceList<ListOfCoupleExport, CoupleExport>("couple/export");
+        }
+
+        /// <summary>
         /// Gets a list of couples.
         /// </summary>
         /// <param name="filter">A dictionaly containing filter parameters. See API documentation for details.</param>

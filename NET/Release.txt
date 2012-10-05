@@ -1,7 +1,9 @@
-﻿1.0.0.0			inital release
-1.0.4529.20254	+ added filter helper
+﻿WDSF API Client
+
+1.0.0.0			inital release
+1.0.4529		+ added filter helper
 				+ API status message is now available publicly
-1.0.4608.32446	- Downgrade solution to VS2008 (to make it accesible to more developers).
+1.0.4608		- Downgrade solution to VS2008 (to make it accesible to more developers).
 				- Add reference to System.Core (Linq) to some projects (it was missing somehow).
 				- Client.cs:
 				-- Store password in SecureString instead of plain string.
@@ -19,3 +21,14 @@
 				- Make TypeHelper class internal.
 				- Make string in FilterNames.cs and Relation.cs const instead of static (to prevent change of it during runtime).
 				- Make changes to the code of examples to make it work with new Client.
+1.0.4661		+ added solution files for VS2010 and VS2008
+				+ added couple export method and models
+
+
+WDSF Checkin
+
+1.0.0.0			- initial implementation
+1.0.4661		- using couple export for offline usage
+				! needs to implement personal username/password for API access
+				! needs to implement start number assignation
+				! needs to implement output for scrutiny SW or upload to API

@@ -421,10 +421,11 @@ namespace Wdsf.Api.Client
         /// <param name="discipline">The discipline.</param>
         /// <param name="ageGroup">The age group.</param>
         /// <param name="division">The division.</param>
+		/// <param name="date">Date to get ranking for. Can be absent.</param>
         /// <exception cref="ApiException">The request failed. See inner exception for details.</exception>
-        /// <exception cref="ArgumentException">Any of the arguments is missing.</exception>
+        /// <exception cref="ArgumentException">Any of the required arguments is missing.</exception>
         /// <returns>The world ranking list</returns>
-        public IList<Ranking> GetWorldRanking(string discipline, string ageGroup, string division)
+		public IList<Ranking> GetWorldRanking(string discipline, string ageGroup, string division, DateTime date)
         {
             if (string.IsNullOrEmpty(discipline))
             {
@@ -442,7 +443,7 @@ namespace Wdsf.Api.Client
             }
 
             return GetResourceList<ListOfRanking, Ranking>(
-                string.Format("ranking?agegroup={0}&discipline={1}&division={2}", ageGroup, discipline, division)
+				string.Format("ranking?agegroup={0}&discipline={1}&division={2}&date={3:yyyy\\/MM\\/dd}", ageGroup, discipline, division)
             );
         }
 

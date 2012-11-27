@@ -33,6 +33,25 @@ namespace WDSF_Checkin
             context = new DataContext();
             this.DataContext = context;
 
+
+            string path = System.IO.Path.GetDirectoryName(AppSettings.Default.CoupleFile);
+            if (!System.IO.Directory.Exists(path))
+            {
+                System.Windows.MessageBox.Show(String.Format("The path '{0}' does not exists.\nThis is where the offline couple data will be saved.\nPlease create it or change the configuration.", path ), "Configuration error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+            string tempFile = System.IO.Path.Combine(path, System.IO.Path.GetTempFileName());
+            try
+            {
+                System.IO.FileStream temp = System.IO.File.Open(tempFile, System.IO.FileMode.Create);
+                temp.Dispose();
+                System.IO.File.Delete(tempFile);
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show(String.Format("The path '{0}' could not be written to.\nThis is where the offline couple data will be saved.\nPlease allow write access to it or change the configuration.", path), "Configuration error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
             LoadWDSFCouples();
             context.LoadParticipants(AppSettings.Default.ParticipantsFile);
             var thread = new System.Threading.Thread(SocketReceiveThread);

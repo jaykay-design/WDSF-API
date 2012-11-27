@@ -343,7 +343,7 @@ namespace Wdsf.Api.Client
         /// <returns>true on success.</returns>
         public bool DeleteOfficial(int id)
         {
-            return DeleteResource(string.Format("offcial/{0}", id));
+            return DeleteResource(string.Format("official/{0}", id));
         }
 
 

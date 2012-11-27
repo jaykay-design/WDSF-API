@@ -241,7 +241,19 @@
             <param name="ageGroup">The age group.</param>
             <param name="division">The division.</param>
             <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
-            <exception cref="T:System.ArgumentException">Any of the arguments is missing.</exception>
+            <exception cref="T:System.ArgumentException">Any of the required arguments is missing.</exception>
+            <returns>The world ranking list</returns>
+        </member>
+        <member name="M:Wdsf.Api.Client.Client.GetWorldRanking(System.String,System.String,System.String,System.DateTime)">
+            <summary>
+            Gets a world ranking list.
+            </summary>
+            <param name="discipline">The discipline.</param>
+            <param name="ageGroup">The age group.</param>
+            <param name="division">The division.</param>
+            <param name="date">Date to get ranking for. Can be absent.</param>
+            <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
+            <exception cref="T:System.ArgumentException">Any of the required arguments is missing.</exception>
             <returns>The world ranking list</returns>
         </member>
         <member name="M:Wdsf.Api.Client.Client.GetAges">

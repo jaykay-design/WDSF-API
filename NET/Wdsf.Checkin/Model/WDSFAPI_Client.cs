@@ -73,7 +73,8 @@ namespace WDSF_Checkin.Model
                     Woman = new Person() { FirstName = couple.WomanName, LastName = couple.WomanSurname, Id = couple.WomanMin.ToString(), Country = couple.WomanNationality },
                     Id = couple.Id,
                     AgeGroup = couple.AgeGroup,
-                    Country = couple.Country
+                    Country = couple.Country,
+                    Division = couple.Division
                 });
             }
         }

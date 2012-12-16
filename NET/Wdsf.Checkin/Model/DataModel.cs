@@ -156,6 +156,7 @@ namespace WDSF_Checkin.Model
         public Person Woman { get; set; }
         public string Country { get; set; }
         public string AgeGroup { get; set; }
+        public string Division { get; set; }
         public List<Participant> Participations { get; set; }
 
         public string NiceName
@@ -186,8 +187,8 @@ namespace WDSF_Checkin.Model
         {
             var xmlMan = String.Format("<FirstName>{0}</FirstName><LastName>{1}</LastName><Country>{2}</Country>", this.Man.FirstName, this.Man.LastName, this.Man.Country);
             var xmlWoman = String.Format("<FirstName>{0}</FirstName><LastName>{1}</LastName><Country>{2}</Country>", this.Woman.FirstName, this.Woman.LastName, this.Woman.Country);
-            var xml = String.Format("<Couple id=\"{0}\"><Country>{5}</Country><Man id=\"{1}\">{2}</Man><Woman id=\"{3}\">{4}</Woman><AgeGroup>{6}</AgeGroup></Couple>", 
-                                    this.Id, this.Man.Id, xmlMan, this.Woman.Id, xmlWoman, this.Country, this.AgeGroup);
+            var xml = String.Format("<Couple id=\"{0}\"><Country>{5}</Country><Man id=\"{1}\">{2}</Man><Woman id=\"{3}\">{4}</Woman><AgeGroup>{6}</AgeGroup><Division>{7}</Division></Couple>", 
+                                    this.Id, this.Man.Id, xmlMan, this.Woman.Id, xmlWoman, this.Country, this.AgeGroup, this.Division);
             return xml;
         }
         /// <summary>
@@ -217,6 +218,7 @@ namespace WDSF_Checkin.Model
             this.Man = man;
             this.Country = node["Country"].InnerText;
             this.AgeGroup = node["AgeGroup"].InnerText;
+            this.Division = node["Division"].InnerText;
 
         }
         /// <summary>

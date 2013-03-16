@@ -48,23 +48,7 @@
             <para>This class is threadsafe and multiple request can be made to the same instance.</para>
             </summary>
         </member>
-        <member name="M:Wdsf.Api.Client.Client.GetPersons(System.Collections.Generic.IDictionary{System.String,System.String})">
-            <summary>
-            Gets a list of persons.
-            </summary>
-            <param name="filter">A dictionaly containing filter parameters. See API documentation for details.</param>
-            <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
-            <returns>A list of persons</returns>
-        </member>
-        <member name="M:Wdsf.Api.Client.Client.GetPerson(System.Int32)">
-            <summary>
-            Gets a person
-            </summary>
-            <param name="min">The member ID number</param>
-            <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
-            <returns>The person model.</returns>
-        </member>
-        <member name="M:Wdsf.Api.Client.Client.GetCompetitions(System.Collections.Generic.IDictionary{System.String,System.String})">
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.GetCompetitions(System.Collections.Generic.IDictionary{System.String,System.String})">
             <summary>
             Gets a list of competitions.
             </summary>
@@ -72,7 +56,7 @@
             <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
             <returns>A list of competitions.</returns>
         </member>
-        <member name="M:Wdsf.Api.Client.Client.GetCompetition(System.Int32)">
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.GetCompetition(System.Int32)">
             <summary>
             Gets a competition
             </summary>
@@ -80,36 +64,14 @@
             <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
             <returns>The competition</returns>
         </member>
-        <member name="M:Wdsf.Api.Client.Client.UpdateCompetition(Wdsf.Api.Client.Models.CompetitionDetail)">
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.UpdateCompetition(Wdsf.Api.Client.Models.CompetitionDetail)">
             <summary>
             Updates a competition
             </summary>
             <param name="competition">The competition model</param>
             <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
         </member>
-        <member name="M:Wdsf.Api.Client.Client.GetCoupleParticipant(System.Int32)">
-            <summary>
-            Gets a participant (couple)
-            </summary>
-            <param name="id">The participant ID</param>
-            <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
-            <returns>The participant (couple)</returns>
-        </member>
-        <member name="M:Wdsf.Api.Client.Client.GetCoupleParticipants(System.Int32)">
-            <summary>
-            Get all participiants (couples) for specified competition
-            </summary>
-            <param name="competitionId">The competition ID</param>
-            <returns>The list of participants (couples)</returns>
-        </member>
-        <member name="M:Wdsf.Api.Client.Client.UpdateCoupleParticipant(Wdsf.Api.Client.Models.ParticipantCoupleDetail)">
-            <summary>
-            Updates a participant (couple).
-            </summary>
-            <param name="participant">The participant model.</param>
-            <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
-        </member>
-        <member name="M:Wdsf.Api.Client.Client.SaveCoupleParticipant(Wdsf.Api.Client.Models.ParticipantCoupleDetail)">
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.SaveCoupleParticipant(Wdsf.Api.Client.Models.ParticipantCoupleDetail)">
             <summary>
             Saves a new participant (couple).
             </summary>
@@ -117,7 +79,22 @@
             <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
             <returns>The Uri to the newly created resource</returns>
         </member>
-        <member name="M:Wdsf.Api.Client.Client.DeleteCoupleParticipant(System.Int32)">
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.GetCoupleParticipant(System.Int32)">
+            <summary>
+            Gets a participant (couple)
+            </summary>
+            <param name="id">The participant ID</param>
+            <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
+            <returns>The participant (couple)</returns>
+        </member>
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.UpdateCoupleParticipant(Wdsf.Api.Client.Models.ParticipantCoupleDetail)">
+            <summary>
+            Updates a participant (couple).
+            </summary>
+            <param name="participant">The participant model.</param>
+            <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
+        </member>
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.DeleteCoupleParticipant(System.Int32)">
             <summary>
             Delete a participant (couple)
             </summary>
@@ -125,23 +102,7 @@
             <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
             <returns>true on success.</returns>
         </member>
-        <member name="M:Wdsf.Api.Client.Client.GetTeamParticipant(System.Int32)">
-            <summary>
-            Gets a participant (team)
-            </summary>
-            <param name="id">The participant ID</param>
-            <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
-            <returns>The participant (team)</returns>
-        </member>
-        <member name="M:Wdsf.Api.Client.Client.UpdateTeamParticipant(Wdsf.Api.Client.Models.ParticipantTeamDetail)">
-            <summary>
-            Updates a participant (team).
-            </summary>
-            <param name="participant">The participant model.</param>
-            <exception cref="T:Wdsf.Api.Client.Exceptions.UnknownMediaTypeException">The received resource type was not recognized.</exception>
-            <exception cref="T:Wdsf.Api.Client.Exceptions.UnexpectedMediaTypeException">The received resource type was not expected.</exception>
-        </member>
-        <member name="M:Wdsf.Api.Client.Client.SaveTeamParticipant(Wdsf.Api.Client.Models.ParticipantTeamDetail)">
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.SaveTeamParticipant(Wdsf.Api.Client.Models.ParticipantTeamDetail)">
             <summary>
             Saves a new participant (team).
             </summary>
@@ -149,7 +110,23 @@
             <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
             <returns>The Uri to the newly created resource</returns>
         </member>
-        <member name="M:Wdsf.Api.Client.Client.DeleteTeamParticipant(System.Int32)">
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.GetTeamParticipant(System.Int32)">
+            <summary>
+            Gets a participant (team)
+            </summary>
+            <param name="id">The participant ID</param>
+            <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
+            <returns>The participant (team)</returns>
+        </member>
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.UpdateTeamParticipant(Wdsf.Api.Client.Models.ParticipantTeamDetail)">
+            <summary>
+            Updates a participant (team).
+            </summary>
+            <param name="participant">The participant model.</param>
+            <exception cref="T:Wdsf.Api.Client.Exceptions.UnknownMediaTypeException">The received resource type was not recognized.</exception>
+            <exception cref="T:Wdsf.Api.Client.Exceptions.UnexpectedMediaTypeException">The received resource type was not expected.</exception>
+        </member>
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.DeleteTeamParticipant(System.Int32)">
             <summary>
             Delete a participant (team)
             </summary>
@@ -157,29 +134,14 @@
             <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
             <returns>true on success.</returns>
         </member>
-        <member name="M:Wdsf.Api.Client.Client.GetOfficial(System.Int32)">
-            <summary>
-            Gets an official
-            </summary>
-            <param name="id">The official ID</param>
-            <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
-            <returns>The official</returns>
-        </member>
-        <member name="M:Wdsf.Api.Client.Client.GetOfficials(System.Int32)">
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.GetOfficials(System.Int32)">
             <summary>
             Gets officials of specified competition
             </summary>
             <param name="competitionId">The competition ID</param>
             <returns>The list of officials</returns>
         </member>
-        <member name="M:Wdsf.Api.Client.Client.UpdateOfficial(Wdsf.Api.Client.Models.OfficialDetail)">
-            <summary>
-            Updates an official
-            </summary>
-            <param name="official">The official model.</param>
-            <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
-        </member>
-        <member name="M:Wdsf.Api.Client.Client.SaveOfficial(Wdsf.Api.Client.Models.OfficialDetail)">
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.SaveOfficial(Wdsf.Api.Client.Models.OfficialDetail)">
             <summary>
             Saves a new official.
             </summary>
@@ -187,7 +149,22 @@
             <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
             <returns>The Uri to the newly created official</returns>
         </member>
-        <member name="M:Wdsf.Api.Client.Client.DeleteOfficial(System.Int32)">
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.GetOfficial(System.Int32)">
+            <summary>
+            Gets an official
+            </summary>
+            <param name="id">The official ID</param>
+            <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
+            <returns>The official</returns>
+        </member>
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.UpdateOfficial(Wdsf.Api.Client.Models.OfficialDetail)">
+            <summary>
+            Updates an official
+            </summary>
+            <param name="official">The official model.</param>
+            <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
+        </member>
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.DeleteOfficial(System.Int32)">
             <summary>
             Delete am official
             </summary>
@@ -195,14 +172,14 @@
             <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
             <returns>true on success.</returns>
         </member>
-        <member name="M:Wdsf.Api.Client.Client.GetCouples">
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.GetCouples">
             <summary>
             Gets a list of all active couples. This list contains all neccesary information for off-line usage.
             </summary>
             <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
             <returns>A list of couples</returns>
         </member>
-        <member name="M:Wdsf.Api.Client.Client.GetCouples(System.Collections.Generic.IDictionary{System.String,System.String})">
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.GetCouples(System.Collections.Generic.IDictionary{System.String,System.String})">
             <summary>
             Gets a list of couples.
             </summary>
@@ -210,22 +187,7 @@
             <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
             <returns>A list of couples</returns>
         </member>
-        <member name="M:Wdsf.Api.Client.Client.GetCouple(System.String)">
-            <summary>
-            Gets a couple
-            </summary>
-            <param name="id">The couple ID</param>
-            <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
-            <returns>The couple</returns>
-        </member>
-        <member name="M:Wdsf.Api.Client.Client.UpdateCouple(Wdsf.Api.Client.Models.CoupleDetail)">
-            <summary>
-            Updates a couple
-            </summary>
-            <param name="couple">The couple model.</param>
-            <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
-        </member>
-        <member name="M:Wdsf.Api.Client.Client.SaveCouple(Wdsf.Api.Client.Models.CoupleDetail)">
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.SaveCouple(Wdsf.Api.Client.Models.CoupleDetail)">
             <summary>
             Saves a new couple.
             </summary>
@@ -233,7 +195,38 @@
             <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
             <returns>The Uri to the newly created couple</returns>
         </member>
-        <member name="M:Wdsf.Api.Client.Client.GetWorldRanking(System.String,System.String,System.String)">
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.GetCouple(System.String)">
+            <summary>
+            Gets a couple
+            </summary>
+            <param name="id">The couple ID</param>
+            <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
+            <returns>The couple</returns>
+        </member>
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.UpdateCouple(Wdsf.Api.Client.Models.CoupleDetail)">
+            <summary>
+            Updates a couple
+            </summary>
+            <param name="couple">The couple model.</param>
+            <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
+        </member>
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.GetPerson(System.Int32)">
+            <summary>
+            Gets a person
+            </summary>
+            <param name="min">The member ID number</param>
+            <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
+            <returns>The person model.</returns>
+        </member>
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.GetPersons(System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            Gets a list of persons.
+            </summary>
+            <param name="filter">A dictionaly containing filter parameters. See API documentation for details.</param>
+            <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
+            <returns>A list of persons</returns>
+        </member>
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.GetWorldRanking(System.String,System.String,System.String)">
             <summary>
             Gets a world ranking list.
             </summary>
@@ -244,9 +237,9 @@
             <exception cref="T:System.ArgumentException">Any of the required arguments is missing.</exception>
             <returns>The world ranking list</returns>
         </member>
-        <member name="M:Wdsf.Api.Client.Client.GetWorldRanking(System.String,System.String,System.String,System.DateTime)">
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.GetWorldRanking(System.String,System.String,System.String,System.DateTime)">
             <summary>
-            Gets a world ranking list.
+            Gets a world ranking list by a date. The WRL does not exists for all dates.
             </summary>
             <param name="discipline">The discipline.</param>
             <param name="ageGroup">The age group.</param>
@@ -256,19 +249,35 @@
             <exception cref="T:System.ArgumentException">Any of the required arguments is missing.</exception>
             <returns>The world ranking list</returns>
         </member>
-        <member name="M:Wdsf.Api.Client.Client.GetAges">
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.GetCountries">
+            <summary>
+            Gets all allowed countries.
+            </summary>
+            <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
+            <returns>The countries</returns>
+        </member>
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.GetAges">
             <summary>
             Gets all allowed age groups.
             </summary>
             <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
             <returns>The age groups</returns>
         </member>
-        <member name="M:Wdsf.Api.Client.Client.GetCountries">
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.Authenticate(System.String,System.String,System.String,System.String)">
             <summary>
-            Gets all allowed countries.
+            Validates the credentials of a user
             </summary>
-            <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
-            <returns>The countries</returns>
+            <param name="username">The user name, not case-sensitive</param>
+            <param name="password">The password, case-sensitive</param>
+            <param name="usersGroup">Check if the user with the given credentials is member of this users group, optional</param>
+            <param name="memberIdNumber">Check if the user with the given credentials has this MIN, optional</param>
+            <returns><para>True if all provided information matches. </para>
+            <para>A maximum of 10 failed attempts in 3 hours is allowed. Thereafter any further authentication request with the same username will allways return false.</para>  </returns>
+        </member>
+        <member name="P:Wdsf.Api.Client.Interfaces.IClient.LastApiMessage">
+            <summary>
+            This string contains the message returned from the last API call.
+            </summary>
         </member>
         <member name="M:Wdsf.Api.Client.Client.Get``1(System.Uri)">
             <summary>
@@ -292,6 +301,11 @@
             Removes the Link property of all Score types to reduce the model's overall size.
             </summary>
             <param name="participant"></param>
+        </member>
+        <member name="P:Wdsf.Api.Client.Client.LastApiMessage">
+            <summary>
+            Contains the last message returned from the API
+            </summary>
         </member>
         <member name="M:Wdsf.Api.Client.RestAdapter.Get(System.Uri)">
             <summary>

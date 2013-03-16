@@ -263,6 +263,11 @@
             <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
             <returns>The age groups</returns>
         </member>
+        <member name="P:Wdsf.Api.Client.Interfaces.IClient.LastApiMessage">
+            <summary>
+            This string contains the message returned from the last API call.
+            </summary>
+        </member>
         <member name="M:Wdsf.Api.Client.Client.Get``1(System.Uri)">
             <summary>
             Gets a resource.
@@ -593,6 +598,31 @@
         <member name="F:Wdsf.Api.Client.FilterNames.Ranking.Division">
             <summary>
             WRL of a certain division. Allowed values are General and Professional.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScale2Score.TQ">
+            <summary>
+            Techincal Quality
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScale2Score.MM">
+            <summary>
+            Movement to music
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScale2Score.PS">
+            <summary>
+            Partnering skill
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScale2Score.CP">
+            <summary>
+            Choreography and Presentation
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScale2Score.Reduction">
+            <summary>
+            Reduction by Chairman
             </summary>
         </member>
     </members>

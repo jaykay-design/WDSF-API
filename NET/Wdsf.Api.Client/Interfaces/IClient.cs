@@ -8,6 +8,11 @@
     public interface IClient
     {
         /// <summary>
+        /// This string contains the message returned from the last API call.
+        /// </summary>
+        string LastApiMessage { get; }
+
+        /// <summary>
         /// Gets a list of competitions.
         /// </summary>
         /// <param name="filter">A dictionaly containing filter parameters. See API documentation for details.</param>

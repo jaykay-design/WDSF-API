@@ -22,5 +22,14 @@
         
         [XmlElement("points")]
         public int Points { get; set; }
+
+        [XmlElement("manMin")]
+        public string ManMin { get; set; }
+
+        [XmlElement("womanMin")]
+        public string WomanMin { get; set; }
+
+        [XmlElement("coupleId")]
+        public string Id { get; set; }
     }
 }

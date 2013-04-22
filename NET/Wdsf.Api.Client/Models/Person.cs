@@ -1,5 +1,6 @@
 ﻿namespace Wdsf.Api.Client.Models
 {
+	using System;
     using System.Xml.Serialization;
     using Wdsf.Api.Client.Attributes;
 
@@ -15,6 +16,26 @@
 
         [XmlElement("name")]
         public string Name { get; set; }
+
+		[XmlElement("sex")]
+		public string SexForSerialization;
+
+		public bool IsMale
+		{
+			get
+			{
+				if ("male".Equals(SexForSerialization, System.StringComparison.OrdinalIgnoreCase))
+					return true;
+				else if ("female".Equals(SexForSerialization, System.StringComparison.OrdinalIgnoreCase))
+					return false;
+				else
+					throw new ApplicationException("Unexpected sex.");
+			}
+			set
+			{
+				SexForSerialization = (value ? "Male" : "Female");
+			}
+		}
 
         [XmlElement("country")]
         public string Country { get; set; }

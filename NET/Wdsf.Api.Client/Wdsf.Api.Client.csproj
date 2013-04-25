@@ -68,6 +68,7 @@
   <ItemGroup>
     <Compile Include="Attributes\MediaTypeAttribute.cs" />
     <Compile Include="Client.cs" />
+    <Compile Include="Enumerations.cs" />
     <Compile Include="Exceptions\ApiException.cs" />
     <Compile Include="Exceptions\BusyException.cs" />
     <Compile Include="Exceptions\UnexpectedMediaTypeException.cs" />

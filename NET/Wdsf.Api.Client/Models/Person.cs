@@ -18,22 +18,28 @@
         public string Name { get; set; }
 
         [XmlElement("sex")]
-        public string SexForSerialization;
+        public string Sex { get; set; }
 
         public bool IsMale
         {
             get
             {
-                if ("male".Equals(SexForSerialization, System.StringComparison.OrdinalIgnoreCase))
+                if (Sex.Equals(Gender.Male, System.StringComparison.OrdinalIgnoreCase))
+                {
                     return true;
-                else if ("female".Equals(SexForSerialization, System.StringComparison.OrdinalIgnoreCase))
+                }
+                else if (Sex.Equals(Gender.Female, System.StringComparison.OrdinalIgnoreCase))
+                {
                     return false;
+                }
                 else
-                    throw new ApplicationException("Unexpected sex.");
+                {
+                    throw new ApplicationException("The person's sex not specified.");
+                }
             }
             set
             {
-                SexForSerialization = (value ? "Male" : "Female");
+                Sex = (value ? Gender.Male : Gender.Female);
             }
         }
 

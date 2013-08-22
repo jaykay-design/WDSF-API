@@ -24,7 +24,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Close competition", "Exampl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wdsf.Checkin", "Wdsf.Checkin\Wdsf.Checkin.csproj", "{5867A62F-9D7F-46D5-A50C-6F6D94D7FBCC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoadParticipants", "LoadParticipants\LoadParticipants.csproj", "{0396BFF4-4048-41A9-BDBA-A7613C878A81}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoadParticipants", "Examples\LoadParticipants\LoadParticipants.csproj", "{0396BFF4-4048-41A9-BDBA-A7613C878A81}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

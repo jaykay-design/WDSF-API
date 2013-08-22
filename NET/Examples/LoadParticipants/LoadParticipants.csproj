@@ -47,7 +47,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Wdsf.Api.Client\Wdsf.Api.Client.csproj">
+    <ProjectReference Include="..\..\Wdsf.Api.Client\Wdsf.Api.Client.csproj">
       <Project>{EB80C37C-ADC8-4B97-87B8-D2026CC36542}</Project>
       <Name>Wdsf.Api.Client</Name>
     </ProjectReference>

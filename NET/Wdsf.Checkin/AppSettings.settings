@@ -11,11 +11,17 @@
     <Setting Name="API_ProductionSystem" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="CoupleFile" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">c:\temp\wdsfcouples.xml</Value>
+    <Setting Name="ParticipantExportPath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">C:\temp</Value>
     </Setting>
-    <Setting Name="ParticipantsFile" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">C:\temp\participants.tps</Value>
+    <Setting Name="OfflineDataPath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">{temp}\WDSF.Checkin\OfflineData</Value>
+    </Setting>
+    <Setting Name="StartNumberFile" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">C:\temp\startnumber.txt</Value>
+    </Setting>
+    <Setting Name="WorkOffline" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>

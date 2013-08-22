@@ -263,17 +263,6 @@
             <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
             <returns>The age groups</returns>
         </member>
-        <member name="M:Wdsf.Api.Client.Interfaces.IClient.Authenticate(System.String,System.String,System.String,System.String)">
-            <summary>
-            Validates the credentials of a user
-            </summary>
-            <param name="username">The user name, not case-sensitive</param>
-            <param name="password">The password, case-sensitive</param>
-            <param name="usersGroup">Check if the user with the given credentials is member of this users group, optional</param>
-            <param name="memberIdNumber">Check if the user with the given credentials has this MIN, optional</param>
-            <returns><para>True if all provided information matches. </para>
-            <para>A maximum of 10 failed attempts in 3 hours is allowed. Thereafter any further authentication request with the same username will allways return false.</para>  </returns>
-        </member>
         <member name="P:Wdsf.Api.Client.Interfaces.IClient.LastApiMessage">
             <summary>
             This string contains the message returned from the last API call.
@@ -609,6 +598,31 @@
         <member name="F:Wdsf.Api.Client.FilterNames.Ranking.Division">
             <summary>
             WRL of a certain division. Allowed values are General and Professional.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScale2Score.TQ">
+            <summary>
+            Techincal Quality
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScale2Score.MM">
+            <summary>
+            Movement to music
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScale2Score.PS">
+            <summary>
+            Partnering skill
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScale2Score.CP">
+            <summary>
+            Choreography and Presentation
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScale2Score.Reduction">
+            <summary>
+            Reduction by Chairman
             </summary>
         </member>
     </members>

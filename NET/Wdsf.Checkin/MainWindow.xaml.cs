@@ -24,23 +24,36 @@ namespace WDSF_Checkin
     public partial class MainWindow : Window
     {
         private Model.DataContext context;
-        private ApiAdapter.IApiAdapter apiAdapter;
 
         public MainWindow()
         {
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
 
             InitializeComponent();
+            context = new DataContext();
+            this.DataContext = context;
 
-            this.apiAdapter = ApiAdapter.ApiAdapterFactory.GetInstance();
 
-            if (!this.apiAdapter.Initialize())
+            string path = System.IO.Path.GetDirectoryName(AppSettings.Default.CoupleFile);
+            if (!System.IO.Directory.Exists(path))
             {
-                Application.Current.Shutdown();
+                System.Windows.MessageBox.Show(String.Format("The path '{0}' does not exists.\nThis is where the offline couple data will be saved.\nPlease create it or change the configuration.", path ), "Configuration error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
-            context.LoadParticipants(AppSettings.Default.ParticipantExportPath);
+            string tempFile = System.IO.Path.Combine(path, System.IO.Path.GetTempFileName());
+            try
+            {
+                System.IO.FileStream temp = System.IO.File.Open(tempFile, System.IO.FileMode.Create);
+                temp.Dispose();
+                System.IO.File.Delete(tempFile);
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show(String.Format("The path '{0}' could not be written to.\nThis is where the offline couple data will be saved.\nPlease allow write access to it or change the configuration.", path), "Configuration error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
 
+            LoadWDSFCouples();
+            context.LoadParticipants(AppSettings.Default.ParticipantsFile);
             var thread = new System.Threading.Thread(SocketReceiveThread);
             thread.IsBackground = true;
             thread.Start();
@@ -49,6 +62,27 @@ namespace WDSF_Checkin
             // Let's show some statistics
             Statistics.Content = String.Format("Downloaded: {0}, {1} couples in the local database", context.DownloadDate.ToShortDateString(), context.WDSF_Couples.Count());
 
+        }
+
+        private void LoadWDSFCouples()
+        {
+            if (!System.IO.File.Exists(AppSettings.Default.CoupleFile))
+            {
+                System.Windows.MessageBox.Show(String.Format("File {0} not found, can not load the WDSF couples from a local file. Please download the WDSF couples via File menue", AppSettings.Default.CoupleFile), "No WDSF Couples", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else
+            {
+                context.LoadWDSFCouples(AppSettings.Default.CoupleFile);
+                // Check that our data is not older then one week, if so display a message box
+                var now = DateTime.Now.AddDays(-7);
+                if (context.DownloadDate < now)
+                {
+                    System.Windows.MessageBox.Show("WDSF Couples file is older then one week. Please download a new version via File menue", "Update Data", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+
+            // Let's show some statistics
+            Statistics.Content = String.Format("Downloaded: {0}, {1} couples in the local database", context.DownloadDate.ToShortDateString(), context.WDSF_Couples.Count());
         }
 
         void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
@@ -63,15 +97,9 @@ namespace WDSF_Checkin
         private void MIN_Man_LostFocus(object sender, System.Windows.RoutedEventArgs e)
         {
             TextBox_LostFocus(sender, e);
-
-            int min;
-            if (!int.TryParse(MIN_Man.Text, out min))
-            {
-                MIN_Man.Text = "";
-                return;
-            }
-
-            var man = this.apiAdapter.GetPerson(min);
+            
+            // Search Name of Man
+            var man = context.Persons.FirstOrDefault(p => p.Id == MIN_Man.Text);
             if (man == null)
             {
                 Text_Man.Content = "Not Found !!!";
@@ -79,7 +107,7 @@ namespace WDSF_Checkin
             }
             else
             {
-                Text_Man.Content = man.Name;
+                Text_Man.Content = man.FirstName + " " + man.LastName;
                 Text_Man.Foreground = Brushes.Green;
             }
 
@@ -90,22 +118,14 @@ namespace WDSF_Checkin
         {
             TextBox_LostFocus(sender, e);
 
-            int min;
-            if (!int.TryParse(MIN_Woman.Text, out min))
-            {
-                MIN_Woman.Text = "";
-                return;
-            }
-
-            var woman = this.apiAdapter.GetPerson(min);
-
+            var woman = context.Persons.FirstOrDefault(p => p.Id == MIN_Woman.Text);
             if (woman == null)
             {
                 Text_Woman.Content = "Not Found !!!";
             }
             else
             {
-                Text_Woman.Content = woman.Name;
+                Text_Woman.Content = woman.FirstName + " " + woman.LastName;
                 Text_Woman.Foreground = Brushes.Green;
             }
 
@@ -147,6 +167,18 @@ namespace WDSF_Checkin
             Text_Couple.Content = "";
             CompetitionList.ItemsSource = null;
             MIN_Man.Focus();
+        }
+        /// <summary>
+        /// Event handler for menu
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void LoadCouples_Click(object sender, RoutedEventArgs e)
+        {
+            var dl = new Download(context);
+
+            dl.OnComplete += (s, e2) => { this.LoadWDSFCouples(); };
+            dl.Show();
         }
 
         private void CheckBox_Click(object sender, RoutedEventArgs e)

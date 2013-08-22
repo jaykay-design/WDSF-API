@@ -1,7 +1,6 @@
 ﻿<Window x:Class="WDSF_Checkin.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:local="clr-namespace:WDSF_Checkin"
         Title="WDSF Check-In" Height="563" Width="586" ResizeMode="NoResize" KeyUp="Window_KeyUp">
 	<Canvas Margin="9,5,0,0">
 		<GroupBox Header="MIN - Man" Height="72" Canvas.Left="23" Canvas.Top="40" Width="235" FontSize="16">
@@ -20,9 +19,8 @@
 		<Button x:Name="Next" Content="Next" Height="46" Canvas.Left="390" Canvas.Top="446" Width="133" Click="Next_Click" Style="{StaticResource SimpleButton}" />
 		<ListBox Height="174" Canvas.Left="23" Canvas.Top="255" Width="500"></ListBox>
         <Menu Canvas.Left="0" Canvas.Top="0" Height="24" Name="menu1" Width="553">
-            <MenuItem Name="FileMenu" Header="File" >
-                <MenuItem Name="WorkOffline" IsCheckable="True" IsChecked="{local:SettingBinding WorkOffline}">
-                </MenuItem>
+            <MenuItem Name="FileMenue" Header="File">
+                <MenuItem Name="LoadCouples" Header="Get Couples via WDSF API ..." Click="LoadCouples_Click" />
             </MenuItem>
         </Menu>
         <DataGrid AutoGenerateColumns="False" Canvas.Left="33" Canvas.Top="264" Height="156" Name="CompetitionList" Width="482" CanUserAddRows="False">

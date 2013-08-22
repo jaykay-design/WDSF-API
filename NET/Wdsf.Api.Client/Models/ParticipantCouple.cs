@@ -5,7 +5,7 @@
     using Wdsf.Api.Client.Attributes;
 
     [XmlType("participant", Namespace = "http://services.worlddancesport.org/api")]
-    [XmlRoot(Namespace = "http://services.worlddancesport.org/api")]
+    [XmlRoot("participant", Namespace = "http://services.worlddancesport.org/api")]
     public class ParticipantCouple : ParticipantBase
     {
         [XmlElement("link")]

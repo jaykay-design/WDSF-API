@@ -130,6 +130,12 @@ namespace Wdsf.Api.Client
             HttpWebResponse response = GetResponse(request);
             this.IsBusy = false;
             CheckResourceType<StatusMessage>(response);
+
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                throw new UnauthorizedAccessException();
+            }
+
             StatusMessage message = ReadReponseBody<StatusMessage>(response);
             response.Close();
 
@@ -157,6 +163,12 @@ namespace Wdsf.Api.Client
 
             HttpWebResponse response = GetResponse(request);
             this.IsBusy = false;
+
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                throw new UnauthorizedAccessException();
+            }
+
             CheckResourceType<StatusMessage>(response);
             StatusMessage message = ReadReponseBody<StatusMessage>(response);
             response.Close();
@@ -183,6 +195,12 @@ namespace Wdsf.Api.Client
             HttpWebResponse response = GetResponse(request);
             this.IsBusy = false;
             CheckResourceType<StatusMessage>(response);
+
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                throw new UnauthorizedAccessException();
+            }
+
             StatusMessage message = ReadReponseBody<StatusMessage>(response);
             response.Close();
 
@@ -200,9 +218,6 @@ namespace Wdsf.Api.Client
 
             if (receivedType == null)
             {
-                if (response.StatusCode == HttpStatusCode.Unauthorized)
-                    throw new UnauthorizedAccessException();
-
                 throw new UnknownMediaTypeException(response.ContentType);
             }
 

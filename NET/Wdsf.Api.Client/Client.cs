@@ -132,13 +132,14 @@ namespace Wdsf.Api.Client
 
             return UpdateResource<CompetitionDetail>(competition, string.Format("competition/{0}", competition.Id));
         }
+
         public ParticipantCoupleDetail GetCoupleParticipant(int id)
         {
             return GetResource<ParticipantCoupleDetail>(string.Format("participant/{0}", id));
         }
         public IList<ParticipantCouple> GetCoupleParticipants(int competitionId)
         {
-            return GetResourceList<ListOfCoupleParticpant, ParticipantCouple>(
+            return GetResourceList<ListOfCoupleParticipant, ParticipantCouple>(
                 string.Format("participant?competitionId={0}", competitionId)
             );
         }
@@ -170,6 +171,12 @@ namespace Wdsf.Api.Client
         {
             return GetResource<ParticipantTeamDetail>(string.Format("participant/{0}", id));
         }
+        public IList<ParticipantTeam> GetTeamParticipants(int competitionId)
+        {
+            return GetResourceList<ListOfTeamParticipant, ParticipantTeam>(
+                string.Format("participant?competitionId={0}", competitionId)
+            );
+        }
         public bool UpdateTeamParticipant(ParticipantTeamDetail participant)
         {
             if (participant == null)
@@ -189,6 +196,40 @@ namespace Wdsf.Api.Client
             return SaveResource<ParticipantTeamDetail>(participant, "participant");
         }
         public bool DeleteTeamParticipant(int id)
+        {
+            return DeleteResource(string.Format("participant/{0}", id));
+        }
+
+
+        public ParticipantSingleDetail GetSingleParticipant(int id)
+        {
+            return GetResource<ParticipantSingleDetail>(string.Format("participant/{0}", id));
+        }
+        public IList<ParticipantSingle> GetSingleParticipants(int competitionId)
+        {
+            return GetResourceList<ListOfSingleParticipant, ParticipantSingle>(
+                string.Format("participant?competitionId={0}", competitionId)
+            );
+        }
+        public bool UpdateSingleParticipant(ParticipantSingleDetail participant)
+        {
+            if (participant == null)
+                throw new ArgumentNullException("participant");
+
+            ClearLinks(participant);
+
+            return UpdateResource<ParticipantSingleDetail>(participant, string.Format("participant/{0}", participant.Id));
+        }
+        public Uri SaveSingleParticipant(ParticipantSingleDetail participant)
+        {
+            if (participant == null)
+                throw new ArgumentNullException("participant");
+
+            ClearLinks(participant);
+
+            return SaveResource<ParticipantSingleDetail>(participant, "participant");
+        }
+        public bool DeleteSingleParticipant(int id)
         {
             return DeleteResource(string.Format("participant/{0}", id));
         }

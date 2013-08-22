@@ -34,6 +34,12 @@
         bool UpdateCompetition(CompetitionDetail competition);
 
         /// <summary>
+        /// Get the participants of a competition
+        /// </summary>
+        /// <param name="competitionId">The competition Id</param>
+        /// <returns>List of participants</returns>
+        IList<ParticipantCouple> GetCoupleParticipants(int competitionId);
+        /// <summary>
         /// Saves a new participant (couple).
         /// </summary>
         /// <param name="participant">The participant model.</param>
@@ -62,6 +68,12 @@
         bool DeleteCoupleParticipant(int id);
 
         /// <summary>
+        /// Get the participants of a competition
+        /// </summary>
+        /// <param name="competitionId">The competition Id</param>
+        /// <returns>List of participants</returns>
+        IList<ParticipantTeam> GetTeamParticipants(int competitionId);
+        /// <summary>
         /// Saves a new participant (team).
         /// </summary>
         /// <param name="participant">The participant model.</param>
@@ -89,6 +101,41 @@
         /// <exception cref="ApiException">The request failed. See inner exception for details.</exception>
         /// <returns>true on success.</returns>
         bool DeleteTeamParticipant(int id);
+
+        /// <summary>
+        /// Get the participants of a competition
+        /// </summary>
+        /// <param name="competitionId">The competition Id</param>
+        /// <returns>List of participants</returns>
+        IList<ParticipantSingle> GetSingleParticipants(int competitionId);
+        /// <summary>
+        /// Saves a new participant (single).
+        /// </summary>
+        /// <param name="participant">The participant model.</param>
+        /// <exception cref="ApiException">The request failed. See inner exception for details.</exception>
+        /// <returns>The Uri to the newly created resource</returns>
+        Uri SaveSingleParticipant(ParticipantSingleDetail participant);
+        /// <summary>
+        /// Gets a participant (single)
+        /// </summary>
+        /// <param name="id">The participant ID</param>
+        /// <exception cref="ApiException">The request failed. See inner exception for details.</exception>
+        /// <returns>The participant (single)</returns>
+        ParticipantSingleDetail GetSingleParticipant(int id);
+        /// <summary>
+        /// Updates a participant (single).
+        /// </summary>
+        /// <param name="participant">The participant model.</param>
+        /// <exception cref="UnknownMediaTypeException">The received resource type was not recognized.</exception>
+        /// <exception cref="UnexpectedMediaTypeException">The received resource type was not expected.</exception>
+        bool UpdateSingleParticipant(ParticipantSingleDetail participant);
+        /// <summary>
+        /// Delete a participant (single)
+        /// </summary>
+        /// <param name="id">The participant ID</param>
+        /// <exception cref="ApiException">The request failed. See inner exception for details.</exception>
+        /// <returns>true on success.</returns>
+        bool DeleteSingleParticipant(int id);
 
         /// <summary>
         /// Gets officials of specified competition

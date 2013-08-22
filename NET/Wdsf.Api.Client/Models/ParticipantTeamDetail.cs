@@ -16,12 +16,9 @@
         public int TeamId { get; set; }
 
         [XmlElement("name")]
-        public Guid Team { get; set; }
+        public string Team { get; set; }
 
         [XmlElement("country")]
-        public Guid Country { get; set; }
-
-        [XmlAttribute("kind")]
-        public string Kind { get { return "team"; } set { ;} }
+        public string Country { get; set; }
     }
 }

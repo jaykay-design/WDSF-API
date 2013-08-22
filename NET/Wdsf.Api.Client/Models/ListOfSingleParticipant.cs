@@ -6,8 +6,8 @@
 
     [XmlType("participants", Namespace = "http://services.worlddancesport.org/api")]
     [XmlRoot("participants", Namespace = "http://services.worlddancesport.org/api")]
-    [MediaType("application/vnd.worlddancesport.participants.couple", IsCollection = true)]
-    public class ListOfCoupleParticipant : List<ParticipantCouple>
+    [MediaType("application/vnd.worlddancesport.participants.single", IsCollection = true)]
+    public class ListOfSingleParticipant : List<ParticipantSingle>
     {
     }
 }

@@ -38,7 +38,7 @@ namespace Wdsf.Api.Client
         /// <summary>
         /// A participant
         /// </summary>
-        public const string Particiapnt = "http://services.worlddancesport.org/rel/participant";
+        public const string Participant = "http://services.worlddancesport.org/rel/participant";
         /// <summary>
         /// The competition a participant has taken part at
         /// </summary>

@@ -24,6 +24,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Close competition", "Exampl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wdsf.Checkin", "Wdsf.Checkin\Wdsf.Checkin.csproj", "{5867A62F-9D7F-46D5-A50C-6F6D94D7FBCC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoadParticipants", "LoadParticipants\LoadParticipants.csproj", "{0396BFF4-4048-41A9-BDBA-A7613C878A81}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -104,6 +106,16 @@ Global
 		{5867A62F-9D7F-46D5-A50C-6F6D94D7FBCC}.Release|Mixed Platforms.Build.0 = Release|x86
 		{5867A62F-9D7F-46D5-A50C-6F6D94D7FBCC}.Release|x86.ActiveCfg = Release|x86
 		{5867A62F-9D7F-46D5-A50C-6F6D94D7FBCC}.Release|x86.Build.0 = Release|x86
+		{0396BFF4-4048-41A9-BDBA-A7613C878A81}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{0396BFF4-4048-41A9-BDBA-A7613C878A81}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{0396BFF4-4048-41A9-BDBA-A7613C878A81}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{0396BFF4-4048-41A9-BDBA-A7613C878A81}.Debug|x86.ActiveCfg = Debug|x86
+		{0396BFF4-4048-41A9-BDBA-A7613C878A81}.Debug|x86.Build.0 = Debug|x86
+		{0396BFF4-4048-41A9-BDBA-A7613C878A81}.Release|Any CPU.ActiveCfg = Release|x86
+		{0396BFF4-4048-41A9-BDBA-A7613C878A81}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{0396BFF4-4048-41A9-BDBA-A7613C878A81}.Release|Mixed Platforms.Build.0 = Release|x86
+		{0396BFF4-4048-41A9-BDBA-A7613C878A81}.Release|x86.ActiveCfg = Release|x86
+		{0396BFF4-4048-41A9-BDBA-A7613C878A81}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -114,5 +126,6 @@ Global
 		{B3F8EF2B-D431-4A09-A6DA-082161A81364} = {081A54EE-EBAB-471D-9DD0-54EB71F40EA1}
 		{0BC0A9DE-9C80-49E7-8E4A-FDF2020A3485} = {081A54EE-EBAB-471D-9DD0-54EB71F40EA1}
 		{D998DF37-8BDF-4C7B-8033-B34B485ED122} = {081A54EE-EBAB-471D-9DD0-54EB71F40EA1}
+		{0396BFF4-4048-41A9-BDBA-A7613C878A81} = {081A54EE-EBAB-471D-9DD0-54EB71F40EA1}
 	EndGlobalSection
 EndGlobal

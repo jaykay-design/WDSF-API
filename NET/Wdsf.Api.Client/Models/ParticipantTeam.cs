@@ -17,7 +17,7 @@
         [XmlElement("country")]
         public string Country { get; set; }
 
-        [XmlAttribute]
-        public string Kind { get { return "Team"; } set { ;} }
+        [XmlElement("number")]
+        public string StartNumber { get; set; }
     }
 }

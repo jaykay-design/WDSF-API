@@ -80,6 +80,10 @@
     <Compile Include="Models\CompetitionDetail.cs" />
     <Compile Include="Models\Competition.cs" />
     <Compile Include="Models\Authentication.cs" />
+    <Compile Include="Models\ListOfTeam.cs" />
+    <Compile Include="Models\ListOfSingleParticipant.cs" />
+    <Compile Include="Models\ParticipantSingleDetail.cs" />
+    <Compile Include="Models\ParticipantSingle.cs" />
     <Compile Include="Models\OnScale2Score.cs" />
     <Compile Include="Models\Country.cs" />
     <Compile Include="Models\CoupleBase.cs" />
@@ -115,6 +119,9 @@
     <Compile Include="Models\Round.cs" />
     <Compile Include="Models\Score.cs" />
     <Compile Include="Models\StatusMessage.cs" />
+    <Compile Include="Models\Team.cs" />
+    <Compile Include="Models\TeamBase.cs" />
+    <Compile Include="Models\TeamDetail.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Relations.cs" />
     <Compile Include="RestAdapter.cs" />

@@ -5,15 +5,15 @@
     using Wdsf.Api.Client.Attributes;
 
     [XmlType("participant", Namespace = "http://services.worlddancesport.org/api")]
-    [XmlRoot(Namespace = "http://services.worlddancesport.org/api")]
-    [MediaType("application/vnd.worlddancesport.participant.couple")]
-    public class ParticipantCoupleDetail : ParticipantBaseDetail
+    [XmlRoot("participant", Namespace = "http://services.worlddancesport.org/api")]
+    [MediaType("application/vnd.worlddancesport.participant.single")]
+    public class ParticipantSingleDetail : ParticipantBaseDetail
     {
         [XmlElement("link")]
         public override Link[] Link { get; set; }
 
-        [XmlElement("coupleId")]
-        public string CoupleId { get; set; }
+        [XmlElement("personId")]
+        public string PersonId { get; set; }
 
         [XmlElement("name")]
         public string Name { get; set; }

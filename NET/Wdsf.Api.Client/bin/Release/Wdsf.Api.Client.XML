@@ -4,6 +4,41 @@
         <name>Wdsf.Api.Client</name>
     </assembly>
     <members>
+        <member name="F:Wdsf.Api.Client.Gender.Male">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Wdsf.Api.Client.Gender.Female">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScale2Score.TQ">
+            <summary>
+            Techincal Quality
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScale2Score.MM">
+            <summary>
+            Movement to music
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScale2Score.PS">
+            <summary>
+            Partnering skill
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScale2Score.CP">
+            <summary>
+            Choreography and Presentation
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScale2Score.Reduction">
+            <summary>
+            Reduction by Chairman
+            </summary>
+        </member>
         <member name="F:Wdsf.Api.Client.WdsfEndpoint.Sandbox">
             <summary>
             Use this endpoint for testing
@@ -71,6 +106,13 @@
             <param name="competition">The competition model</param>
             <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
         </member>
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.GetCoupleParticipants(System.Int32)">
+            <summary>
+            Get the participants of a competition
+            </summary>
+            <param name="competitionId">The competition Id</param>
+            <returns>List of participants</returns>
+        </member>
         <member name="M:Wdsf.Api.Client.Interfaces.IClient.SaveCoupleParticipant(Wdsf.Api.Client.Models.ParticipantCoupleDetail)">
             <summary>
             Saves a new participant (couple).
@@ -102,6 +144,13 @@
             <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
             <returns>true on success.</returns>
         </member>
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.GetTeamParticipants(System.Int32)">
+            <summary>
+            Get the participants of a competition
+            </summary>
+            <param name="competitionId">The competition Id</param>
+            <returns>List of participants</returns>
+        </member>
         <member name="M:Wdsf.Api.Client.Interfaces.IClient.SaveTeamParticipant(Wdsf.Api.Client.Models.ParticipantTeamDetail)">
             <summary>
             Saves a new participant (team).
@@ -129,6 +178,45 @@
         <member name="M:Wdsf.Api.Client.Interfaces.IClient.DeleteTeamParticipant(System.Int32)">
             <summary>
             Delete a participant (team)
+            </summary>
+            <param name="id">The participant ID</param>
+            <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
+            <returns>true on success.</returns>
+        </member>
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.GetSingleParticipants(System.Int32)">
+            <summary>
+            Get the participants of a competition
+            </summary>
+            <param name="competitionId">The competition Id</param>
+            <returns>List of participants</returns>
+        </member>
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.SaveSingleParticipant(Wdsf.Api.Client.Models.ParticipantSingleDetail)">
+            <summary>
+            Saves a new participant (single).
+            </summary>
+            <param name="participant">The participant model.</param>
+            <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
+            <returns>The Uri to the newly created resource</returns>
+        </member>
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.GetSingleParticipant(System.Int32)">
+            <summary>
+            Gets a participant (single)
+            </summary>
+            <param name="id">The participant ID</param>
+            <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
+            <returns>The participant (single)</returns>
+        </member>
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.UpdateSingleParticipant(Wdsf.Api.Client.Models.ParticipantSingleDetail)">
+            <summary>
+            Updates a participant (single).
+            </summary>
+            <param name="participant">The participant model.</param>
+            <exception cref="T:Wdsf.Api.Client.Exceptions.UnknownMediaTypeException">The received resource type was not recognized.</exception>
+            <exception cref="T:Wdsf.Api.Client.Exceptions.UnexpectedMediaTypeException">The received resource type was not expected.</exception>
+        </member>
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.DeleteSingleParticipant(System.Int32)">
+            <summary>
+            Delete a participant (single)
             </summary>
             <param name="id">The participant ID</param>
             <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
@@ -381,7 +469,7 @@
             The officials of a competition
             </summary>
         </member>
-        <member name="F:Wdsf.Api.Client.ResourceRelation.Particiapnt">
+        <member name="F:Wdsf.Api.Client.ResourceRelation.Participant">
             <summary>
             A participant
             </summary>
@@ -598,31 +686,6 @@
         <member name="F:Wdsf.Api.Client.FilterNames.Ranking.Division">
             <summary>
             WRL of a certain division. Allowed values are General and Professional.
-            </summary>
-        </member>
-        <member name="P:Wdsf.Api.Client.Models.OnScale2Score.TQ">
-            <summary>
-            Techincal Quality
-            </summary>
-        </member>
-        <member name="P:Wdsf.Api.Client.Models.OnScale2Score.MM">
-            <summary>
-            Movement to music
-            </summary>
-        </member>
-        <member name="P:Wdsf.Api.Client.Models.OnScale2Score.PS">
-            <summary>
-            Partnering skill
-            </summary>
-        </member>
-        <member name="P:Wdsf.Api.Client.Models.OnScale2Score.CP">
-            <summary>
-            Choreography and Presentation
-            </summary>
-        </member>
-        <member name="P:Wdsf.Api.Client.Models.OnScale2Score.Reduction">
-            <summary>
-            Reduction by Chairman
             </summary>
         </member>
     </members>

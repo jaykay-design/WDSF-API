@@ -21,6 +21,7 @@
         [XmlArrayItem("mark", typeof(MarkScore))]
         [XmlArrayItem("final", typeof(FinalScore))]
         [XmlArrayItem("onScale", typeof(OnScaleScore))]
+        [XmlArrayItem("onScaleIdo", typeof(OnScaleIdoScore))]
         [XmlArrayItem("onScale2", typeof(OnScale2Score))]
         public Score[] ScoresForSerialization
         {

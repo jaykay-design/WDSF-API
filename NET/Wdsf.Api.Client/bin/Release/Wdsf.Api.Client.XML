@@ -4,16 +4,6 @@
         <name>Wdsf.Api.Client</name>
     </assembly>
     <members>
-        <member name="F:Wdsf.Api.Client.Gender.Male">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Wdsf.Api.Client.Gender.Female">
-            <summary>
-            
-            </summary>
-        </member>
         <member name="P:Wdsf.Api.Client.Models.OnScale2Score.TQ">
             <summary>
             Techincal Quality
@@ -37,6 +27,16 @@
         <member name="P:Wdsf.Api.Client.Models.OnScale2Score.Reduction">
             <summary>
             Reduction by Chairman
+            </summary>
+        </member>
+        <member name="F:Wdsf.Api.Client.Gender.Male">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Wdsf.Api.Client.Gender.Female">
+            <summary>
+            
             </summary>
         </member>
         <member name="F:Wdsf.Api.Client.WdsfEndpoint.Sandbox">
@@ -686,6 +686,31 @@
         <member name="F:Wdsf.Api.Client.FilterNames.Ranking.Division">
             <summary>
             WRL of a certain division. Allowed values are General and Professional.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScaleIdoScore.T">
+            <summary>
+            Technique
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScaleIdoScore.C">
+            <summary>
+            Composition
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScaleIdoScore.I">
+            <summary>
+            Image
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScaleIdoScore.S">
+            <summary>
+            Show
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScaleIdoScore.Reduction">
+            <summary>
+            Reduction by Chairman
             </summary>
         </member>
     </members>

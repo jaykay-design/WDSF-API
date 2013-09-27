@@ -29,6 +29,11 @@
             Reduction by Chairman
             </summary>
         </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScale2Score.IsSet">
+            <summary>
+            This participant was allowed to skip the round it set to true
+            </summary>
+        </member>
         <member name="F:Wdsf.Api.Client.Gender.Male">
             <summary>
             
@@ -578,6 +583,31 @@
             Reduction by Chairman
             </summary>
         </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScaleIdoScore.T">
+            <summary>
+            Technique
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScaleIdoScore.C">
+            <summary>
+            Composition
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScaleIdoScore.I">
+            <summary>
+            Image
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScaleIdoScore.S">
+            <summary>
+            Show
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScaleIdoScore.Reduction">
+            <summary>
+            Reduction by Chairman
+            </summary>
+        </member>
         <member name="F:Wdsf.Api.Client.FilterNames.Competition.Since">
             <summary>
             List all competitions since a date. The date is formated according to ISO YYYY/MM/DD.
@@ -686,31 +716,6 @@
         <member name="F:Wdsf.Api.Client.FilterNames.Ranking.Division">
             <summary>
             WRL of a certain division. Allowed values are General and Professional.
-            </summary>
-        </member>
-        <member name="P:Wdsf.Api.Client.Models.OnScaleIdoScore.T">
-            <summary>
-            Technique
-            </summary>
-        </member>
-        <member name="P:Wdsf.Api.Client.Models.OnScaleIdoScore.C">
-            <summary>
-            Composition
-            </summary>
-        </member>
-        <member name="P:Wdsf.Api.Client.Models.OnScaleIdoScore.I">
-            <summary>
-            Image
-            </summary>
-        </member>
-        <member name="P:Wdsf.Api.Client.Models.OnScaleIdoScore.S">
-            <summary>
-            Show
-            </summary>
-        </member>
-        <member name="P:Wdsf.Api.Client.Models.OnScaleIdoScore.Reduction">
-            <summary>
-            Reduction by Chairman
             </summary>
         </member>
     </members>

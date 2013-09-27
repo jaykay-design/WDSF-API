@@ -31,5 +31,11 @@
         /// </summary>
         [XmlAttribute("reduction")]
         public virtual decimal Reduction { get; set; }
+        /// <summary>
+        /// This participant was allowed to skip the round it set to true
+        /// </summary>
+        [XmlAttribute("set")]
+        public virtual bool IsSet { get; set; }
+
     }
 }

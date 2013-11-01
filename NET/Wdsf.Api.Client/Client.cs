@@ -353,13 +353,18 @@ namespace Wdsf.Api.Client
             if (null == resourceUri)
                 throw new ArgumentNullException("resourceUri");
 
+            RestAdapter adapter = GetAdapter();
             try
             {
-                return GetAdapter().Get<T>(resourceUri);
+                return adapter.Get<T>(resourceUri);
             }
             catch (Exception ex)
             {
                 throw new ApiException(ex);
+            }
+            finally
+            {
+                ReleaseAdapter(adapter);
             }
         }
 
@@ -374,13 +379,18 @@ namespace Wdsf.Api.Client
             if (null == resourceUri)
                 throw new ArgumentNullException("resourceUri");
 
+            RestAdapter adapter = GetAdapter();
             try
             {
-                return GetAdapter().Get(resourceUri);
+                return adapter.Get(resourceUri);
             }
             catch (Exception ex)
             {
                 throw new ApiException(ex);
+            }
+            finally
+            {
+                ReleaseAdapter(adapter);
             }
         }
 
@@ -397,53 +407,77 @@ namespace Wdsf.Api.Client
             if (null == resourceUri)
                 throw new ArgumentNullException("resourceUri");
 
+            RestAdapter adapter = GetAdapter();
             try
             {
-                return GetAdapter().Get(new Uri(this.apiUriBase + resourceUri));
+                return adapter.Get(new Uri(this.apiUriBase + resourceUri));
             }
             catch (Exception ex)
             {
                 throw new ApiException(ex);
             }
+            finally
+            {
+                ReleaseAdapter(adapter);
+            }
+
         }
 
         private T GetResource<T>(string resourceUri) where T : class
         {
+            RestAdapter adapter = GetAdapter();
             try
             {
-                return GetAdapter().Get<T>(new Uri(this.apiUriBase + resourceUri));
+                return adapter.Get<T>(new Uri(this.apiUriBase + resourceUri));
             }
             catch (Exception ex)
             {
                 throw new ApiException(ex);
             }
+            finally
+            {
+                ReleaseAdapter(adapter);
+            }
+
         }
         private IList<TItem> GetResourceList<TContainer, TItem>(string resourceUri)
             where TContainer : class, IEnumerable<TItem>
             where TItem : class
         {
 
+            RestAdapter adapter = GetAdapter();
             try
             {
-                TContainer items = GetAdapter().Get<TContainer>(new Uri(this.apiUriBase + resourceUri));
+                TContainer items = adapter.Get<TContainer>(new Uri(this.apiUriBase + resourceUri));
                 return new List<TItem>(items);
             }
             catch (Exception ex)
             {
                 throw new ApiException(ex);
             }
+            finally
+            {
+                ReleaseAdapter(adapter);
+            }
+
         }
         private bool UpdateResource<T>(T competition, string resourceUri) where T : class
         {
             StatusMessage message;
+            RestAdapter adapter = GetAdapter();
             try
             {
-                message = GetAdapter().Put<T>(new Uri(this.apiUriBase + resourceUri), competition);
+                message = adapter.Put<T>(new Uri(this.apiUriBase + resourceUri), competition);
             }
             catch (Exception ex)
             {
                 throw new ApiException(ex);
             }
+            finally
+            {
+                ReleaseAdapter(adapter);
+            }
+
 
             this.LastApiMessage = message.Message;
             return message.Code == (int)HttpStatusCode.OK;
@@ -451,14 +485,20 @@ namespace Wdsf.Api.Client
         private Uri SaveResource<T>(T participant, string resourceUri) where T : class
         {
             StatusMessage message;
+            RestAdapter adapter = GetAdapter();
             try
             {
-                message = GetAdapter().Post<T>(new Uri(this.apiUriBase + resourceUri), participant);
+                message = adapter.Post<T>(new Uri(this.apiUriBase + resourceUri), participant);
             }
             catch (Exception ex)
             {
                 throw new ApiException(ex);
             }
+            finally
+            {
+                ReleaseAdapter(adapter);
+            }
+
 
             if (message.Code != (int)HttpStatusCode.Created)
             {
@@ -471,14 +511,20 @@ namespace Wdsf.Api.Client
         private bool DeleteResource(string resourceUri)
         {
             StatusMessage message;
+            RestAdapter adapter = GetAdapter();
             try
             {
-                message = GetAdapter().Delete(new Uri(this.apiUriBase + resourceUri));
+                message = adapter.Delete(new Uri(this.apiUriBase + resourceUri));
             }
             catch (Exception ex)
             {
                 throw new ApiException(ex);
             }
+            finally
+            {
+                ReleaseAdapter(adapter);
+            }
+
 
             this.LastApiMessage = message.Message;
             return message.Code == (int)HttpStatusCode.OK;
@@ -516,14 +562,22 @@ namespace Wdsf.Api.Client
                 if (null == this.adapters)
                     throw new ObjectDisposedException(GetType().FullName);
 
-                RestAdapter adapter = this.adapters.FirstOrDefault(a => a.IsBusy == false);
+                RestAdapter adapter = this.adapters.FirstOrDefault(a => a.IsBusy == false && a.IsAssigned == false);
                 if (adapter == null)
                 {
                     adapter = new RestAdapter(this.username, this.password);
                     this.adapters.Add(adapter);
                 }
 
+                adapter.IsAssigned = true;
                 return adapter;
+            }
+        }
+        private void ReleaseAdapter(RestAdapter adapter)
+        {
+            lock (adapterLock)
+            {
+                adapter.IsAssigned = false;
             }
         }
 

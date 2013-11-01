@@ -28,6 +28,7 @@ namespace Wdsf.Api.Client
 
     internal class RestAdapter : IDisposable
     {
+        public bool IsAssigned { get; set; }
         public bool IsBusy { get; private set; }
         private object busyLock = new object();
 

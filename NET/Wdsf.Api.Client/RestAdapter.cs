@@ -102,6 +102,12 @@ namespace Wdsf.Api.Client
             
             HttpWebResponse response = GetResponse(request);
             this.IsBusy = false;
+            
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                throw new UnauthorizedException("GET", resourceUri);
+            }
+
             CheckResourceType<T>(response);
             T result =  ReadReponseBody<T>(response);
             response.Close();
@@ -130,12 +136,13 @@ namespace Wdsf.Api.Client
 
             HttpWebResponse response = GetResponse(request);
             this.IsBusy = false;
-            CheckResourceType<StatusMessage>(response);
 
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                throw new UnauthorizedAccessException();
+                throw new UnauthorizedException("PUT", resourceUri);
             }
+
+            CheckResourceType<StatusMessage>(response);
 
             StatusMessage message = ReadReponseBody<StatusMessage>(response);
             response.Close();
@@ -167,7 +174,7 @@ namespace Wdsf.Api.Client
 
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                throw new UnauthorizedAccessException();
+                throw new UnauthorizedException("POST", resourceUri);
             }
 
             CheckResourceType<StatusMessage>(response);
@@ -195,12 +202,13 @@ namespace Wdsf.Api.Client
 
             HttpWebResponse response = GetResponse(request);
             this.IsBusy = false;
-            CheckResourceType<StatusMessage>(response);
 
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                throw new UnauthorizedAccessException();
+                throw new UnauthorizedException("DELETE", resourceUri);
             }
+
+            CheckResourceType<StatusMessage>(response);
 
             StatusMessage message = ReadReponseBody<StatusMessage>(response);
             response.Close();

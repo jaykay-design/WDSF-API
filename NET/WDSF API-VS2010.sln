@@ -26,6 +26,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wdsf.Checkin", "Wdsf.Checki
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoadParticipants", "Examples\LoadParticipants\LoadParticipants.csproj", "{0396BFF4-4048-41A9-BDBA-A7613C878A81}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wdsf.Api.Test", "Wdsf.Api.Test\Wdsf.Api.Test.csproj", "{8900932F-7434-4059-87F3-2C757B451458}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -116,6 +118,16 @@ Global
 		{0396BFF4-4048-41A9-BDBA-A7613C878A81}.Release|Mixed Platforms.Build.0 = Release|x86
 		{0396BFF4-4048-41A9-BDBA-A7613C878A81}.Release|x86.ActiveCfg = Release|x86
 		{0396BFF4-4048-41A9-BDBA-A7613C878A81}.Release|x86.Build.0 = Release|x86
+		{8900932F-7434-4059-87F3-2C757B451458}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{8900932F-7434-4059-87F3-2C757B451458}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{8900932F-7434-4059-87F3-2C757B451458}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{8900932F-7434-4059-87F3-2C757B451458}.Debug|x86.ActiveCfg = Debug|x86
+		{8900932F-7434-4059-87F3-2C757B451458}.Debug|x86.Build.0 = Debug|x86
+		{8900932F-7434-4059-87F3-2C757B451458}.Release|Any CPU.ActiveCfg = Release|x86
+		{8900932F-7434-4059-87F3-2C757B451458}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{8900932F-7434-4059-87F3-2C757B451458}.Release|Mixed Platforms.Build.0 = Release|x86
+		{8900932F-7434-4059-87F3-2C757B451458}.Release|x86.ActiveCfg = Release|x86
+		{8900932F-7434-4059-87F3-2C757B451458}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

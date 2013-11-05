@@ -13,7 +13,7 @@
         public Link[] Link  { get; set; }
 
         [XmlElement("id")]
-        public string Min { get; set; }
+        public int Min { get; set; }
 
         [XmlElement("name")]
         public string Name { get; set; }
@@ -32,5 +32,8 @@
 
         [XmlElement("ageGroup")]
         public string AgeGroup { get; set; }
+
+        [XmlArray("licenses")]
+        public License[] Licenses { get; set; }
     }
 }

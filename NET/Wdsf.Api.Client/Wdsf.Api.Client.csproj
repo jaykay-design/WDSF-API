@@ -72,6 +72,7 @@
     <Compile Include="Enumerations.cs" />
     <Compile Include="Exceptions\ApiException.cs" />
     <Compile Include="Exceptions\BusyException.cs" />
+    <Compile Include="Exceptions\UnauthorizedException.cs" />
     <Compile Include="Exceptions\UnexpectedMediaTypeException.cs" />
     <Compile Include="Exceptions\RestException.cs" />
     <Compile Include="Exceptions\UnknownMediaTypeException.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="Models\CompetitionDetail.cs" />
     <Compile Include="Models\Competition.cs" />
     <Compile Include="Models\Authentication.cs" />
+    <Compile Include="Models\License.cs" />
     <Compile Include="Models\OnScaleIdoScore.cs" />
     <Compile Include="Models\ListOfTeam.cs" />
     <Compile Include="Models\ListOfSingleParticipant.cs" />

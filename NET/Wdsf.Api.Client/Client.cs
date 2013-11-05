@@ -74,6 +74,10 @@ namespace Wdsf.Api.Client
             this.password = password;
 
             this.adapters = new List<RestAdapter>() { new RestAdapter(username, password) };
+
+#if DEBUG
+            System.Net.ServicePointManager.ServerCertificateValidationCallback = CertificatePolicy.ValidateSSLCertificate;
+#endif
         }
 
         private static SecureString MakeSecureString(string val)
@@ -106,6 +110,13 @@ namespace Wdsf.Api.Client
         public PersonDetail GetPerson(int min)
         {
             return GetResource<PersonDetail>(string.Format("person/{0}", min));
+        }
+        public bool UpdatePerson(PersonDetail person)
+        {
+            if (person == null)
+                throw new ArgumentNullException("person");
+
+            return UpdateResource<PersonDetail>(person, string.Format("person/{0}", person.Min));
         }
 
 

@@ -206,6 +206,13 @@
         bool UpdateCouple(CoupleDetail couple);
 
         /// <summary>
+        /// Gets a list of persons.
+        /// </summary>
+        /// <param name="filter">A dictionaly containing filter parameters. See API documentation for details.</param>
+        /// <exception cref="ApiException">The request failed. See inner exception for details.</exception>
+        /// <returns>A list of persons</returns>
+        IList<Person> GetPersons(IDictionary<string, string> filter);
+        /// <summary>
         /// Gets a person
         /// </summary>
         /// <param name="min">The member ID number</param>
@@ -213,12 +220,13 @@
         /// <returns>The person model.</returns>
         PersonDetail GetPerson(int min);
         /// <summary>
-        /// Gets a list of persons.
+        /// Updates a person
         /// </summary>
-        /// <param name="filter">A dictionaly containing filter parameters. See API documentation for details.</param>
+        /// <param name="person">The person model.</param>
+        /// <returns></returns>
         /// <exception cref="ApiException">The request failed. See inner exception for details.</exception>
-        /// <returns>A list of persons</returns>
-        IList<Person> GetPersons(IDictionary<string, string> filter);
+        bool UpdatePerson(PersonDetail person);
+
 
         /// <summary>
         /// Gets a world ranking list.

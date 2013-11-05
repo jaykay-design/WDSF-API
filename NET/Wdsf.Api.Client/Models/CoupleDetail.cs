@@ -24,6 +24,15 @@
         [XmlElement("status")]
         public string Status { get; set; }
 
+        [XmlElement("retiredOn")]
+        public string RetiredOn { get; set; }
+
+        [XmlElement("wrlBLockedUntil")]
+        public string WrlBlockedUntil { get; set; }
+
+        [XmlElement("cupOrChampionshipBlockedUntil")]
+        public string CupOrChampionshipBlockedUntil { get; set; }
+
         [XmlElement("man")]
         public int ManMin { get; set; }
 

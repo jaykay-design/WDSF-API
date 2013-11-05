@@ -12,7 +12,7 @@
         public Link[] Link  { get; set; }
 
         [XmlElement("id")]
-        public string Min { get; set; }
+        public int Min { get; set; }
 
         [XmlElement("name")]
         public string Name { get; set; }

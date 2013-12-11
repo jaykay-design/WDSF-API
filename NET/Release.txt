@@ -24,6 +24,11 @@
 1.0.4661		+ added solution files for VS2010 and VS2008
 				+ added couple export method and models
 
+1.0.5008		+ added/updated models for member API
+			+ improved Adapter handling for multitaksing
+			# fixed multiple typos
+			+ authorization problems now throw UnauthorizedException
+			
 
 WDSF Checkin
 

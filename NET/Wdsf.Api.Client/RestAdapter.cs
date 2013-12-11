@@ -19,6 +19,7 @@ namespace Wdsf.Api.Client
 {
     using System;
     using System.IO;
+    using System.IO.Compression;
     using System.Net;
     using System.Security;
     using System.Runtime.InteropServices;
@@ -311,12 +312,28 @@ namespace Wdsf.Api.Client
             XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
             ns.Add("xlink", "http://www.w3.org/1999/xlink");
 
-            Stream requestStream = request.GetRequestStream();
+            using (MemoryStream data = new MemoryStream())
+            {
+                if (request.Headers["Content-Encoding"] == "gzip")
+                {
+                    using (GZipStream compressor = new GZipStream(data, CompressionMode.Compress, true))
+                    {
+                        serializer.Serialize(compressor, model, ns);
+                    }
+                }
+                else
+                {
+                    serializer.Serialize(data, model, ns);
+                }
 
-            serializer.Serialize(requestStream, model, ns);
+                data.Position = 0;
 
-            requestStream.Flush();
-            requestStream.Close();
+                Stream requestStream = request.GetRequestStream();
+                data.WriteTo(requestStream);
+                requestStream.Flush();
+                requestStream.Close();
+            }
+
         }
 
         #region IDisposable Members

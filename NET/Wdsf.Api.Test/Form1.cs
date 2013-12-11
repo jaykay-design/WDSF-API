@@ -65,7 +65,7 @@
             }
             else
             {
-                apiUrl = password.Replace("apiUrl=", string.Empty);
+                apiUrl = apiUrl.Replace("apiurl=", string.Empty);
                 this.apiClient = new Api.Client.Client(username, password, apiUrl);
             }
 

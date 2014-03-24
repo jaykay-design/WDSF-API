@@ -81,7 +81,6 @@
     <Compile Include="Models\AgeClass.cs" />
     <Compile Include="Models\CompetitionDetail.cs" />
     <Compile Include="Models\Competition.cs" />
-    <Compile Include="Models\Authentication.cs" />
     <Compile Include="Models\License.cs" />
     <Compile Include="Models\OnScaleIdoScore.cs" />
     <Compile Include="Models\ListOfTeam.cs" />

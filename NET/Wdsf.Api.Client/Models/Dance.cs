@@ -1,16 +1,18 @@
 ﻿namespace Wdsf.Api.Client.Models
 {
     using System;
-    using System.Linq;
-    using System.Xml.Serialization;
     using System.Collections.Generic;
+    using System.Xml.Serialization;
+    using Newtonsoft.Json;
 
     [XmlType("dance", Namespace = "http://services.worlddancesport.org/api")]
+    [JsonObject("dance")]
     public class Dance
     {
         private List<Score> scores = new List<Score>();
 
         [XmlAttribute("name")]
+        [JsonProperty("name")]
         public string Name { get; set; }
 
         /// <summary>
@@ -23,6 +25,7 @@
         [XmlArrayItem("onScale", typeof(OnScaleScore))]
         [XmlArrayItem("onScaleIdo", typeof(OnScaleIdoScore))]
         [XmlArrayItem("onScale2", typeof(OnScale2Score))]
+        [JsonProperty("scores", ItemConverterType = typeof(Converter.JsonScoreConverter))]
         public Score[] ScoresForSerialization
         {
             get
@@ -38,7 +41,7 @@
             }
         }
 
-        [XmlIgnore]
+        [XmlIgnore, JsonIgnore]
         public IList<Score> Scores
         {
             get

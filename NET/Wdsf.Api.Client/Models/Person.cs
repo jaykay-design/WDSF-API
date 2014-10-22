@@ -3,21 +3,27 @@
     using System;
     using System.Xml.Serialization;
     using Wdsf.Api.Client.Attributes;
+    using Newtonsoft.Json;
 
     [XmlType("person", Namespace = "http://services.worlddancesport.org/api")]
     [XmlRoot("person", Namespace = "http://services.worlddancesport.org/api")]
+    [JsonObject("person")]
     public class Person
     {
-        [XmlElement("link")]
-        public Link[] Link  { get; set; }
+        [XmlArray("link")]
+        [JsonProperty("link")]
+        public Link[] Link { get; set; }
 
         [XmlElement("id")]
+        [JsonProperty("id")]
         public int Min { get; set; }
 
         [XmlElement("name")]
+        [JsonProperty("name")]
         public string Name { get; set; }
 
         [XmlElement("sex")]
+        [JsonProperty("sex")]
         public string Sex { get; set; }
 
         public bool IsMale
@@ -44,15 +50,19 @@
         }
 
         [XmlElement("country")]
+        [JsonProperty("country")]
         public string Country { get; set; }
 
         [XmlElement("activePartner")]
+        [JsonProperty("activePartner")]
         public string ActivePartner { get; set; }
 
         [XmlElement("activeCoupleId")]
+        [JsonProperty("activeCoupleId")]
         public string ActiveCoupleId { get; set; }
 
         [XmlElement("activeCoupleAgeGroup")]
+        [JsonProperty("activeCoupleAgeGroup")]
         public string AgeGroup { get; set; }
     }
 }

@@ -69,6 +69,8 @@
                 this.apiClient = new Api.Client.Client(username, password, apiUrl);
             }
 
+//            ((Api.Client.Client)this.apiClient).ContentType = ContentTypes.Json;
+
             this.apiClient.GetAges().ToList().ForEach(c => this.model.Ages.Add(new AgeWrapper(c)));
             this.apiClient.GetCountries().ToList().ForEach(c => this.model.Countries.Add(new CountryWrapper(c)));
             this.apiClient.GetPersons(new Dictionary<string, string>() { { "type", "Adjudicator" } }).ToList().ForEach(c => this.model.Adjudicator.Add(new PersonWrapper(c)));

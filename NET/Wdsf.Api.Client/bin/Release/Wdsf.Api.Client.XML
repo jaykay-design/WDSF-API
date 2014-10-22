@@ -4,84 +4,6 @@
         <name>Wdsf.Api.Client</name>
     </assembly>
     <members>
-        <member name="P:Wdsf.Api.Client.Models.OnScale2Score.TQ">
-            <summary>
-            Techincal Quality
-            </summary>
-        </member>
-        <member name="P:Wdsf.Api.Client.Models.OnScale2Score.MM">
-            <summary>
-            Movement to music
-            </summary>
-        </member>
-        <member name="P:Wdsf.Api.Client.Models.OnScale2Score.PS">
-            <summary>
-            Partnering skill
-            </summary>
-        </member>
-        <member name="P:Wdsf.Api.Client.Models.OnScale2Score.CP">
-            <summary>
-            Choreography and Presentation
-            </summary>
-        </member>
-        <member name="P:Wdsf.Api.Client.Models.OnScale2Score.Reduction">
-            <summary>
-            Reduction by Chairman
-            </summary>
-        </member>
-        <member name="P:Wdsf.Api.Client.Models.OnScale2Score.IsSet">
-            <summary>
-            This participant was allowed to skip the round it set to true
-            </summary>
-        </member>
-        <member name="F:Wdsf.Api.Client.Gender.Male">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Wdsf.Api.Client.Gender.Female">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="F:Wdsf.Api.Client.WdsfEndpoint.Sandbox">
-            <summary>
-            Use this endpoint for testing
-            </summary>
-        </member>
-        <member name="F:Wdsf.Api.Client.WdsfEndpoint.Services">
-            <summary>
-            This endpoint goes to the live website
-            </summary>
-        </member>
-        <member name="P:Wdsf.Api.Client.Models.Round.DancesForSerialization">
-            <summary>
-            <para>Do not use this array to process dances.</para>
-            <para>It is used only as a workaround for .NET's XmlSerializer limitations on deserializing lists.</para>
-            </summary>
-        </member>
-        <member name="P:Wdsf.Api.Client.Models.ParticipantBaseDetail.Status">
-            <summary>
-            Present, Noshow, Excused, Disqualified
-            </summary>
-        </member>
-        <member name="P:Wdsf.Api.Client.Models.ParticipantBaseDetail.RoundsForSerialization">
-            <summary>
-            <para>Do not use this array to process rounds.</para>
-            <para>It is used only as a workaround for .NET's XmlSerializer limitations on deserializing lists.</para>
-            </summary>
-        </member>
-        <member name="P:Wdsf.Api.Client.Models.ParticipantBaseDetail.Rounds">
-            <summary>
-            Contains the scores. Set to null if the scores shall not be updated.
-            </summary>
-        </member>
-        <member name="P:Wdsf.Api.Client.Models.Dance.ScoresForSerialization">
-            <summary>
-            <para>Do not use this array to process scores.</para>
-            <para>It is used only as a workaround for .NET's XmlSerializer limitations on deserializing lists.</para>
-            </summary>
-        </member>
         <member name="T:Wdsf.Api.Client.Client">
             <summary>
             <para>Provides access to the WDSF API throught stongly typed models.</para>
@@ -303,6 +225,14 @@
             <param name="couple">The couple model.</param>
             <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
         </member>
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.GetPersons(System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            Gets a list of persons.
+            </summary>
+            <param name="filter">A dictionaly containing filter parameters. See API documentation for details.</param>
+            <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
+            <returns>A list of persons</returns>
+        </member>
         <member name="M:Wdsf.Api.Client.Interfaces.IClient.GetPerson(System.Int32)">
             <summary>
             Gets a person
@@ -311,13 +241,13 @@
             <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
             <returns>The person model.</returns>
         </member>
-        <member name="M:Wdsf.Api.Client.Interfaces.IClient.GetPersons(System.Collections.Generic.IDictionary{System.String,System.String})">
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.UpdatePerson(Wdsf.Api.Client.Models.PersonDetail)">
             <summary>
-            Gets a list of persons.
+            Updates a person
             </summary>
-            <param name="filter">A dictionaly containing filter parameters. See API documentation for details.</param>
+            <param name="person">The person model.</param>
+            <returns></returns>
             <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
-            <returns>A list of persons</returns>
         </member>
         <member name="M:Wdsf.Api.Client.Interfaces.IClient.GetWorldRanking(System.String,System.String,System.String)">
             <summary>
@@ -389,223 +319,14 @@
             Contains the last message returned from the API
             </summary>
         </member>
-        <member name="M:Wdsf.Api.Client.RestAdapter.Get(System.Uri)">
+        <member name="F:Wdsf.Api.Client.Gender.Male">
             <summary>
-            Gets a resource of unknown type.
-            </summary>
-            <param name="resourceUri">The Uri to the resource.</param>
-            <exception cref="T:Wdsf.Api.Client.Exceptions.UnknownMediaTypeException">The received resource type was not recognized.</exception>
-            <exception cref="T:Wdsf.Api.Client.Exceptions.BusyException">The adapter is busy, use a new instance or check the IsBusy property.</exception>
-            <exception cref="!:HttpWebException">A general failure.</exception>
-            <returns>The resource.</returns>
-        </member>
-        <member name="M:Wdsf.Api.Client.RestAdapter.Get``1(System.Uri)">
-            <summary>
-            Gets a resource.
-            </summary>
-            <typeparam name="T">The expected resource type.</typeparam>
-            <param name="resourceUri">The Uri to the resource.</param>
-            <exception cref="T:Wdsf.Api.Client.Exceptions.UnknownMediaTypeException">The received resource type was not recognized.</exception>
-            <exception cref="T:Wdsf.Api.Client.Exceptions.UnexpectedMediaTypeException">The received resource type was not expected.</exception>
-            <exception cref="T:Wdsf.Api.Client.Exceptions.RestException">The API returned a message instead of a resource.</exception>
-            <exception cref="T:Wdsf.Api.Client.Exceptions.BusyException">The adapter is busy, use a new instance or check the IsBusy property.</exception>
-            <exception cref="!:HttpWebException">A general failure.</exception>
-            <returns>The resource.</returns>
-        </member>
-        <member name="M:Wdsf.Api.Client.RestAdapter.Put``1(System.Uri,``0)">
-            <summary>
-            Updates a resource.
-            </summary>
-            <typeparam name="T">The resource type.</typeparam>
-            <param name="resourceUri">The Uri to the resource.</param>
-            <exception cref="T:Wdsf.Api.Client.Exceptions.UnknownMediaTypeException">The received message type was not recognized.</exception>
-            <exception cref="T:Wdsf.Api.Client.Exceptions.UnexpectedMediaTypeException">The received message type was not expected.</exception>
-            <exception cref="T:Wdsf.Api.Client.Exceptions.BusyException">The adapter is busy, use a new instance or check the IsBusy property.</exception>
-            <exception cref="!:HttpWebException">A general failure.</exception>
-            <returns>A status message.</returns>
-        </member>
-        <member name="M:Wdsf.Api.Client.RestAdapter.Post``1(System.Uri,``0)">
-            <summary>
-            Saves a new resource.
-            </summary>
-            <typeparam name="T">The resource type.</typeparam>
-            <param name="resourceUri">The Uri to the resource.</param>
-            <exception cref="T:Wdsf.Api.Client.Exceptions.UnknownMediaTypeException">The received message type was not recognized.</exception>
-            <exception cref="T:Wdsf.Api.Client.Exceptions.UnexpectedMediaTypeException">The received message type was not expected.</exception>
-            <exception cref="T:Wdsf.Api.Client.Exceptions.BusyException">The adapter is busy, use a new instance or check the IsBusy property.</exception>
-            <exception cref="!:HttpWebException">A general failure.</exception>
-            <returns>A status message containing the Uri to the new resource.</returns>
-        </member>
-        <member name="M:Wdsf.Api.Client.RestAdapter.Delete(System.Uri)">
-            <summary>
-            Deletes a resource.
-            </summary>
-            <param name="resourceUri">The Uri to the resource.</param>
-            <exception cref="T:Wdsf.Api.Client.Exceptions.UnknownMediaTypeException">The received message type was not recognized.</exception>
-            <exception cref="T:Wdsf.Api.Client.Exceptions.UnexpectedMediaTypeException">The received message type was not expected.</exception>
-            <exception cref="T:Wdsf.Api.Client.Exceptions.BusyException">The adapter is busy, use a new instance or check the IsBusy property.</exception>
-            <exception cref="!:HttpWebException">A general failure.</exception>
-            <returns>A status message.</returns>
-        </member>
-        <member name="M:Wdsf.Api.Client.RestAdapter.CheckResourceType``1(System.Net.HttpWebResponse)">
-            <summary>
-            Verifies if the received content-type corresponds to the requested one.
-            </summary>
-            <typeparam name="T">The type expected</typeparam>
-            <param name="response">The response containing a content-type header</param>
-        </member>
-        <member name="F:Wdsf.Api.Client.ResourceRelation.Self">
-            <summary>
-            The resource itself
+            
             </summary>
         </member>
-        <member name="F:Wdsf.Api.Client.ResourceRelation.Competition">
+        <member name="F:Wdsf.Api.Client.Gender.Female">
             <summary>
-            A competition
-            </summary>
-        </member>
-        <member name="F:Wdsf.Api.Client.ResourceRelation.CompetitionParticipants">
-            <summary>
-            The participants of a competition.
-            </summary>
-        </member>
-        <member name="F:Wdsf.Api.Client.ResourceRelation.CompetitionOfficials">
-            <summary>
-            The officials of a competition
-            </summary>
-        </member>
-        <member name="F:Wdsf.Api.Client.ResourceRelation.Participant">
-            <summary>
-            A participant
-            </summary>
-        </member>
-        <member name="F:Wdsf.Api.Client.ResourceRelation.ParticipantCompetition">
-            <summary>
-            The competition a participant has taken part at
-            </summary>
-        </member>
-        <member name="F:Wdsf.Api.Client.ResourceRelation.ParticipantCouple">
-            <summary>
-            The couple related to this participant
-            </summary>
-        </member>
-        <member name="F:Wdsf.Api.Client.ResourceRelation.ParticipantTeam">
-            <summary>
-            The team related to this participant
-            </summary>
-        </member>
-        <member name="F:Wdsf.Api.Client.ResourceRelation.Couple">
-            <summary>
-            A couple
-            </summary>
-        </member>
-        <member name="F:Wdsf.Api.Client.ResourceRelation.Man">
-            <summary>
-            The man of a couple
-            </summary>
-        </member>
-        <member name="F:Wdsf.Api.Client.ResourceRelation.Woman">
-            <summary>
-            The woman of a couple
-            </summary>
-        </member>
-        <member name="F:Wdsf.Api.Client.ResourceRelation.Team">
-            <summary>
-            A team
-            </summary>
-        </member>
-        <member name="F:Wdsf.Api.Client.ResourceRelation.Person">
-            <summary>
-            A person
-            </summary>
-        </member>
-        <member name="F:Wdsf.Api.Client.ResourceRelation.PersonPartner">
-            <summary>
-            The current partner of a person.
-            </summary>
-        </member>
-        <member name="F:Wdsf.Api.Client.ResourceRelation.Official">
-            <summary>
-            An official
-            </summary>
-        </member>
-        <member name="F:Wdsf.Api.Client.ResourceRelation.OfficialPerson">
-            <summary>
-            The Person acting as an official
-            </summary>
-        </member>
-        <member name="F:Wdsf.Api.Client.ResourceRelation.OfficialCompetition">
-            <summary>
-            The competition an official acts at
-            </summary>
-        </member>
-        <member name="M:Wdsf.Api.Client.TypeHelper.GetHttpContentType(System.Type)">
-            <summary>
-            Maps a API Model to a HTTP content-type.
-            </summary>
-            <param name="type">The API model.</param>
-            <returns>the HTTP content-type string or null if there is no related type.</returns>
-        </member>
-        <member name="M:Wdsf.Api.Client.TypeHelper.GetApiModelType(System.String)">
-            <summary>
-            Maps a HTTP content-type to an API Model.
-            </summary>
-            <param name="mediaType">the HTTP content-type value.</param>
-            <returns>The API model or null if there is no related type.</returns>
-        </member>
-        <member name="P:Wdsf.Api.Client.Models.OnScaleScore.PB">
-            <summary>
-            Posture Balance Coorination
-            </summary>
-        </member>
-        <member name="P:Wdsf.Api.Client.Models.OnScaleScore.QM">
-            <summary>
-            Quality of movement
-            </summary>
-        </member>
-        <member name="P:Wdsf.Api.Client.Models.OnScaleScore.MM">
-            <summary>
-            Movement to music
-            </summary>
-        </member>
-        <member name="P:Wdsf.Api.Client.Models.OnScaleScore.PS">
-            <summary>
-            Partnering skill
-            </summary>
-        </member>
-        <member name="P:Wdsf.Api.Client.Models.OnScaleScore.CP">
-            <summary>
-            Choreography and Presentation
-            </summary>
-        </member>
-        <member name="P:Wdsf.Api.Client.Models.OnScaleScore.Reduction">
-            <summary>
-            Reduction by Chairman
-            </summary>
-        </member>
-        <member name="P:Wdsf.Api.Client.Models.OnScaleIdoScore.T">
-            <summary>
-            Technique
-            </summary>
-        </member>
-        <member name="P:Wdsf.Api.Client.Models.OnScaleIdoScore.C">
-            <summary>
-            Composition
-            </summary>
-        </member>
-        <member name="P:Wdsf.Api.Client.Models.OnScaleIdoScore.I">
-            <summary>
-            Image
-            </summary>
-        </member>
-        <member name="P:Wdsf.Api.Client.Models.OnScaleIdoScore.S">
-            <summary>
-            Show
-            </summary>
-        </member>
-        <member name="P:Wdsf.Api.Client.Models.OnScaleIdoScore.Reduction">
-            <summary>
-            Reduction by Chairman
+            
             </summary>
         </member>
         <member name="F:Wdsf.Api.Client.FilterNames.Competition.Since">
@@ -716,6 +437,293 @@
         <member name="F:Wdsf.Api.Client.FilterNames.Ranking.Division">
             <summary>
             WRL of a certain division. Allowed values are General and Professional.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScaleIdoScore.T">
+            <summary>
+            Technique
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScaleIdoScore.C">
+            <summary>
+            Composition
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScaleIdoScore.I">
+            <summary>
+            Image
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScaleIdoScore.S">
+            <summary>
+            Show
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScaleIdoScore.Reduction">
+            <summary>
+            Reduction by Chairman
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.ParticipantBaseDetail.Status">
+            <summary>
+            Present, Noshow, Excused, Disqualified
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.ParticipantBaseDetail.RoundsForSerialization">
+            <summary>
+            <para>Do not use this array to process rounds.</para>
+            <para>It is used only as a workaround for .NET's XmlSerializer limitations on deserializing lists.</para>
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.ParticipantBaseDetail.Rounds">
+            <summary>
+            Contains the scores. Set to null if the scores shall not be updated.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScale2Score.TQ">
+            <summary>
+            Techincal Quality
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScale2Score.MM">
+            <summary>
+            Movement to music
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScale2Score.PS">
+            <summary>
+            Partnering skill
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScale2Score.CP">
+            <summary>
+            Choreography and Presentation
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScale2Score.Reduction">
+            <summary>
+            Reduction by Chairman
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScale2Score.IsSet">
+            <summary>
+            This participant was allowed to skip the round it set to true
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.Dance.ScoresForSerialization">
+            <summary>
+            <para>Do not use this array to process scores.</para>
+            <para>It is used only as a workaround for .NET's XmlSerializer limitations on deserializing lists.</para>
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScaleScore.PB">
+            <summary>
+            Posture Balance Coorination
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScaleScore.QM">
+            <summary>
+            Quality of movement
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScaleScore.MM">
+            <summary>
+            Movement to music
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScaleScore.PS">
+            <summary>
+            Partnering skill
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScaleScore.CP">
+            <summary>
+            Choreography and Presentation
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScaleScore.Reduction">
+            <summary>
+            Reduction by Chairman
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.Round.DancesForSerialization">
+            <summary>
+            <para>Do not use this array to process dances.</para>
+            <para>It is used only as a workaround for .NET's XmlSerializer limitations on deserializing lists.</para>
+            </summary>
+        </member>
+        <member name="F:Wdsf.Api.Client.ResourceRelation.Self">
+            <summary>
+            The resource itself
+            </summary>
+        </member>
+        <member name="F:Wdsf.Api.Client.ResourceRelation.Competition">
+            <summary>
+            A competition
+            </summary>
+        </member>
+        <member name="F:Wdsf.Api.Client.ResourceRelation.CompetitionParticipants">
+            <summary>
+            The participants of a competition.
+            </summary>
+        </member>
+        <member name="F:Wdsf.Api.Client.ResourceRelation.CompetitionOfficials">
+            <summary>
+            The officials of a competition
+            </summary>
+        </member>
+        <member name="F:Wdsf.Api.Client.ResourceRelation.Participant">
+            <summary>
+            A participant
+            </summary>
+        </member>
+        <member name="F:Wdsf.Api.Client.ResourceRelation.ParticipantCompetition">
+            <summary>
+            The competition a participant has taken part at
+            </summary>
+        </member>
+        <member name="F:Wdsf.Api.Client.ResourceRelation.ParticipantCouple">
+            <summary>
+            The couple related to this participant
+            </summary>
+        </member>
+        <member name="F:Wdsf.Api.Client.ResourceRelation.ParticipantTeam">
+            <summary>
+            The team related to this participant
+            </summary>
+        </member>
+        <member name="F:Wdsf.Api.Client.ResourceRelation.Couple">
+            <summary>
+            A couple
+            </summary>
+        </member>
+        <member name="F:Wdsf.Api.Client.ResourceRelation.Man">
+            <summary>
+            The man of a couple
+            </summary>
+        </member>
+        <member name="F:Wdsf.Api.Client.ResourceRelation.Woman">
+            <summary>
+            The woman of a couple
+            </summary>
+        </member>
+        <member name="F:Wdsf.Api.Client.ResourceRelation.Team">
+            <summary>
+            A team
+            </summary>
+        </member>
+        <member name="F:Wdsf.Api.Client.ResourceRelation.Person">
+            <summary>
+            A person
+            </summary>
+        </member>
+        <member name="F:Wdsf.Api.Client.ResourceRelation.PersonPartner">
+            <summary>
+            The current partner of a person.
+            </summary>
+        </member>
+        <member name="F:Wdsf.Api.Client.ResourceRelation.Official">
+            <summary>
+            An official
+            </summary>
+        </member>
+        <member name="F:Wdsf.Api.Client.ResourceRelation.OfficialPerson">
+            <summary>
+            The Person acting as an official
+            </summary>
+        </member>
+        <member name="F:Wdsf.Api.Client.ResourceRelation.OfficialCompetition">
+            <summary>
+            The competition an official acts at
+            </summary>
+        </member>
+        <member name="M:Wdsf.Api.Client.RestAdapter.Get(System.Uri)">
+            <summary>
+            Gets a resource of unknown type.
+            </summary>
+            <param name="resourceUri">The Uri to the resource.</param>
+            <exception cref="T:Wdsf.Api.Client.Exceptions.UnknownMediaTypeException">The received resource type was not recognized.</exception>
+            <exception cref="T:Wdsf.Api.Client.Exceptions.BusyException">The adapter is busy, use a new instance or check the IsBusy property.</exception>
+            <exception cref="!:HttpWebException">A general failure.</exception>
+            <returns>The resource.</returns>
+        </member>
+        <member name="M:Wdsf.Api.Client.RestAdapter.Get``1(System.Uri)">
+            <summary>
+            Gets a resource.
+            </summary>
+            <typeparam name="T">The expected resource type.</typeparam>
+            <param name="resourceUri">The Uri to the resource.</param>
+            <exception cref="T:Wdsf.Api.Client.Exceptions.UnknownMediaTypeException">The received resource type was not recognized.</exception>
+            <exception cref="T:Wdsf.Api.Client.Exceptions.UnexpectedMediaTypeException">The received resource type was not expected.</exception>
+            <exception cref="T:Wdsf.Api.Client.Exceptions.RestException">The API returned a message instead of a resource.</exception>
+            <exception cref="T:Wdsf.Api.Client.Exceptions.BusyException">The adapter is busy, use a new instance or check the IsBusy property.</exception>
+            <exception cref="!:HttpWebException">A general failure.</exception>
+            <returns>The resource.</returns>
+        </member>
+        <member name="M:Wdsf.Api.Client.RestAdapter.Put``1(System.Uri,``0)">
+            <summary>
+            Updates a resource.
+            </summary>
+            <typeparam name="T">The resource type.</typeparam>
+            <param name="resourceUri">The Uri to the resource.</param>
+            <exception cref="T:Wdsf.Api.Client.Exceptions.UnknownMediaTypeException">The received message type was not recognized.</exception>
+            <exception cref="T:Wdsf.Api.Client.Exceptions.UnexpectedMediaTypeException">The received message type was not expected.</exception>
+            <exception cref="T:Wdsf.Api.Client.Exceptions.BusyException">The adapter is busy, use a new instance or check the IsBusy property.</exception>
+            <exception cref="!:HttpWebException">A general failure.</exception>
+            <returns>A status message.</returns>
+        </member>
+        <member name="M:Wdsf.Api.Client.RestAdapter.Post``1(System.Uri,``0)">
+            <summary>
+            Saves a new resource.
+            </summary>
+            <typeparam name="T">The resource type.</typeparam>
+            <param name="resourceUri">The Uri to the resource.</param>
+            <exception cref="T:Wdsf.Api.Client.Exceptions.UnknownMediaTypeException">The received message type was not recognized.</exception>
+            <exception cref="T:Wdsf.Api.Client.Exceptions.UnexpectedMediaTypeException">The received message type was not expected.</exception>
+            <exception cref="T:Wdsf.Api.Client.Exceptions.BusyException">The adapter is busy, use a new instance or check the IsBusy property.</exception>
+            <exception cref="!:HttpWebException">A general failure.</exception>
+            <returns>A status message containing the Uri to the new resource.</returns>
+        </member>
+        <member name="M:Wdsf.Api.Client.RestAdapter.Delete(System.Uri)">
+            <summary>
+            Deletes a resource.
+            </summary>
+            <param name="resourceUri">The Uri to the resource.</param>
+            <exception cref="T:Wdsf.Api.Client.Exceptions.UnknownMediaTypeException">The received message type was not recognized.</exception>
+            <exception cref="T:Wdsf.Api.Client.Exceptions.UnexpectedMediaTypeException">The received message type was not expected.</exception>
+            <exception cref="T:Wdsf.Api.Client.Exceptions.BusyException">The adapter is busy, use a new instance or check the IsBusy property.</exception>
+            <exception cref="!:HttpWebException">A general failure.</exception>
+            <returns>A status message.</returns>
+        </member>
+        <member name="M:Wdsf.Api.Client.RestAdapter.CheckResourceType``1(System.Net.HttpWebResponse)">
+            <summary>
+            Verifies if the received content-type corresponds to the requested one.
+            </summary>
+            <typeparam name="T">The type expected</typeparam>
+            <param name="response">The response containing a content-type header</param>
+        </member>
+        <member name="M:Wdsf.Api.Client.TypeHelper.GetHttpContentType(System.Type)">
+            <summary>
+            Maps a API Model to a HTTP content-type.
+            </summary>
+            <param name="type">The API model.</param>
+            <returns>the HTTP content-type string or null if there is no related type.</returns>
+        </member>
+        <member name="M:Wdsf.Api.Client.TypeHelper.GetApiModelType(System.String)">
+            <summary>
+            Maps a HTTP content-type to an API Model.
+            </summary>
+            <param name="mediaType">the HTTP content-type value.</param>
+            <returns>The API model or null if there is no related type.</returns>
+        </member>
+        <member name="F:Wdsf.Api.Client.WdsfEndpoint.Sandbox">
+            <summary>
+            Use this endpoint for testing
+            </summary>
+        </member>
+        <member name="F:Wdsf.Api.Client.WdsfEndpoint.Services">
+            <summary>
+            This endpoint goes to the live website
             </summary>
         </member>
     </members>

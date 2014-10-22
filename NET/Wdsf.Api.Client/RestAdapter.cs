@@ -23,15 +23,18 @@ namespace Wdsf.Api.Client
     using System.Net;
     using System.Security;
     using System.Runtime.InteropServices;
-    using System.Xml.Serialization;
     using Wdsf.Api.Client.Exceptions;
     using Wdsf.Api.Client.Models;
+    using Serializer;
+    using Interfaces;
 
     internal class RestAdapter : IDisposable
     {
         public bool IsAssigned { get; set; }
         public bool IsBusy { get; private set; }
         private object busyLock = new object();
+
+        public ContentTypes ContentType { get; set; }
 
         private readonly WebClient client = new WebClient();
         private readonly ICredentials credentials;
@@ -77,8 +80,9 @@ namespace Wdsf.Api.Client
                 throw new UnknownMediaTypeException(response.ContentType);
             }
 
-            XmlSerializer serializer = new XmlSerializer(receivedType);
-            object result =  serializer.Deserialize(response.GetResponseStream());
+            ISerializer serializer = SerializerFactory.GetSerializer(this.ContentType);
+            object result = serializer.Deserialize(receivedType, response.GetResponseStream());
+
             response.Close();
 
             return result;
@@ -132,7 +136,7 @@ namespace Wdsf.Api.Client
 
             HttpWebRequest request = GetRequestForSending(resourceUri);
             request.Method = "PUT";
-            request.ContentType = string.Format("{0}+xml", TypeHelper.GetHttpContentType(typeof(T)));
+            request.ContentType = GetContentType(typeof(T));
             WriteRequestBody<T>(model, request);
 
             HttpWebResponse response = GetResponse(request);
@@ -167,7 +171,7 @@ namespace Wdsf.Api.Client
 
             HttpWebRequest request = GetRequestForSending(resourceUri);
             request.Method = "POST";
-            request.ContentType = string.Format("{0}+xml", TypeHelper.GetHttpContentType(typeof(T)));
+            request.ContentType = GetContentType(typeof(T));
             WriteRequestBody<T>(model, request);
 
             HttpWebResponse response = GetResponse(request);
@@ -274,8 +278,8 @@ namespace Wdsf.Api.Client
         }
         private T ReadReponseBody<T>(HttpWebResponse response) where T:class
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(T));
-            T result = serializer.Deserialize(response.GetResponseStream()) as T;
+            ISerializer serializer = SerializerFactory.GetSerializer(this.ContentType);
+            T result = serializer.Deserialize(typeof(T), response.GetResponseStream()) as T;
 
             return result;
         }
@@ -286,7 +290,7 @@ namespace Wdsf.Api.Client
 
             request.Credentials = this.credentials;
             request.PreAuthenticate = true;
-            request.Accept = "application/xml";
+            request.Accept = GetAcceptType();
             request.UserAgent = "WDSF API Client";
             request.AutomaticDecompression = DecompressionMethods.GZip;
 
@@ -298,7 +302,7 @@ namespace Wdsf.Api.Client
 
             request.Credentials = this.credentials;
             request.PreAuthenticate = true;
-            request.Accept = "application/xml";
+            request.Accept = GetAcceptType();
             request.UserAgent = "WDSF API Client";
             request.Headers.Add("Content-Encoding", "gzip");
 
@@ -306,11 +310,37 @@ namespace Wdsf.Api.Client
 
             return request;
         }
+        private string GetAcceptType()
+        {
+            switch (this.ContentType)
+            {
+                case ContentTypes.Xml: { return "application/xml"; }
+                case ContentTypes.Json: { return "application/json"; }
+                default:
+                    {
+                        throw new Exception("ApiDataFormat invalid.");
+                    }
+            }
+        }
+        private string GetContentType(Type contentType)
+        {
+            string typeName = TypeHelper.GetHttpContentType(contentType);
+            string contentTypeFormat = "{0}+{1}";
+
+            switch (this.ContentType)
+            {
+                case ContentTypes.Xml: { return string.Format(contentTypeFormat, typeName, "xml"); }
+                case ContentTypes.Json: { return string.Format(contentTypeFormat, typeName, "json"); }
+                default:
+                    {
+                        throw new Exception("ApiDataFormat invalid.");
+                    }
+            }
+        }
+
         private void WriteRequestBody<T>(T model, HttpWebRequest request) where T : class
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(T));
-            XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
-            ns.Add("xlink", "http://www.w3.org/1999/xlink");
+            ISerializer serializer = SerializerFactory.GetSerializer(this.ContentType);
 
             using (MemoryStream data = new MemoryStream())
             {
@@ -318,12 +348,12 @@ namespace Wdsf.Api.Client
                 {
                     using (GZipStream compressor = new GZipStream(data, CompressionMode.Compress, true))
                     {
-                        serializer.Serialize(compressor, model, ns);
+                        serializer.Serialize(typeof(T), model, compressor);
                     }
                 }
                 else
                 {
-                    serializer.Serialize(data, model, ns);
+                    serializer.Serialize(typeof(T), model, data);
                 }
 
                 data.Position = 0;
@@ -333,7 +363,6 @@ namespace Wdsf.Api.Client
                 requestStream.Flush();
                 requestStream.Close();
             }
-
         }
 
         #region IDisposable Members

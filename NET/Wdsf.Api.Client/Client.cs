@@ -39,6 +39,8 @@ namespace Wdsf.Api.Client
         private List<RestAdapter> adapters;
         private readonly object adapterLock = new object();
 
+        public ContentTypes ContentType { get; set; }
+
         /// <summary>
         /// Contains the last message returned from the API
         /// </summary>
@@ -73,7 +75,7 @@ namespace Wdsf.Api.Client
             this.username = username;
             this.password = password;
 
-            this.adapters = new List<RestAdapter>() { new RestAdapter(username, password) };
+            this.adapters = new List<RestAdapter>() {};
 
 #if DEBUG
             System.Net.ServicePointManager.ServerCertificateValidationCallback = CertificatePolicy.ValidateSSLCertificate;
@@ -577,6 +579,7 @@ namespace Wdsf.Api.Client
                 if (adapter == null)
                 {
                     adapter = new RestAdapter(this.username, this.password);
+                    adapter.ContentType = this.ContentType;
                     this.adapters.Add(adapter);
                 }
 

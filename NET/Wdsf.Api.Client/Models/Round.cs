@@ -1,15 +1,18 @@
 ﻿namespace Wdsf.Api.Client.Models
 {
     using System;
-    using System.Xml.Serialization;
     using System.Collections.Generic;
+    using System.Xml.Serialization;
+    using Newtonsoft.Json;
 
     [XmlType("round", Namespace = "http://services.worlddancesport.org/api")]
+    [JsonObject("round")]
     public class Round
     {
         private List<Dance> dances = new List<Dance>();
 
         [XmlAttribute("name")]
+        [JsonProperty("name")]
         public string Name { get; set; }
 
         /// <summary>
@@ -17,6 +20,7 @@
         /// <para>It is used only as a workaround for .NET's XmlSerializer limitations on deserializing lists.</para>
         /// </summary>
         [XmlArray("dances")]
+        [JsonProperty("dances")]
         public Dance[] DancesForSerialization
         {
             get
@@ -32,7 +36,7 @@
             }
         }
 
-        [XmlIgnore]
+        [XmlIgnore, JsonIgnore]
         public IList<Dance> Dances
         {
             get

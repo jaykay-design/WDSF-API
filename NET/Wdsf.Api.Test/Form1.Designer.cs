@@ -118,6 +118,8 @@
             this.buttonCreateRandomCouples = new System.Windows.Forms.Button();
             this.textBoxRandomCoupleCount = new System.Windows.Forms.TextBox();
             this.label23 = new System.Windows.Forms.Label();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPagePersons.SuspendLayout();
             this.tabPageCouples.SuspendLayout();
@@ -767,6 +769,7 @@
             this.buttonUpdateParticipant.TabIndex = 33;
             this.buttonUpdateParticipant.Text = "Update Participant";
             this.buttonUpdateParticipant.UseVisualStyleBackColor = true;
+            this.buttonUpdateParticipant.Click += new System.EventHandler(this.buttonUpdateParticipant_Click);
             // 
             // buttonDeleteParticipant
             // 
@@ -1030,11 +1033,33 @@
             this.label23.TabIndex = 58;
             this.label23.Text = "Couples:";
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(18, 606);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(100, 23);
+            this.button2.TabIndex = 59;
+            this.button2.Text = "Save locally";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(124, 606);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(100, 23);
+            this.button3.TabIndex = 60;
+            this.button3.Text = "Load locally";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(985, 651);
+            this.Controls.Add(this.button3);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.label23);
             this.Controls.Add(this.textBoxRandomCoupleCount);
             this.Controls.Add(this.buttonCreateRandomCouples);
@@ -1194,6 +1219,8 @@
         private System.Windows.Forms.Button buttonCreateRandomCouples;
         private System.Windows.Forms.TextBox textBoxRandomCoupleCount;
         private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button3;
     }
 }
 

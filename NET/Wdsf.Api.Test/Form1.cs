@@ -69,7 +69,7 @@
                 this.apiClient = new Api.Client.Client(username, password, apiUrl);
             }
 
-//            ((Api.Client.Client)this.apiClient).ContentType = ContentTypes.Json;
+            ((Api.Client.Client)this.apiClient).ContentType = ContentTypes.Json;
 
             this.apiClient.GetAges().ToList().ForEach(c => this.model.Ages.Add(new AgeWrapper(c)));
             this.apiClient.GetCountries().ToList().ForEach(c => this.model.Countries.Add(new CountryWrapper(c)));
@@ -98,7 +98,7 @@
                     this.checkedListBoxCoupleAgeGroup.SetItemChecked(this.checkedListBoxCoupleAgeGroup.Items.IndexOf(this.model.Ages.First(a => a.age.Name == p[0])), true);
                     this.checkedListBoxCoupleStatus.SetItemChecked(this.checkedListBoxCoupleStatus.Items.IndexOf(p[1]), true);
                     this.checkedListBoxCoupleDivision.SetItemChecked(this.checkedListBoxCoupleDivision.Items.IndexOf(p[2]), true);
-                    LoadAthletes();
+                    LoadCouples();
                 }
             }
         }
@@ -235,7 +235,10 @@
                 tasks.Add(new Task(new Action<object>(state =>
                 {
                     ParticipantWrapper pa = state as ParticipantWrapper;
-                    this.apiClient.DeleteCoupleParticipant(pa.coupleParticipant.Id);
+                    if (pa.coupleParticipant != null)
+                    {
+                        this.apiClient.DeleteCoupleParticipant(pa.coupleParticipant.Id);
+                    }
                     lock (this.model.Participants)
                     {
                         this.model.Participants.Remove(pa);
@@ -268,6 +271,12 @@
             int max = listBoxCouples.Items.Count - 1;
             List<int> steps = new List<int> { 192, 96, 48, 24, 12, 6, 0 };
             int maxRounds = 7 - steps.IndexOf(steps.First(s => s < total));
+
+            if (this.model.CompetitionOfficials.Count == 0)
+            {
+                MessageBox.Show("No officils loaded.");
+                return;
+            }
 
             string scoreType = this.checkBoxIncludeScores.Checked ? this.comboBoxScoreType.SelectedItem.ToString() : string.Empty;
 
@@ -788,6 +797,52 @@
             }
 
             MessageBox.Show(string.Join("\n",result));
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            System.Xml.Serialization.XmlSerializer s = new System.Xml.Serialization.XmlSerializer(typeof(Model));
+            using (System.IO.FileStream o = new System.IO.FileStream("C:\temp.xml", System.IO.FileMode.Create, System.IO.FileAccess.Write))
+            {
+                s.Serialize(o, this.model);
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            System.Xml.Serialization.XmlSerializer s = new System.Xml.Serialization.XmlSerializer(typeof(Model));
+            using (System.IO.FileStream o = new System.IO.FileStream("C:\temp.xml", System.IO.FileMode.Open, System.IO.FileAccess.Read))
+            {
+                this.model = s.Deserialize(o) as Model;
+            }
+        }
+
+        private void buttonUpdateParticipant_Click(object sender, EventArgs e)
+        {
+            model.Participant.Status = (string)this.comboBoxCoupleStatus.SelectedValue;
+
+            if (this.model.CompetitionOfficials.Count == 0)
+            {
+                MessageBox.Show("No officils loaded.");
+                return;
+            }
+
+            string scoreType = this.checkBoxIncludeScores.Checked ? this.comboBoxScoreType.SelectedItem.ToString() : string.Empty;
+
+            if (this.checkBoxIncludeScoresSingle.Checked)
+            {
+                ModelFiller.Fill(model.Participant, scoreType, 4, 4, this.model.CompetitionOfficials);
+            }
+
+            try
+            {
+                bool success = apiClient.UpdateCoupleParticipant(model.Participant);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.InnerException.Message);
+            }
+
         }
     }
 }

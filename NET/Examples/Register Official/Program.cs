@@ -140,7 +140,7 @@
                 OfficialDetail official = new OfficialDetail()
                 {
                     CompetitionId = competition.Id,
-                    Min = int.Parse(selectedPerson.Min)
+                    Min = selectedPerson.Min
                 };
 
                 if (adjudicatorChar == string.Empty ||

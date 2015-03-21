@@ -64,7 +64,7 @@
                 Console.WriteLine("Results:");
                 Console.WriteLine(string.Format("{0,3} {1,4} {2,6} {3,-40} {4}", "Rank", "#", "Points", "Name", "Country"));
 
-                ListOfCoupleParticpant participants = apiClient.Get<ListOfCoupleParticpant>(allParticipantsUri);
+                ListOfCoupleParticipant participants = apiClient.Get<ListOfCoupleParticipant>(allParticipantsUri);
                 foreach (ParticipantCouple participant in participants)
                 {
                     ParticipantCoupleDetail p = apiClient.GetCoupleParticipant(participant.Id);

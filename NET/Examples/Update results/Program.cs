@@ -113,7 +113,7 @@
                 .Select(l => new Uri(l.HRef))
                 .FirstOrDefault();
 
-            ListOfCoupleParticpant allParticipants = apiClient.Get<ListOfCoupleParticpant>(officialsUri);
+            ListOfCoupleParticipant allParticipants = apiClient.Get<ListOfCoupleParticipant>(officialsUri);
 
             return new List<ParticipantCouple>(allParticipants);
         }

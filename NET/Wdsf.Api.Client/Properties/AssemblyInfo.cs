@@ -4,8 +4,8 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Wdsf.Api.Client")]
-[assembly: AssemblyDescription("WDSF API Client")]
+[assembly: AssemblyTitle("WDSF API Client")]
+[assembly: AssemblyDescription("A .NET library which connects to the World Dance Sport Federation's API using strongly typed models.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("JayKay-Designs S.C.")]
 [assembly: AssemblyProduct("Wdsf.Api.Client")]

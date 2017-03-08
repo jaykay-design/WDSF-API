@@ -476,6 +476,8 @@ namespace Wdsf.Api.Client
         }
         private bool UpdateResource<T>(T competition, string resourceUri) where T : class
         {
+            this.LastApiMessage = string.Empty;
+
             StatusMessage message;
             RestAdapter adapter = GetAdapter();
             try
@@ -497,6 +499,8 @@ namespace Wdsf.Api.Client
         }
         private Uri SaveResource<T>(T participant, string resourceUri) where T : class
         {
+            this.LastApiMessage = string.Empty;
+
             StatusMessage message;
             RestAdapter adapter = GetAdapter();
             try
@@ -523,6 +527,8 @@ namespace Wdsf.Api.Client
         }
         private bool DeleteResource(string resourceUri)
         {
+            this.LastApiMessage = string.Empty;
+
             StatusMessage message;
             RestAdapter adapter = GetAdapter();
             try
@@ -537,7 +543,6 @@ namespace Wdsf.Api.Client
             {
                 ReleaseAdapter(adapter);
             }
-
 
             this.LastApiMessage = message.Message;
             return message.Code == (int)HttpStatusCode.OK;

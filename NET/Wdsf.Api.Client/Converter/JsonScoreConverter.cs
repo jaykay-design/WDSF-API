@@ -23,6 +23,7 @@
 
             switch (jObject["kind"].Value<string>())
             {
+                case "onScale3": return jObject.ToObject<OnScale3Score>(serializer);
                 case "onScale2": return jObject.ToObject<OnScale2Score>(serializer);
                 case "onScale": return jObject.ToObject<OnScaleScore>(serializer);
                 case "onScaleIdo": return jObject.ToObject<OnScaleIdoScore>(serializer);

@@ -28,6 +28,9 @@
 			+ improved Adapter handling for multitaksing
 			# fixed multiple typos
 			+ authorization problems now throw UnauthorizedException
+
+1.0.5407	+ added JudgingSystem 3 models
+			# clear LastErrorMessage before making a new REST call so old messages are not used by mistake
 			
 
 WDSF Checkin

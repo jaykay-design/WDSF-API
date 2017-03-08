@@ -15,6 +15,10 @@
         [JsonProperty("name")]
         public string Name { get; set; }
 
+        [XmlAttribute("isGroupDance")]
+        [JsonProperty("isGroupDance")]
+        public string IsGroupDance { get; set; }
+
         /// <summary>
         /// <para>Do not use this array to process scores.</para>
         /// <para>It is used only as a workaround for .NET's XmlSerializer limitations on deserializing lists.</para>
@@ -25,6 +29,7 @@
         [XmlArrayItem("onScale", typeof(OnScaleScore))]
         [XmlArrayItem("onScaleIdo", typeof(OnScaleIdoScore))]
         [XmlArrayItem("onScale2", typeof(OnScale2Score))]
+        [XmlArrayItem("onScale3", typeof(OnScale3Score))]
         [JsonProperty("scores", ItemConverterType = typeof(Converter.JsonScoreConverter))]
         public Score[] ScoresForSerialization
         {

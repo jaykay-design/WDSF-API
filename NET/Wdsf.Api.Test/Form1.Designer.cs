@@ -69,6 +69,8 @@
             this.listBoxOfficials = new System.Windows.Forms.ListBox();
             this.buttonFillWithOfficials = new System.Windows.Forms.Button();
             this.buttonLoadOfficials = new System.Windows.Forms.Button();
+            this.tabPageError = new System.Windows.Forms.TabPage();
+            this.listBoxErrors = new System.Windows.Forms.ListBox();
             this.buttonAddCouple = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxManMin = new System.Windows.Forms.TextBox();
@@ -114,18 +116,19 @@
             this.label15 = new System.Windows.Forms.Label();
             this.comboBoxCoupleStatus = new System.Windows.Forms.ComboBox();
             this.label20 = new System.Windows.Forms.Label();
-            this.form1BindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.buttonCreateRandomCouples = new System.Windows.Forms.Button();
             this.textBoxRandomCoupleCount = new System.Windows.Forms.TextBox();
             this.label23 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
+            this.form1BindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.tabControl1.SuspendLayout();
             this.tabPagePersons.SuspendLayout();
             this.tabPageCouples.SuspendLayout();
             this.tabPageCompetitions.SuspendLayout();
             this.tabPageParticipants.SuspendLayout();
             this.tabPageOfficials.SuspendLayout();
+            this.tabPageError.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.form1BindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -139,6 +142,7 @@
             this.tabControl1.Controls.Add(this.tabPageCompetitions);
             this.tabControl1.Controls.Add(this.tabPageParticipants);
             this.tabControl1.Controls.Add(this.tabPageOfficials);
+            this.tabControl1.Controls.Add(this.tabPageError);
             this.tabControl1.Location = new System.Drawing.Point(401, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -407,7 +411,8 @@
             this.comboBoxScoreType.Items.AddRange(new object[] {
             "Scating",
             "OnScale 1",
-            "OnScale 2"});
+            "OnScale 2",
+            "OnScale 3"});
             this.comboBoxScoreType.Location = new System.Drawing.Point(314, 96);
             this.comboBoxScoreType.Name = "comboBoxScoreType";
             this.comboBoxScoreType.Size = new System.Drawing.Size(121, 24);
@@ -574,6 +579,29 @@
             this.buttonLoadOfficials.UseVisualStyleBackColor = true;
             this.buttonLoadOfficials.Click += new System.EventHandler(this.buttonLoadOfficials_Click);
             // 
+            // tabPageError
+            // 
+            this.tabPageError.Controls.Add(this.listBoxErrors);
+            this.tabPageError.Location = new System.Drawing.Point(4, 25);
+            this.tabPageError.Name = "tabPageError";
+            this.tabPageError.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageError.Size = new System.Drawing.Size(549, 593);
+            this.tabPageError.TabIndex = 5;
+            this.tabPageError.Text = "Errors";
+            this.tabPageError.UseVisualStyleBackColor = true;
+            // 
+            // listBoxErrors
+            // 
+            this.listBoxErrors.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.listBoxErrors.Font = new System.Drawing.Font("Courier New", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.listBoxErrors.ItemHeight = 16;
+            this.listBoxErrors.Location = new System.Drawing.Point(0, 6);
+            this.listBoxErrors.Name = "listBoxErrors";
+            this.listBoxErrors.Size = new System.Drawing.Size(549, 580);
+            this.listBoxErrors.TabIndex = 13;
+            // 
             // buttonAddCouple
             // 
             this.buttonAddCouple.Location = new System.Drawing.Point(15, 227);
@@ -735,7 +763,8 @@
             this.comboBoxScoreTypeSingle.Items.AddRange(new object[] {
             "Scating",
             "OnScale 1",
-            "OnScale 2"});
+            "OnScale 2",
+            "OnScale 3"});
             this.comboBoxScoreTypeSingle.Location = new System.Drawing.Point(240, 581);
             this.comboBoxScoreTypeSingle.Name = "comboBoxScoreTypeSingle";
             this.comboBoxScoreTypeSingle.Size = new System.Drawing.Size(121, 24);
@@ -1002,10 +1031,6 @@
             this.label20.TabIndex = 54;
             this.label20.Text = "Status";
             // 
-            // form1BindingSource
-            // 
-            this.form1BindingSource.DataSource = typeof(Wdsf.Api.Test.Form1);
-            // 
             // buttonCreateRandomCouples
             // 
             this.buttonCreateRandomCouples.Location = new System.Drawing.Point(15, 293);
@@ -1052,6 +1077,10 @@
             this.button3.Text = "Load locally";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // form1BindingSource
+            // 
+            this.form1BindingSource.DataSource = typeof(Wdsf.Api.Test.Form1);
             // 
             // Form1
             // 
@@ -1110,7 +1139,7 @@
             this.Controls.Add(this.textBoxGroupId);
             this.Controls.Add(this.buttonLoadCompetitions);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "WDSF API test | {0}";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPagePersons.ResumeLayout(false);
@@ -1122,6 +1151,7 @@
             this.tabPageParticipants.PerformLayout();
             this.tabPageOfficials.ResumeLayout(false);
             this.tabPageOfficials.PerformLayout();
+            this.tabPageError.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.form1BindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -1221,6 +1251,8 @@
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.TabPage tabPageError;
+        private System.Windows.Forms.ListBox listBoxErrors;
     }
 }
 

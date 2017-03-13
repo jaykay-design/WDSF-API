@@ -15,6 +15,8 @@
         string[] args;
         internal Model model;
 
+        internal BindingListInvokable<string> errors;
+
         public Form1(string[] args)
         {
             this.args = args;
@@ -47,6 +49,9 @@
             {
                 password = password.Replace("password=", string.Empty);
             }
+
+            this.errors = new BindingListInvokable<string>(this);
+
             this.model = new Model(this);
             this.comboBoxCoupleCountry.DataSource = this.model.Countries;
             this.checkedListBoxCoupleAgeGroup.DataSource = this.model.Ages;
@@ -56,20 +61,23 @@
             this.listBoxAthletes.DataSource = this.model.Athletes;
             this.listBoxParticipants.DataSource = this.model.Participants;
             this.listBoxOfficials.DataSource = this.model.CompetitionOfficials;
+            this.listBoxErrors.DataSource = this.errors;
 
             string apiUrl = args.FirstOrDefault(a => a.StartsWith("apiurl"));
 
             if (apiUrl == null)
             {
-                this.apiClient = new Api.Client.Client(username, password, Wdsf.Api.Client.WdsfEndpoint.Sandbox);
+                this.Text = string.Format(this.Text, "LIVE");
+                this.apiClient = new Api.Client.Client(username, password, Wdsf.Api.Client.WdsfEndpoint.Services);
             }
             else
             {
                 apiUrl = apiUrl.Replace("apiurl=", string.Empty);
+                this.Text = string.Format(this.Text, apiUrl);
                 this.apiClient = new Api.Client.Client(username, password, apiUrl);
             }
 
-            ((Api.Client.Client)this.apiClient).ContentType = ContentTypes.Json;
+            ((Api.Client.Client)this.apiClient).ContentType = ContentTypes.Xml;
 
             this.apiClient.GetAges().ToList().ForEach(c => this.model.Ages.Add(new AgeWrapper(c)));
             this.apiClient.GetCountries().ToList().ForEach(c => this.model.Countries.Add(new CountryWrapper(c)));
@@ -434,6 +442,11 @@
                 }), p));
             }
 
+            if (tasks.Count == 0)
+            {
+                return;
+            }
+
             Task.Factory.ContinueWhenAll(tasks.ToArray(), new Action<Task[]>(t =>
             {
                 MessageBox.Show("All officials deleted.");
@@ -453,18 +466,26 @@
             tasks.Add(new Task(new Action(() =>
             {
                 var chairman = this.model.Chairman[random.Next(0, this.model.Chairman.Count - 1)];
-                Uri chairmanUri = this.apiClient.SaveOfficial(new Api.Client.Models.OfficialDetail()
+                try
                 {
-                    AdjudicatorChar = "CH",
-                    Task = "Chairman",
-                    CompetitionId = competition.competition.Id,
-                    Min = chairman.person.Min
-                });
-                var ch = new OfficialWrapper(this.apiClient.Get<API_Models.OfficialDetail>(chairmanUri));
-                lock (this.model.CompetitionOfficials)
-                {
-                    this.model.CompetitionOfficials.Add(ch);
+                    Uri chairmanUri = this.apiClient.SaveOfficial(new Api.Client.Models.OfficialDetail()
+                    {
+                        AdjudicatorChar = "CH",
+                        Task = "Chairman",
+                        CompetitionId = competition.competition.Id,
+                        Min = chairman.person.Min
+                    });
+                    var ch = new OfficialWrapper(this.apiClient.Get<API_Models.OfficialDetail>(chairmanUri));
+                    lock (this.model.CompetitionOfficials)
+                    {
+                        this.model.CompetitionOfficials.Add(ch);
+                    }
                 }
+                catch (Api.Client.Exceptions.ApiException ex)
+                {
+                    this.errors.Add(ex.InnerException.Message);
+                }
+
             })));
 
             List<int> indexes = new List<int>();
@@ -477,17 +498,24 @@
                 tasks.Add(new Task(new Action<object>((state) =>
                 {
                     var adjudicator = this.model.Adjudicator[(int)state];
-                    Uri adjudicatorUri = this.apiClient.SaveOfficial(new Api.Client.Models.OfficialDetail()
+                    try
                     {
-                        AdjudicatorChar = adjudicator.person.Name.Substring(0,2),
-                        Task = "Adjudicator",
-                        CompetitionId = competition.competition.Id,
-                        Min = adjudicator.person.Min
-                    });
-                    var adj = new OfficialWrapper(this.apiClient.Get<API_Models.OfficialDetail>(adjudicatorUri));
-                    lock (this.model.CompetitionOfficials)
+                        Uri adjudicatorUri = this.apiClient.SaveOfficial(new Api.Client.Models.OfficialDetail()
+                        {
+                            AdjudicatorChar = adjudicator.person.Name.Substring(0, 2),
+                            Task = "Adjudicator",
+                            CompetitionId = competition.competition.Id,
+                            Min = adjudicator.person.Min
+                        });
+                        var adj = new OfficialWrapper(this.apiClient.Get<API_Models.OfficialDetail>(adjudicatorUri));
+                        lock (this.model.CompetitionOfficials)
+                        {
+                            this.model.CompetitionOfficials.Add(adj);
+                        }
+                    }
+                    catch (Api.Client.Exceptions.ApiException ex)
                     {
-                        this.model.CompetitionOfficials.Add(adj);
+                        this.errors.Add(ex.InnerException.Message);
                     }
 
                 }), i));
@@ -658,7 +686,7 @@
 
         private void SetProgressBar(ProgressBar progressBar, int value = -1, int max = 0)
         {
-            if (this.InvokeRequired)
+            if (this.InvokeRequired && ! this.IsDisposed)
             {
                 this.Invoke(new Action<ProgressBar, int, int>(this.SetProgressBar), progressBar, value, max);
                 return;

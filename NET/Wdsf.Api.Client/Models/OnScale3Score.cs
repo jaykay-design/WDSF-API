@@ -8,6 +8,8 @@
     [JsonObject("onScale3")]
     public class OnScale3Score : Score
     {
+        [XmlIgnore]
+        [JsonProperty("kind")]
         public override string Kind { get { return "onScale3"; } set { ; } }
 
         /// <summary>

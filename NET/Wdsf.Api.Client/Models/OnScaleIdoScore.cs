@@ -7,6 +7,8 @@
     [JsonObject("onScaleIdo")]
     public class OnScaleIdoScore : Score
     {
+        [XmlIgnore]
+        [JsonProperty("kind")]
         public override string Kind { get { return "onScaleIdo"; } set { ; } }
 
         /// <summary>

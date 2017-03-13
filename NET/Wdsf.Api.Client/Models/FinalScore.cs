@@ -18,6 +18,8 @@
             this.Rank = rank;
         }
 
+        [XmlIgnore]
+        [JsonProperty("kind")]
         public override string Kind { get { return "final"; } set { ; } }
 
         [XmlAttribute("rank")]

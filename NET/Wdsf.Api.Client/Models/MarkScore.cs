@@ -18,6 +18,8 @@
             this.IsSet = isSet;
         }
 
+        [XmlIgnore]
+        [JsonProperty("kind")]
         public override string Kind { get { return "mark"; } set { ; } }
 
         [XmlAttribute("set")]

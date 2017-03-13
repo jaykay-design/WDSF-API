@@ -17,7 +17,7 @@
 
         [XmlAttribute("isGroupDance")]
         [JsonProperty("isGroupDance")]
-        public string IsGroupDance { get; set; }
+        public bool IsGroupDance { get; set; }
 
         /// <summary>
         /// <para>Do not use this array to process scores.</para>

@@ -16,6 +16,13 @@
         public string Name { get; set; }
 
         /// <summary>
+        /// Maximum allowed deviation of scrores in AJS 3.0
+        /// </summary>
+        [XmlAttribute("maxDeviation")]
+        [JsonProperty("maxDeviation")]
+        public string MaxDeviation { get; set; }
+
+        /// <summary>
         /// <para>Do not use this array to process dances.</para>
         /// <para>It is used only as a workaround for .NET's XmlSerializer limitations on deserializing lists.</para>
         /// </summary>

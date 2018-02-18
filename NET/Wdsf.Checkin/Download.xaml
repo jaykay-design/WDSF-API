@@ -1,0 +1,10 @@
+﻿<Window x:Class="WDSF_Checkin.Download"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Download" Height="155" Width="370">
+    <Canvas>
+        <ProgressBar Height="22" HorizontalAlignment="Left" Margin="22,30,0,0" Name="Progress" VerticalAlignment="Top" Width="305" />
+        <Button Canvas.Left="246" Canvas.Top="71" Content="Start" Height="33" Name="button1" Width="79" Click="Start_Click" />
+        <Label Canvas.Left="22" Canvas.Top="0" Height="24" Name="StatusText" Width="305" />
+    </Canvas>
+</Window>

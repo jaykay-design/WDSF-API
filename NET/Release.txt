@@ -1,0 +1,43 @@
+﻿WDSF API Client
+
+1.0.0.0			inital release
+1.0.4529		+ added filter helper
+				+ API status message is now available publicly
+1.0.4608		- Downgrade solution to VS2008 (to make it accesible to more developers).
+				- Add reference to System.Core (Linq) to some projects (it was missing somehow).
+				- Client.cs:
+				-- Store password in SecureString instead of plain string.
+				-- Add null argument checks.
+				-- Add correct Dispose implementation (according to microsoft docs).
+				-- Make action methods add apiUriBase to passed strings.
+				-- Add methods: GetCoupleParticipants, GetOfficials.
+				-- Make some class fields readonly.
+				- RestAdapter.cs:
+				-- Make class internal.
+				-- Make it use SecureString instead of string for password.
+				-- Make some class fields readonly.
+				-- Make CheckResourceType nethod throw UnauthorizedAccessException in case of invalid credentials instead of UnknownMediaTypeException.
+				- Make Round::Dances, ParticipantBaseDetail::Rounds, Dance::Scores return empty list (IList) instead of null in case of no dances.
+				- Make TypeHelper class internal.
+				- Make string in FilterNames.cs and Relation.cs const instead of static (to prevent change of it during runtime).
+				- Make changes to the code of examples to make it work with new Client.
+1.0.4661		+ added solution files for VS2010 and VS2008
+				+ added couple export method and models
+
+1.0.5008		+ added/updated models for member API
+			+ improved Adapter handling for multitaksing
+			# fixed multiple typos
+			+ authorization problems now throw UnauthorizedException
+
+1.0.5407	+ added JudgingSystem 3 models
+			# clear LastErrorMessage before making a new REST call so old messages are not used by mistake
+1.0.6281	+ added JudgingSyste 3 maxDeviation property
+			
+
+WDSF Checkin
+
+1.0.0.0			- initial implementation
+1.0.4661		- using couple export for offline usage
+				! needs to implement personal username/password for API access
+				! needs to implement start number assignation
+				! needs to implement output for scrutiny SW or upload to API

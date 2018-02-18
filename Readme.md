@@ -29,3 +29,12 @@ This example is using the Wdsf.Api.Client
 Examples
 --------
 Various command line examples for the Wdsf.Api.Client usage.
+
+
+API documentation
+-----------------
+https://worlddancesport.atlassian.net/wiki/spaces/PUB/pages/491652/API+Client
+
+NuGet package
+-------------
+https://www.nuget.org/packages/Wdsf.Api.Client/

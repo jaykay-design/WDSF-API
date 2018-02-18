@@ -1,10 +1,12 @@
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2027
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{590B475A-8FFE-4CE3-BBB8-FD26CCFBCC4B}"
 	ProjectSection(SolutionItems) = preProject
 		Examples.txt = Examples.txt
-		License.txt = License.txt
-		Readme.txt = Readme.txt
+		..\License.txt = ..\License.txt
+		..\Readme.md = ..\Readme.md
 		Release.txt = Release.txt
 	EndProjectSection
 EndProject
@@ -139,5 +141,8 @@ Global
 		{0BC0A9DE-9C80-49E7-8E4A-FDF2020A3485} = {081A54EE-EBAB-471D-9DD0-54EB71F40EA1}
 		{D998DF37-8BDF-4C7B-8033-B34B485ED122} = {081A54EE-EBAB-471D-9DD0-54EB71F40EA1}
 		{0396BFF4-4048-41A9-BDBA-A7613C878A81} = {081A54EE-EBAB-471D-9DD0-54EB71F40EA1}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {13C0F660-B70F-4171-87C3-D3234D38DAAD}
 	EndGlobalSection
 EndGlobal

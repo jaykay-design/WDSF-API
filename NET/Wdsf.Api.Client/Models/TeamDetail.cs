@@ -1,6 +1,7 @@
 ﻿namespace Wdsf.Api.Client.Models
 {
     using Newtonsoft.Json;
+    using System.Collections.Generic;
     using System.Xml.Serialization;
     using Wdsf.Api.Client.Attributes;
 
@@ -17,5 +18,15 @@
         [XmlElement("division")]
         [JsonProperty("division")]
         public string Division { get; set; }
+
+        [XmlArray("members")]
+        [JsonProperty("members")]
+        public List<TeamMember> Members { get; set; }
+
+        public bool ShouldSerializeMembers()
+        {
+            return Members != null && Members.Count > 0;
+        }
+
     }
 }

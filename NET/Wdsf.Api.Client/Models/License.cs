@@ -1,13 +1,13 @@
 ﻿namespace Wdsf.Api.Client.Models
 {
-    using System.Xml.Serialization;
     using Newtonsoft.Json;
+    using System.Xml.Serialization;
 
     [XmlType("license", Namespace = "http://services.worlddancesport.org/api")]
     [JsonObject("link")]
     public class License
     {
-        [XmlIgnore,JsonIgnore]
+        [XmlIgnore, JsonIgnore]
         public int Id { get; set; }
 
         [XmlElement("type")]

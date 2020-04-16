@@ -1,8 +1,8 @@
 ﻿namespace Wdsf.Api.Client.Serializer
 {
+    using Interfaces;
     using System;
     using System.IO;
-    using Interfaces;
     using xml = System.Xml.Serialization;
 
     internal class XmlSerializer : ISerializer

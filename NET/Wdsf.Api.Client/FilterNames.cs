@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Wdsf.Api.Client
+﻿namespace Wdsf.Api.Client
 {
     public static class FilterNames
     {
@@ -87,7 +82,7 @@ namespace Wdsf.Api.Client
             /// Search for couples being part of a divivion. Allowed values are General and Professional.
             /// </summary>
             public const string Division = "division";
-         }
+        }
 
         public static class Ranking
         {

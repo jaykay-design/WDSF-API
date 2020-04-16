@@ -2,8 +2,8 @@
 {
     using System;
     using System.Collections.Generic;
-    using Wdsf.Api.Client.Models;
     using Wdsf.Api.Client.Exceptions;
+    using Wdsf.Api.Client.Models;
 
     public interface IClient
     {

@@ -1,12 +1,12 @@
 ﻿
 namespace Wdsf.Api.Client.Serializer
 {
+    using Interfaces;
     using System;
     using System.IO;
-    using Interfaces;
     using n = Newtonsoft.Json;
 
-    internal class JsonSerializer:ISerializer
+    internal class JsonSerializer : ISerializer
     {
         public object Deserialize(Type type, Stream data)
         {

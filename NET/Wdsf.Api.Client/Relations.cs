@@ -1,4 +1,4 @@
-﻿/*  Copyright (C) 2011-2012 JayKay-Design S.C.
+﻿/*  Copyright (C) 2011-2020 JayKay-Design S.C.
     Author: John Caprez jay@jaykay-design.com
 
     This program is free software: you can redistribute it and/or modify

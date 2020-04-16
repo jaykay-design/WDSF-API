@@ -1,9 +1,8 @@
 ﻿namespace Wdsf.Api.Client.Models
 {
-    using System;
+    using Newtonsoft.Json;
     using System.Xml.Serialization;
     using Wdsf.Api.Client.Attributes;
-    using Newtonsoft.Json;
 
     [XmlType("rank", Namespace = "http://services.worlddancesport.org/api")]
     [MediaType("application/vnd.worlddancesport.rank")]
@@ -25,7 +24,7 @@
         [XmlElement("rank")]
         [JsonProperty("rank")]
         public int Rank { get; set; }
-        
+
         [XmlElement("points")]
         [JsonProperty("points")]
         public int Points { get; set; }

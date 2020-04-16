@@ -1,7 +1,7 @@
 ﻿namespace Wdsf.Api.Client.Models
 {
-    using System.Xml.Serialization;
     using Newtonsoft.Json;
+    using System.Xml.Serialization;
     using Wdsf.Api.Client.Attributes;
 
     [XmlType("couple", Namespace = "http://services.worlddancesport.org/api")]

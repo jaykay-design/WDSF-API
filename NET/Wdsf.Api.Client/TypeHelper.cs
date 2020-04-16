@@ -1,4 +1,4 @@
-﻿/*  Copyright (C) 2011-2012 JayKay-Design S.C.
+﻿/*  Copyright (C) 2011-2020 JayKay-Design S.C.
     Author: John Caprez jay@jaykay-design.com
 
     This program is free software: you can redistribute it and/or modify
@@ -25,13 +25,13 @@ namespace Wdsf.Api.Client
 
     public static class TypeHelper
     {
-        private static Dictionary<string, Type> mediaTypeTypeMap =
+        private static readonly Dictionary<string, Type> mediaTypeTypeMap =
             Assembly.GetExecutingAssembly()
             .GetTypes()
             .Where(t => t.Namespace == "Wdsf.Api.Client.Models")
             .Where<Type>(t => t.GetCustomAttributes(typeof(MediaTypeAttribute), false).Length != 0)
             .ToDictionary(
-                k => ((MediaTypeAttribute)k.GetCustomAttributes(typeof(MediaTypeAttribute), false).First()).MediaType, 
+                k => ((MediaTypeAttribute)k.GetCustomAttributes(typeof(MediaTypeAttribute), false).First()).MediaType,
                 v => v);
 
         /// <summary>

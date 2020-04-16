@@ -1,8 +1,8 @@
 ﻿namespace Wdsf.Api.Client.Models
 {
+    using Newtonsoft.Json;
     using System;
     using System.Xml.Serialization;
-    using Newtonsoft.Json;
 
     [XmlType("competition", Namespace = "http://services.worlddancesport.org/api")]
     [XmlRoot("competition", Namespace = "http://services.worlddancesport.org/api")]

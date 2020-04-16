@@ -1,4 +1,4 @@
-﻿/*  Copyright (C) 2011-2012 JayKay-Design S.C.
+﻿/*  Copyright (C) 2011-2020 JayKay-Design S.C.
     Author: John Caprez jay@jaykay-design.com
 
     This program is free software: you can redistribute it and/or modify
@@ -17,22 +17,22 @@
 
 namespace Wdsf.Api.Client
 {
+    using Interfaces;
+    using Serializer;
     using System;
     using System.IO;
     using System.IO.Compression;
     using System.Net;
-    using System.Security;
     using System.Runtime.InteropServices;
+    using System.Security;
     using Wdsf.Api.Client.Exceptions;
     using Wdsf.Api.Client.Models;
-    using Serializer;
-    using Interfaces;
 
     internal class RestAdapter : IDisposable
     {
         public bool IsAssigned { get; set; }
         public bool IsBusy { get; private set; }
-        private object busyLock = new object();
+        private readonly object busyLock = new object();
 
         public ContentTypes ContentType { get; set; }
 
@@ -104,17 +104,17 @@ namespace Wdsf.Api.Client
             CheckAndSetBusy();
 
             HttpWebRequest request = GetRequest(resourceUri);
-            
+
             HttpWebResponse response = GetResponse(request);
             this.IsBusy = false;
-            
+
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
                 throw new UnauthorizedException("GET", resourceUri);
             }
 
             CheckResourceType<T>(response);
-            T result =  ReadReponseBody<T>(response);
+            T result = ReadReponseBody<T>(response);
             response.Close();
 
             return result;
@@ -235,7 +235,7 @@ namespace Wdsf.Api.Client
                 throw new UnknownMediaTypeException(response.ContentType);
             }
 
-            if(receivedType != typeof(T))
+            if (receivedType != typeof(T))
             {
                 if (receivedType == typeof(StatusMessage))
                 {
@@ -276,7 +276,7 @@ namespace Wdsf.Api.Client
 
             return response as HttpWebResponse;
         }
-        private T ReadReponseBody<T>(HttpWebResponse response) where T:class
+        private T ReadReponseBody<T>(HttpWebResponse response) where T : class
         {
             ISerializer serializer = SerializerFactory.GetSerializer(this.ContentType);
             T result = serializer.Deserialize(typeof(T), response.GetResponseStream()) as T;
@@ -369,7 +369,7 @@ namespace Wdsf.Api.Client
 
         public void Dispose()
         {
- 	        this.client.Dispose();
+            this.client.Dispose();
         }
 
         #endregion

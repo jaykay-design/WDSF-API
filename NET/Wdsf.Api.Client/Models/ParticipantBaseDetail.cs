@@ -5,14 +5,8 @@
     using System.Collections.Generic;
     using System.Xml.Serialization;
 
-    public class ParticipantBaseDetail
+    public class ParticipantBaseDetail : EntityWithLinks
     {
-        private List<Round> rounds = new List<Round>();
-
-        [XmlElement("link")]
-        [JsonProperty("link")]
-        public virtual Link[] Link { get; set; }
-
         [XmlElement("id")]
         [JsonProperty("id")]
         public int Id { get; set; }
@@ -40,42 +34,18 @@
         [JsonProperty("competitionId")]
         public int CompetitionId { get; set; }
 
-        [XmlIgnore]
-        [JsonIgnore]
-        private bool CompetitionIdSpecified { get { return this.CompetitionId != 0; } set { } }
+        public bool CompetitionIdSpecified { get { return this.CompetitionId != 0; } }
 
-        /// <summary>
-        /// <para>Do not use this array to process rounds.</para>
-        /// <para>It is used only as a workaround for .NET's XmlSerializer limitations on deserializing lists.</para>
-        /// </summary>
         [XmlArray("rounds")]
         [JsonProperty("rounds")]
-        public Round[] RoundsForSerialization
-        {
-            get
-            {
-                return rounds.Count == 0 ? null : rounds.ToArray();
-            }
-            set
-            {
-                if (value == null)
-                    throw new ArgumentNullException("value");
-
-                rounds = new List<Round>(value);
-            }
-        }
-
         /// <summary>
         /// Contains the scores. Set to null if the scores shall not be updated.
         /// </summary>
-        [XmlIgnore]
-        [JsonIgnore]
-        public IList<Round> Rounds
+        public List<Round> Rounds { get; set; }
+
+        public bool ShouldSerializeRounds()
         {
-            get
-            {
-                return rounds;
-            }
+            return Rounds != null && Rounds.Count > 0;
         }
     }
 }

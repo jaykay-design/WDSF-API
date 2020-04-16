@@ -3,12 +3,8 @@
     using Newtonsoft.Json;
     using System.Xml.Serialization;
 
-    public class TeamBase
+    public class TeamBase : EntityWithLinks
     {
-        [XmlElement("link")]
-        [JsonProperty("link")]
-        public virtual Link[] Links { get; set; }
-
         [XmlElement("id")]
         [JsonProperty("id")]
         public virtual int Id { get; set; }

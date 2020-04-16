@@ -10,10 +10,6 @@
     [MediaType("application/vnd.worlddancesport.participant.single")]
     public class ParticipantSingleDetail : ParticipantBaseDetail
     {
-        [XmlElement("link")]
-        [JsonProperty("link")]
-        public override Link[] Link { get; set; }
-
         [XmlElement("personId")]
         [JsonProperty("personId")]
         public string PersonId { get; set; }

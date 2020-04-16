@@ -7,12 +7,8 @@
     [XmlType("person", Namespace = "http://services.worlddancesport.org/api")]
     [XmlRoot("person", Namespace = "http://services.worlddancesport.org/api")]
     [JsonObject("person")]
-    public class Person
+    public class Person : EntityWithLinks
     {
-        [XmlArray("link")]
-        [JsonProperty("link")]
-        public Link[] Link { get; set; }
-
         [XmlElement("id")]
         [JsonProperty("id")]
         public int Min { get; set; }

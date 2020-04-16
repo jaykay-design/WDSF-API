@@ -7,9 +7,6 @@
     [JsonObject("link")]
     public class License
     {
-        [XmlIgnore, JsonIgnore]
-        public int Id { get; set; }
-
         [XmlElement("type")]
         [JsonProperty("type")]
         public string Type { get; set; }

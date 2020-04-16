@@ -1,7 +1,6 @@
 ﻿namespace Wdsf.Api.Client.Models
 {
     using Newtonsoft.Json;
-    using System;
     using System.Collections.Generic;
     using System.Xml.Serialization;
 
@@ -9,8 +8,6 @@
     [JsonObject("dance")]
     public class Dance
     {
-        private List<Score> scores = new List<Score>();
-
         [XmlAttribute("name")]
         [JsonProperty("name")]
         public string Name { get; set; }
@@ -19,11 +16,7 @@
         [JsonProperty("isGroupDance")]
         public bool IsGroupDance { get; set; }
 
-        /// <summary>
-        /// <para>Do not use this array to process scores.</para>
-        /// <para>It is used only as a workaround for .NET's XmlSerializer limitations on deserializing lists.</para>
-        /// </summary>
-        [XmlArray("scores")]
+             [XmlArray("scores")]
         [XmlArrayItem("mark", typeof(MarkScore))]
         [XmlArrayItem("final", typeof(FinalScore))]
         [XmlArrayItem("onScale", typeof(OnScaleScore))]
@@ -31,28 +24,11 @@
         [XmlArrayItem("onScale2", typeof(OnScale2Score))]
         [XmlArrayItem("onScale3", typeof(OnScale3Score))]
         [JsonProperty("scores", ItemConverterType = typeof(Converter.JsonScoreConverter))]
-        public Score[] ScoresForSerialization
+        public List<Score> Scores { get; set; }
+        public bool ShouldSerializeScores()
         {
-            get
-            {
-                return scores.Count == 0 ? null : scores.ToArray();
-            }
-            set
-            {
-                if (value == null)
-                    throw new ArgumentNullException("value");
-
-                scores = new List<Score>(value);
-            }
+            return Scores != null && Scores.Count > 0;
         }
 
-        [XmlIgnore, JsonIgnore]
-        public IList<Score> Scores
-        {
-            get
-            {
-                return scores;
-            }
-        }
     }
 }

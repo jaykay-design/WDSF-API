@@ -26,7 +26,6 @@
         [JsonProperty("set")]
         public bool IsSet { get; set; }
 
-        [XmlIgnore, JsonIgnore]
-        public bool IsSetSpecified { get { return this.IsSet; } set {; } }
+        public bool IsSetSpecified { get { return this.IsSet; }  }
     }
 }

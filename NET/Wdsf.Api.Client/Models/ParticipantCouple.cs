@@ -8,10 +8,6 @@
     [JsonObject("participant")]
     public class ParticipantCouple : ParticipantBase
     {
-        [XmlElement("link")]
-        [JsonProperty("link")]
-        public override Link[] Link { get; set; }
-
         [XmlElement("name")]
         [JsonProperty("name")]
         public string Couple { get; set; }

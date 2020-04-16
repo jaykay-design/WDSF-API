@@ -539,7 +539,7 @@ namespace Wdsf.Api.Client
         /// <param name="participant"></param>
         private void ClearLinks(ParticipantBaseDetail participant)
         {
-            participant.Link = null;
+            participant.Links = null;
 
             if (participant.Rounds == null)
             {

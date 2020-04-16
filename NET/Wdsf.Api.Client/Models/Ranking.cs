@@ -7,12 +7,8 @@
     [XmlType("rank", Namespace = "http://services.worlddancesport.org/api")]
     [MediaType("application/vnd.worlddancesport.rank")]
     [JsonObject("rank")]
-    public class Ranking
+    public class Ranking : EntityWithLinks
     {
-        [XmlElement("link")]
-        [JsonProperty("link")]
-        public Link[] Links { get; set; }
-
         [XmlElement("name")]
         [JsonProperty("name")]
         public string Couple { get; set; }

@@ -3,12 +3,8 @@
     using Newtonsoft.Json;
     using System.Xml.Serialization;
 
-    public class CoupleBase
+    public class CoupleBase: EntityWithLinks
     {
-        [XmlElement("link")]
-        [JsonProperty("link")]
-        public virtual Link[] Links { get; set; }
-
         [XmlElement("id")]
         [JsonProperty("id")]
         public virtual string Id { get; set; }

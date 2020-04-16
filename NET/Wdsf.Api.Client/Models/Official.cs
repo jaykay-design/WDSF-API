@@ -5,12 +5,8 @@
 
     [XmlType("official", Namespace = "http://services.worlddancesport.org/api")]
     [JsonObject("official")]
-    public class Official
+    public class Official : EntityWithLinks
     {
-        [XmlElement("link")]
-        [JsonProperty("link")]
-        public Link[] Link { get; set; }
-
         [XmlElement("id")]
         [JsonProperty("id")]
         public int Id { get; set; }

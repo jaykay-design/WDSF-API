@@ -13,5 +13,9 @@
         [XmlElement("status")]
         [JsonProperty("status")]
         public string Status { get; set; }
+
+        [XmlElement("division")]
+        [JsonProperty("division")]
+        public string Division { get; set; }
     }
 }

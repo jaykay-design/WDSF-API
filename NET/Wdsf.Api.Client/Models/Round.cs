@@ -1,7 +1,6 @@
 ﻿namespace Wdsf.Api.Client.Models
 {
     using Newtonsoft.Json;
-    using System;
     using System.Collections.Generic;
     using System.Xml.Serialization;
 
@@ -9,8 +8,6 @@
     [JsonObject("round")]
     public class Round
     {
-        private List<Dance> dances = new List<Dance>();
-
         [XmlAttribute("name")]
         [JsonProperty("name")]
         public string Name { get; set; }
@@ -20,36 +17,17 @@
         /// </summary>
         [XmlAttribute("maxDeviation")]
         [JsonProperty("maxDeviation")]
-        public string MaxDeviation { get; set; }
+        public decimal MaxDeviation { get; set; }
+        [XmlIgnore, JsonIgnore]
+        public bool MaxDeviationSpecified { get { return this.MaxDeviation != 0; } set {; } }
 
-        /// <summary>
-        /// <para>Do not use this array to process dances.</para>
-        /// <para>It is used only as a workaround for .NET's XmlSerializer limitations on deserializing lists.</para>
-        /// </summary>
         [XmlArray("dances")]
         [JsonProperty("dances")]
-        public Dance[] DancesForSerialization
-        {
-            get
-            {
-                return dances.Count == 0 ? null : dances.ToArray();
-            }
-            set
-            {
-                if (value == null)
-                    throw new ArgumentNullException("value");
+        public List<Dance> Dances { get; set; }
 
-                dances = new List<Dance>(value);
-            }
-        }
-
-        [XmlIgnore, JsonIgnore]
-        public IList<Dance> Dances
+        public bool ShouldSerializeDances()
         {
-            get
-            {
-                return dances;
-            }
+            return Dances != null && Dances.Count > 0;
         }
     }
 }

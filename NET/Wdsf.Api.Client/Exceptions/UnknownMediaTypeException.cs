@@ -14,7 +14,7 @@
         {
             get
             {
-                return string.Format("An unknown media type was received: {0}", this.ReceivedType);
+                return "An unknown media type was received: " + this.ReceivedType;
             }
         }
 

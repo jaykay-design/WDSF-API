@@ -1,7 +1,6 @@
 ﻿namespace Wdsf.Api.Client.Models
 {
     using Newtonsoft.Json;
-    using System;
     using System.Collections.Generic;
     using System.Xml.Serialization;
 
@@ -39,13 +38,34 @@
         [XmlArray("rounds")]
         [JsonProperty("rounds")]
         /// <summary>
-        /// Contains the scores. Set to null if the scores shall not be updated.
+        /// Contains the scores. Set to null if the scores shall not be updated. Empty list will clear rounds.
         /// </summary>
         public List<Round> Rounds { get; set; }
 
         public bool ShouldSerializeRounds()
         {
-            return Rounds != null && Rounds.Count > 0;
+            return Rounds != null;
         }
+        public bool ShouldSerializePoints()
+        {
+            return !string.IsNullOrEmpty(Points);
+        }
+        public bool ShouldSerializeRank()
+        {
+            return !string.IsNullOrEmpty(Rank);
+        }
+        public bool ShouldSerializeStatus()
+        {
+            return !string.IsNullOrEmpty(Status);
+        }
+        public bool ShouldSerializeCompetitionId()
+        {
+            return CompetitionId != 0;
+        }
+        public bool ShouldSerializeStartNumber()
+        {
+            return StartNumber != 0;
+        }
+
     }
 }

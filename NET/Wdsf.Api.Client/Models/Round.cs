@@ -18,8 +18,11 @@
         [XmlAttribute("maxDeviation")]
         [JsonProperty("maxDeviation")]
         public decimal MaxDeviation { get; set; }
-        [XmlIgnore, JsonIgnore]
-        public bool MaxDeviationSpecified { get { return this.MaxDeviation != 0; } set {; } }
+
+        public bool ShouldSerializeMaxDeviation()
+        {
+            return MaxDeviation != 0;
+        }
 
         [XmlArray("dances")]
         [JsonProperty("dances")]

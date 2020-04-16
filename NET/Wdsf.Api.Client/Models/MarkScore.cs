@@ -25,7 +25,5 @@
         [XmlAttribute("set")]
         [JsonProperty("set")]
         public bool IsSet { get; set; }
-
-        public bool IsSetSpecified { get { return this.IsSet; }  }
     }
 }

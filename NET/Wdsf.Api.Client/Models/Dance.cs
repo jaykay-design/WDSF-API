@@ -16,7 +16,7 @@
         [JsonProperty("isGroupDance")]
         public bool IsGroupDance { get; set; }
 
-             [XmlArray("scores")]
+        [XmlArray("scores")]
         [XmlArrayItem("mark", typeof(MarkScore))]
         [XmlArrayItem("final", typeof(FinalScore))]
         [XmlArrayItem("onScale", typeof(OnScaleScore))]

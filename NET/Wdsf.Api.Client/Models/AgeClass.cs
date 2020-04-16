@@ -34,6 +34,6 @@
         [XmlArray("allowedToDanceIn")]
         [XmlArrayItem("age")]
         [JsonProperty("allowedToDanceIn")]
-        public IEnumerable<string> AllowedToDanceIn { get; set; }
+        public List<string> AllowedToDanceIn { get; set; }
     }
 }

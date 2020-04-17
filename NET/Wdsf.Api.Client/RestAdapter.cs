@@ -24,6 +24,7 @@ namespace Wdsf.Api.Client
     using System.Net;
     using System.Runtime.InteropServices;
     using System.Security;
+    using System.Text;
     using Wdsf.Api.Client.Exceptions;
     using Wdsf.Api.Client.Models;
 
@@ -297,6 +298,7 @@ namespace Wdsf.Api.Client
             request.Credentials = this.credentials;
             request.PreAuthenticate = true;
             request.Accept = GetAcceptType();
+            request.Headers.Add("Accept-Encoding", "gzip");
             request.UserAgent = "WDSF API Client";
             request.AutomaticDecompression = DecompressionMethods.GZip;
 
@@ -309,8 +311,11 @@ namespace Wdsf.Api.Client
             request.Credentials = this.credentials;
             request.PreAuthenticate = true;
             request.Accept = GetAcceptType();
+            request.Headers.Add("Accept-Encoding", "gzip");
             request.UserAgent = "WDSF API Client";
+#if !DEBUG
             request.Headers.Add("Content-Encoding", "gzip");
+#endif
 
             request.AutomaticDecompression = DecompressionMethods.GZip;
 
@@ -363,6 +368,9 @@ namespace Wdsf.Api.Client
 
                 data.Position = 0;
 
+#if !DEBUG
+                Console.WriteLine(Encoding.Default.GetString(data.ToArray()));             
+#endif
                 using (var requestStream = request.GetRequestStream())
                 {
                     data.WriteTo(requestStream);
@@ -372,13 +380,13 @@ namespace Wdsf.Api.Client
             }
         }
 
-        #region IDisposable Members
+#region IDisposable Members
 
         public void Dispose()
         {
             this.client.Dispose();
         }
 
-        #endregion
+#endregion
     }
 }

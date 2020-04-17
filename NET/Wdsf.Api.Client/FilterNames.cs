@@ -1,8 +1,8 @@
 ﻿namespace Wdsf.Api.Client
 {
-    public static class FilterNames
+    public sealed class FilterNames
     {
-        public static class Competition
+        public sealed class Competition
         {
             /// <summary>
             /// List all competitions since a date. The date is formated according to ISO YYYY/MM/DD.
@@ -25,7 +25,7 @@
             /// </summary>
             public const string Division = "divivion";
         }
-        public static class Person
+        public sealed class Person
         {
             /// <summary>
             /// Searches a person whos name starts with this value.
@@ -56,7 +56,7 @@
             /// </summary>
             public const string Type = "type";
         }
-        public static class Couple
+        public sealed class Couple
         {
             /// <summary>
             /// Searches couples where one member's name starts with this value.
@@ -84,7 +84,7 @@
             public const string Division = "division";
         }
 
-        public static class Ranking
+        public sealed class Ranking
         {
             /// <summary>
             /// WRL of a certain date. The value is an ISO date, YYYY/MM/DD

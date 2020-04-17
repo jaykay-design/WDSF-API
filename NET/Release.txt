@@ -33,6 +33,19 @@
 			# clear LastErrorMessage before making a new REST call so old messages are not used by mistake
 			
 
+2.0.0.0		+ targeting .netstandard 2.0
+			+ allow creating teams including their members
+			+ added division to member details
+			# propperly disposing response
+			# only serialize certain proerties if neccesary
+			
+			! BREAKING CHANGES: 
+				All model properties which returned an array now return a List
+				All models inheriting from ParticipantBase: The property Link was renamed to Links
+				Round.MaxDeviation is now a decimal, was a string.
+				Score.Link is not an array anymore as it wil always just have one single link
+
+
 WDSF Checkin
 
 1.0.0.0			- initial implementation
@@ -40,3 +53,4 @@ WDSF Checkin
 				! needs to implement personal username/password for API access
 				! needs to implement start number assignation
 				! needs to implement output for scrutiny SW or upload to API
+

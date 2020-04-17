@@ -33,7 +33,7 @@ Various command line examples for the Wdsf.Api.Client usage.
 
 API documentation
 -----------------
-https://worlddancesport.atlassian.net/wiki/spaces/PUB/pages/491652/API+Client
+https://github.com/jaykay-design/WDSF-API/wiki
 
 NuGet package
 -------------

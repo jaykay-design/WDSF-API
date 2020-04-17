@@ -66,6 +66,10 @@
         {
             return StartNumber != 0;
         }
+        public bool ShouldSerializeId()
+        {
+            return Id != 0;
+        }
 
     }
 }

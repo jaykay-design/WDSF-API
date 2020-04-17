@@ -215,10 +215,17 @@
             {
                 tasks.Add(new Task(new Action<object>( state =>
                 {
-                    var pa = new ParticipantWrapper(this.apiClient.GetCoupleParticipant((int)state));
-                    lock (this.model.Participants)
+                    try
                     {
-                        this.model.Participants.Add(pa);
+                        var pa = new ParticipantWrapper(this.apiClient.GetCoupleParticipant((int)state));
+                        lock (this.model.Participants)
+                        {
+                            this.model.Participants.Add(pa);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex);
                     }
                 }), p.Id));
             }
@@ -493,8 +500,12 @@
             {
                 indexes.Add(random.Next(0, this.model.Adjudicator.Count - 1));
             }
+            var adjChar = 'A';
             foreach(int i in indexes.Distinct().Take(int.Parse(textBoxOfficialsCount.Text)))
             {
+                var adjChLocal = adjChar;
+                adjChar++;
+
                 tasks.Add(new Task(new Action<object>((state) =>
                 {
                     var adjudicator = this.model.Adjudicator[(int)state];
@@ -502,7 +513,7 @@
                     {
                         Uri adjudicatorUri = this.apiClient.SaveOfficial(new Api.Client.Models.OfficialDetail()
                         {
-                            AdjudicatorChar = adjudicator.person.Name.Substring(0, 2),
+                            AdjudicatorChar = adjChLocal.ToString(),
                             Task = "Adjudicator",
                             CompetitionId = competition.competition.Id,
                             Min = adjudicator.person.Min
@@ -519,6 +530,7 @@
                     }
 
                 }), i));
+
             }
 
             Task.Factory.ContinueWhenAll(tasks.ToArray(), new Action<Task[]>(t =>

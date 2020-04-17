@@ -1136,13 +1136,6 @@
             // 
             // buttonAddNewOfficial
             // 
-            this.buttonAddNewOfficial.Location = new System.Drawing.Point(455, 77);
-            this.buttonAddNewOfficial.Name = "buttonAddNewOfficial";
-            this.buttonAddNewOfficial.Size = new System.Drawing.Size(75, 23);
-            this.buttonAddNewOfficial.TabIndex = 16;
-            this.buttonAddNewOfficial.Text = "Add";
-            this.buttonAddNewOfficial.UseVisualStyleBackColor = true;
-            this.buttonAddNewOfficial.Click += new System.EventHandler(this.buttonAddNewOfficial_Click);
             // 
             // label123
             // 

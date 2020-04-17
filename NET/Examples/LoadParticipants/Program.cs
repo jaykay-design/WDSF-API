@@ -63,7 +63,7 @@
 
             foreach (ParticipantSingle participant in participants)
             {
-                ParticipantSingleDetail single = apiClient.Get<ParticipantSingleDetail>(new Uri(participant.Link.First(l => l.Rel == ResourceRelation.Self).HRef));
+                ParticipantSingleDetail single = apiClient.Get<ParticipantSingleDetail>(new Uri(participant.Links.First(l => l.Rel == ResourceRelation.Self).HRef));
                 Console.Write("{0} {1} {2}\n", single.StartNumber, single.Name, single.Country);
             }
         }
@@ -74,7 +74,7 @@
 
             foreach (ParticipantCouple participant in participants)
             {
-                ParticipantCoupleDetail couple = apiClient.Get<ParticipantCoupleDetail>(new Uri(participant.Link.First(l => l.Rel == ResourceRelation.Self).HRef));
+                ParticipantCoupleDetail couple = apiClient.Get<ParticipantCoupleDetail>(new Uri(participant.Links.First(l => l.Rel == ResourceRelation.Self).HRef));
                 Console.Write("{0} {1} {2}\n", couple.StartNumber, couple.Name, couple.Country);
             }
         }
@@ -85,7 +85,7 @@
 
             foreach (ParticipantTeam participant in participants)
             {
-                ParticipantTeamDetail team = apiClient.Get<ParticipantTeamDetail>(new Uri(participant.Link.First(l => l.Rel == ResourceRelation.Self).HRef));
+                ParticipantTeamDetail team = apiClient.Get<ParticipantTeamDetail>(new Uri(participant.Links.First(l => l.Rel == ResourceRelation.Self).HRef));
                 Console.Write("{0} {1} {2}\n", team.StartNumber, team.Team, team.Country);
             }
         }

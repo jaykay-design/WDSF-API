@@ -15,6 +15,7 @@ namespace Wdsf.Api.Test
             {
                 return;
             }
+            couple.Rounds = new List<Round>();
 
             var adjudicators = officials.Where(o => o.official.Task == "Adjudicator");
             var chairman = officials.FirstOrDefault(o => o.official.Task == "Chairman");
@@ -22,10 +23,13 @@ namespace Wdsf.Api.Test
             for (int roundIndex = 1; roundIndex <= rounds; roundIndex++)
             {
                 Round round = new Round() { Name = roundIndex == maxRounds ? "F" : roundIndex.ToString() };
+
+                round.Dances = new List<Dance>();
                 couple.Rounds.Add(round);
                 for (int danceIndex = 0; danceIndex < 5; danceIndex++)
                 {
                     Dance dance = new Dance() { Name = danceNames[danceIndex] };
+                    dance.Scores = new List<Score>();
                     round.Dances.Add(dance);
                     switch (scoreType)
                     {

@@ -22,28 +22,31 @@
         private List<RestAdapter> adapters;
         private readonly object adapterLock = new object();
 
+        ///<inheritdoc/>
         public ContentTypes ContentType { get; set; }
 
-        /// <summary>
-        /// Contains the last message returned from the API
-        /// </summary>
+        ///<inheritdoc/>
         public string LastApiMessage { get; private set; }
 
+        ///<inheritdoc/>
         public Client(string username, string password, WdsfEndpoint endPoint) :
             this(username, MakeSecureString(password), endPoint)
         {
         }
 
+        ///<inheritdoc/>
         public Client(string username, SecureString password, WdsfEndpoint endPoint) :
             this(username, password, endPoint == WdsfEndpoint.Services ? "https://services.worlddancesport.org/API/1/" : "https://sandbox.worlddancesport.org/API/1/")
         {
         }
 
+        ///<inheritdoc/>
         public Client(string username, string password, string baseUrl) :
             this(username, MakeSecureString(password), baseUrl)
         {
         }
 
+        ///<inheritdoc/>
         public Client(string username, SecureString password, string baseUrl)
         {
             apiUriBase = baseUrl ?? throw new ArgumentNullException(nameof(baseUrl));
@@ -76,6 +79,7 @@
         }
 
 
+        ///<inheritdoc/>
         public IList<Person> GetPersons(IDictionary<string, string> filter)
         {
             if (filter == null)
@@ -85,10 +89,12 @@
 
             return GetResourceList<ListOfPerson, Person>("person?" + query);
         }
+        ///<inheritdoc/>
         public PersonDetail GetPerson(int min)
         {
             return GetResource<PersonDetail>("person/" + min);
         }
+        ///<inheritdoc/>
         public bool UpdatePerson(PersonDetail person)
         {
             if (person == null)
@@ -98,6 +104,7 @@
         }
 
 
+        ///<inheritdoc/>
         public IList<Competition> GetCompetitions(IDictionary<string, string> filter)
         {
             if (filter == null)
@@ -107,10 +114,12 @@
 
             return GetResourceList<ListOfCompetition, Competition>("competition?" + query);
         }
+        ///<inheritdoc/>
         public CompetitionDetail GetCompetition(int id)
         {
             return GetResource<CompetitionDetail>("competition/" + id);
         }
+        ///<inheritdoc/>
         public bool UpdateCompetition(CompetitionDetail competition)
         {
             if (competition == null)
@@ -122,16 +131,19 @@
             return UpdateResource(competition, "competition/" + competition.Id);
         }
 
+        ///<inheritdoc/>
         public ParticipantCoupleDetail GetCoupleParticipant(int id)
         {
             return GetResource<ParticipantCoupleDetail>("participant/" + id);
         }
+        ///<inheritdoc/>
         public IList<ParticipantCouple> GetCoupleParticipants(int competitionId)
         {
             return GetResourceList<ListOfCoupleParticipant, ParticipantCouple>(
                 "participant?competitionId=" + competitionId
             );
         }
+        ///<inheritdoc/>
         public bool UpdateCoupleParticipant(ParticipantCoupleDetail participant)
         {
             if (participant == null)
@@ -141,6 +153,7 @@
 
             return UpdateResource(participant, "participant/" + participant.Id);
         }
+        ///<inheritdoc/>
         public Uri SaveCoupleParticipant(ParticipantCoupleDetail participant)
         {
             if (participant == null)
@@ -150,22 +163,26 @@
 
             return SaveResource(participant, "participant");
         }
+        ///<inheritdoc/>
         public bool DeleteCoupleParticipant(int id)
         {
             return DeleteResource("participant/" + id);
         }
 
 
+        ///<inheritdoc/>
         public ParticipantTeamDetail GetTeamParticipant(int id)
         {
             return GetResource<ParticipantTeamDetail>("participant/" + id);
         }
+        ///<inheritdoc/>
         public IList<ParticipantTeam> GetTeamParticipants(int competitionId)
         {
             return GetResourceList<ListOfTeamParticipant, ParticipantTeam>(
                 "participant?competitionId=" + competitionId
             );
         }
+        ///<inheritdoc/>
         public bool UpdateTeamParticipant(ParticipantTeamDetail participant)
         {
             if (participant == null)
@@ -175,6 +192,7 @@
 
             return UpdateResource(participant, "participant/" + participant.Id);
         }
+        ///<inheritdoc/>
         public Uri SaveTeamParticipant(ParticipantTeamDetail participant)
         {
             if (participant == null)
@@ -184,22 +202,26 @@
 
             return SaveResource(participant, "participant");
         }
+        ///<inheritdoc/>
         public bool DeleteTeamParticipant(int id)
         {
             return DeleteResource("participant/" + id);
         }
 
 
+        ///<inheritdoc/>
         public ParticipantSingleDetail GetSingleParticipant(int id)
         {
             return GetResource<ParticipantSingleDetail>("participant/" + id);
         }
+        ///<inheritdoc/>
         public IList<ParticipantSingle> GetSingleParticipants(int competitionId)
         {
             return GetResourceList<ListOfSingleParticipant, ParticipantSingle>(
                 "participant?competitionId=" + competitionId
             );
         }
+        ///<inheritdoc/>
         public bool UpdateSingleParticipant(ParticipantSingleDetail participant)
         {
             if (participant == null)
@@ -209,6 +231,7 @@
 
             return UpdateResource(participant, "participant/" + participant.Id);
         }
+        ///<inheritdoc/>
         public Uri SaveSingleParticipant(ParticipantSingleDetail participant)
         {
             if (participant == null)
@@ -218,22 +241,26 @@
 
             return SaveResource(participant, "participant");
         }
+        ///<inheritdoc/>
         public bool DeleteSingleParticipant(int id)
         {
             return DeleteResource("participant/" + id);
         }
 
 
+        ///<inheritdoc/>
         public OfficialDetail GetOfficial(int id)
         {
             return GetResource<OfficialDetail>("official/" + id);
         }
+        ///<inheritdoc/>
         public IList<Official> GetOfficials(int competitionId)
         {
             return GetResourceList<ListOfOfficial, Official>(
                 "official?competitionId=" + competitionId
             );
         }
+        ///<inheritdoc/>
         public bool UpdateOfficial(OfficialDetail official)
         {
             if (official == null)
@@ -241,6 +268,7 @@
 
             return UpdateResource(official, "official/" + official.Id);
         }
+        ///<inheritdoc/>
         public Uri SaveOfficial(OfficialDetail official)
         {
             if (official == null)
@@ -248,16 +276,19 @@
 
             return SaveResource(official, "official");
         }
+        ///<inheritdoc/>
         public bool DeleteOfficial(int id)
         {
             return DeleteResource("official/" +  id);
         }
 
 
+        ///<inheritdoc/>
         public IList<CoupleExport> GetCouples()
         {
             return GetResourceList<ListOfCoupleExport, CoupleExport>("couple/export");
         }
+        ///<inheritdoc/>
         public IList<Couple> GetCouples(IDictionary<string, string> filter)
         {
             if (filter == null)
@@ -267,6 +298,7 @@
 
             return GetResourceList<ListOfCouple, Couple>("couple?" + query);
         }
+        ///<inheritdoc/>
         public CoupleDetail GetCouple(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -274,6 +306,7 @@
 
             return GetResource<CoupleDetail>("couple/" + id);
         }
+        ///<inheritdoc/>
         public bool UpdateCouple(CoupleDetail couple)
         {
             if (couple == null)
@@ -281,6 +314,7 @@
 
             return UpdateResource(couple, "couple/" + couple.Id);
         }
+        ///<inheritdoc/>
         public Uri SaveCouple(CoupleDetail couple)
         {
             if (couple == null)
@@ -289,11 +323,47 @@
             return SaveResource(couple, "couple");
         }
 
+        ///<inheritdoc/>
+        public IList<Team> GetTeams(IDictionary<string, string> filter)
+        {
+            if (filter == null)
+                throw new ArgumentNullException(nameof(filter));
 
+            string query = string.Join("&", filter.Select(e => e.Key + "=" + e.Value).ToArray());
+
+            return GetResourceList<ListOfTeam, Team>("team?" + query);
+        }
+        ///<inheritdoc/>
+        public TeamDetail GetTeam(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                throw new ArgumentException("team ID must be specified.", nameof(id));
+
+            return GetResource<TeamDetail>("team/" + id);
+        }
+        ///<inheritdoc/>
+        public bool UpdateTeam(TeamDetail team)
+        {
+            if (team == null)
+                throw new ArgumentNullException(nameof(team));
+
+            return UpdateResource(team, "team/" + team.Id);
+        }
+        ///<inheritdoc/>
+        public Uri SaveTeam(TeamDetail team)
+        {
+            if (team == null)
+                throw new ArgumentNullException(nameof(team));
+
+            return SaveResource(team, "team");
+        }
+
+        ///<inheritdoc/>
         public IList<Ranking> GetWorldRanking(string discipline, string ageGroup, string division)
         {
             return GetWorldRanking(discipline, ageGroup, division, DateTime.MinValue);
         }
+        ///<inheritdoc/>
         public IList<Ranking> GetWorldRanking(string discipline, string ageGroup, string division, DateTime date)
         {
             if (string.IsNullOrEmpty(discipline))
@@ -312,11 +382,13 @@
             return GetResourceList<ListOfRanking, Ranking>(resourceUri);
         }
 
+        ///<inheritdoc/>
         public IList<AgeClass> GetAges()
         {
             return GetResourceList<ListOfAgeClass, AgeClass>("age");
         }
 
+        ///<inheritdoc/>
         public IList<Country> GetCountries()
         {
             return GetResourceList<ListOfCountry, Country>("country");

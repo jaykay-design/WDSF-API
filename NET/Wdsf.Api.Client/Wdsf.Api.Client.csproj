@@ -4,12 +4,12 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Wdsf.Api.Client</AssemblyName>
     <RootNamespace>Wdsf.Api.Client</RootNamespace>
-    <Version>2.0.1</Version>
+    <Version>2.0.3</Version>
     <Authors>John Caprez</Authors>
     <Company>JayKay-Design S.C.</Company>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Description>A .NET library which connects to the World DanceSport Federation's API using strongly typed models.</Description>
-    <PackageReleaseNotes>Target .netstandard 2</PackageReleaseNotes>
+    <PackageReleaseNotes>Fix dependency</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageProjectUrl></PackageProjectUrl>
     <RepositoryUrl>https://github.com/jaykay-design/WDSF-API/</RepositoryUrl>
@@ -17,6 +17,7 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Wdsf.Api.Client.snk</AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>
+    <AssemblyVersion>2.0.3.0</AssemblyVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

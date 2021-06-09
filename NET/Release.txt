@@ -45,6 +45,7 @@
 				Round.MaxDeviation is now a decimal, was a string.
 				Score.Link is not an array anymore as it wil always just have one single link
 
+2.0.3.0		# downgrade Newtonsoft.JSON as that seems the last version wich works correctly with NetStandard 2.0
 
 WDSF Checkin
 

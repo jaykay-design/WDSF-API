@@ -249,6 +249,21 @@
 
 
         ///<inheritdoc/>
+        public bool UploadResults(IEnumerable<Result> results, int competitionId)
+        {
+            if (results == null)
+                throw new ArgumentNullException(nameof(results));
+
+            if (results.Count() == 0)
+                return true;
+
+            var model = new ListOfResults();
+            model.AddRange(results);
+
+            return UpdateResource(model, "result/" + competitionId);
+        }
+
+        ///<inheritdoc/>
         public OfficialDetail GetOfficial(int id)
         {
             return GetResource<OfficialDetail>("official/" + id);
@@ -448,35 +463,6 @@
             }
         }
 
-        private T Get<T>(string resourceUri) where T : class
-        {
-            if (null == resourceUri)
-                throw new ArgumentNullException(nameof(resourceUri));
-
-            return GetResource<T>(resourceUri);
-        }
-
-        private object Get(string resourceUri)
-        {
-            if (null == resourceUri)
-                throw new ArgumentNullException(nameof(resourceUri));
-
-            var adapter = GetAdapter();
-            try
-            {
-                return adapter.Get(new Uri(this.apiUriBase + resourceUri));
-            }
-            catch (Exception ex)
-            {
-                throw new ApiException(ex);
-            }
-            finally
-            {
-                ReleaseAdapter(adapter);
-            }
-
-        }
-
         private T GetResource<T>(string resourceUri) where T : class
         {
             var adapter = GetAdapter();
@@ -515,7 +501,7 @@
             }
 
         }
-        private bool UpdateResource<T>(T competition, string resourceUri) where T : class
+        private bool UpdateResource<T>(T model, string resourceUri) where T : class
         {
             this.LastApiMessage = string.Empty;
 
@@ -523,7 +509,7 @@
             var adapter = GetAdapter();
             try
             {
-                message = adapter.Put<T>(new Uri(this.apiUriBase + resourceUri), competition);
+                message = adapter.Put(new Uri(this.apiUriBase + resourceUri), model);
             }
             catch (Exception ex)
             {

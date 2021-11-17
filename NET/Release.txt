@@ -47,6 +47,8 @@
 
 2.0.3.0		# downgrade Newtonsoft.JSON as that seems the last version wich works correctly with NetStandard 2.0
 
+2.0.4.0		+ added model and method for batch result uploads
+
 WDSF Checkin
 
 1.0.0.0			- initial implementation

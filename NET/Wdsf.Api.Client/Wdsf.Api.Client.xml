@@ -91,6 +91,9 @@
         <member name="M:Wdsf.Api.Client.Client.DeleteSingleParticipant(System.Int32)">
             <inheritdoc/>
         </member>
+        <member name="M:Wdsf.Api.Client.Client.UploadResults(System.Collections.Generic.IEnumerable{Wdsf.Api.Client.Models.Result},System.Int32)">
+            <inheritdoc/>
+        </member>
         <member name="M:Wdsf.Api.Client.Client.GetOfficial(System.Int32)">
             <inheritdoc/>
         </member>
@@ -436,6 +439,14 @@
             <param name="id">The participant ID</param>
             <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
             <returns>true on success.</returns>
+        </member>
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.UploadResults(System.Collections.Generic.IEnumerable{Wdsf.Api.Client.Models.Result},System.Int32)">
+            <summary>
+            Uploads multipel results at once.
+            </summary>
+            <param name="results">The results</param>
+            <param name="competitionId">What competition these belong to</param>
+            <returns>true on success</returns>
         </member>
         <member name="M:Wdsf.Api.Client.Interfaces.IClient.GetOfficials(System.Int32)">
             <summary>

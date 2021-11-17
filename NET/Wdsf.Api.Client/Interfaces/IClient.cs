@@ -141,6 +141,14 @@
         bool DeleteSingleParticipant(int id);
 
         /// <summary>
+        /// Uploads multipel results at once.
+        /// </summary>
+        /// <param name="results">The results</param>
+        /// <param name="competitionId">What competition these belong to</param>
+        /// <returns>true on success</returns>
+        bool UploadResults(IEnumerable<Result> results, int competitionId);
+
+        /// <summary>
         /// Gets officials of specified competition
         /// </summary>
         /// <param name="competitionId">The competition ID</param>

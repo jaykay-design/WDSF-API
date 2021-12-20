@@ -36,6 +36,12 @@
         }
 
         ///<inheritdoc/>
+        public Client(string username, string password, WdsfEndpoint endPoint, string onBehalfOf = null) :
+            this(username, password, endPoint == WdsfEndpoint.Services ? "https://services.worlddancesport.org/API/1/" : "https://sandbox.worlddancesport.org/API/1/", onBehalfOf)
+        {
+        }
+
+        ///<inheritdoc/>
         public Client(string username, string password, string baseUrl, string onBehalfOf = null)
         {
             apiUriBase = baseUrl ?? throw new ArgumentNullException(nameof(baseUrl));

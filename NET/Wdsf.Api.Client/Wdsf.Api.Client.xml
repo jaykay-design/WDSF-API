@@ -19,6 +19,9 @@
         <member name="M:Wdsf.Api.Client.Client.#ctor(System.String,System.Security.SecureString,Wdsf.Api.Client.WdsfEndpoint,System.String)">
             <inheritdoc/>
         </member>
+        <member name="M:Wdsf.Api.Client.Client.#ctor(System.String,System.String,Wdsf.Api.Client.WdsfEndpoint,System.String)">
+            <inheritdoc/>
+        </member>
         <member name="M:Wdsf.Api.Client.Client.#ctor(System.String,System.String,System.String,System.String)">
             <inheritdoc/>
         </member>

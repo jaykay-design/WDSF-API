@@ -5,8 +5,6 @@
     using System.IO;
     using System.IO.Compression;
     using System.Net;
-    using System.Runtime.InteropServices;
-    using System.Security;
     using System.Text;
     using Wdsf.Api.Client.Exceptions;
     using Wdsf.Api.Client.Models;
@@ -20,23 +18,15 @@
         public ContentTypes ContentType { get; set; }
 
         private readonly WebClient client = new WebClient();
-        private readonly ICredentials credentials;
+        private readonly string username;
+        private readonly string password;
+        private readonly string onBehalfOf;
 
-        public RestAdapter(string username, SecureString password)
+        public RestAdapter(string username, string password, string onBehalfOf = null)
         {
-            var strPointer = IntPtr.Zero;
-            try
-            {
-                strPointer = Marshal.SecureStringToBSTR(password);
-                this.credentials = new NetworkCredential(username, Marshal.PtrToStringBSTR(strPointer));
-            }
-            finally
-            {
-                if (IntPtr.Zero != strPointer)
-                {
-                    Marshal.ZeroFreeBSTR(strPointer);
-                }
-            }
+            this.username = username;
+            this.password = password;
+            this.onBehalfOf = onBehalfOf;
 
         }
 
@@ -277,30 +267,31 @@
         private HttpWebRequest GetRequest(Uri resourceUri)
         {
             var request = WebRequest.Create(resourceUri) as HttpWebRequest;
+            var auth = "Basic " + Convert.ToBase64String(Encoding.Default.GetBytes(username + ":" + password));
 
-            request.Credentials = this.credentials;
             request.PreAuthenticate = true;
+            request.Headers.Add("Authorization", auth);
+
             request.Accept = GetAcceptType();
             request.Headers.Add("Accept-Encoding", "gzip");
+
             request.UserAgent = "WDSF API Client";
             request.AutomaticDecompression = DecompressionMethods.GZip;
+
+            if (!string.IsNullOrEmpty(onBehalfOf))
+            {
+                request.Headers.Add("X-OnBehalfOf", onBehalfOf);
+            }
 
             return request;
         }
         private HttpWebRequest GetRequestForSending(Uri resourceUri)
         {
-            var request = WebRequest.Create(resourceUri) as HttpWebRequest;
+            var request = GetRequest(resourceUri);
 
-            request.Credentials = this.credentials;
-            request.PreAuthenticate = true;
-            request.Accept = GetAcceptType();
-            request.Headers.Add("Accept-Encoding", "gzip");
-            request.UserAgent = "WDSF API Client";
 #if !DEBUG
             request.Headers.Add("Content-Encoding", "gzip");
 #endif
-
-            request.AutomaticDecompression = DecompressionMethods.GZip;
 
             return request;
         }

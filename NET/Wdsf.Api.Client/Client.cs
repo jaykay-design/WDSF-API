@@ -16,7 +16,8 @@
     public class Client : IDisposable, IClient
     {
         private readonly string username;
-        private readonly SecureString password;
+        private readonly string password;
+        private readonly string onBehalfOf;
         private readonly string apiUriBase;
 
         private List<RestAdapter> adapters;
@@ -29,29 +30,18 @@
         public string LastApiMessage { get; private set; }
 
         ///<inheritdoc/>
-        public Client(string username, string password, WdsfEndpoint endPoint) :
-            this(username, MakeSecureString(password), endPoint)
+        public Client(string username, SecureString password, WdsfEndpoint endPoint, string onBehalfOf = null) :
+            this(username, ExtractSecureString(password), endPoint == WdsfEndpoint.Services ? "https://services.worlddancesport.org/API/1/" : "https://sandbox.worlddancesport.org/API/1/", onBehalfOf)
         {
         }
 
         ///<inheritdoc/>
-        public Client(string username, SecureString password, WdsfEndpoint endPoint) :
-            this(username, password, endPoint == WdsfEndpoint.Services ? "https://services.worlddancesport.org/API/1/" : "https://sandbox.worlddancesport.org/API/1/")
-        {
-        }
-
-        ///<inheritdoc/>
-        public Client(string username, string password, string baseUrl) :
-            this(username, MakeSecureString(password), baseUrl)
-        {
-        }
-
-        ///<inheritdoc/>
-        public Client(string username, SecureString password, string baseUrl)
+        public Client(string username, string password, string baseUrl, string onBehalfOf = null)
         {
             apiUriBase = baseUrl ?? throw new ArgumentNullException(nameof(baseUrl));
             this.username = username ?? throw new ArgumentNullException(nameof(username));
             this.password = password ?? throw new ArgumentNullException(nameof(password));
+            this.onBehalfOf = onBehalfOf;
 
             this.adapters = new List<RestAdapter>() { };
 
@@ -61,21 +51,12 @@
 #endif
         }
 
-        private static SecureString MakeSecureString(string val)
+        private static string ExtractSecureString(SecureString val)
         {
             if (val == null)
                 return null;
 
-            SecureString retVal = new SecureString();
-
-            if (val.Length == 0)
-                return retVal;
-
-            for (int i = 0; i < val.Length; i++)
-                retVal.AppendChar(val[i]);
-
-            retVal.MakeReadOnly();
-            return retVal;
+            return val.ToString();
         }
 
 
@@ -609,7 +590,7 @@
                 var adapter = this.adapters.FirstOrDefault(a => a.IsBusy == false && a.IsAssigned == false);
                 if (adapter == null)
                 {
-                    adapter = new RestAdapter(this.username, this.password)
+                    adapter = new RestAdapter(this.username, this.password, this.onBehalfOf)
                     {
                         ContentType = this.ContentType
                     };

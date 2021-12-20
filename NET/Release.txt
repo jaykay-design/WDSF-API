@@ -49,6 +49,10 @@
 
 2.0.4.0		+ added model and method for batch result uploads
 
+2.1.0.0		+ added models for Trivium (Breaking discipline)
+			+ added option to allow impersonating an other scrutiny (only available to trusted service providers)
+			# remove SecureString usage
+
 WDSF Checkin
 
 1.0.0.0			- initial implementation

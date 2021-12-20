@@ -23,6 +23,7 @@
         [XmlArrayItem("onScaleIdo", typeof(OnScaleIdoScore))]
         [XmlArrayItem("onScale2", typeof(OnScale2Score))]
         [XmlArrayItem("onScale3", typeof(OnScale3Score))]
+        [XmlArrayItem("trivium", typeof(TriviumScore))]
         [JsonProperty("scores", ItemConverterType = typeof(Converter.JsonScoreConverter))]
         public List<Score> Scores { get; set; }
         public bool ShouldSerializeScores()

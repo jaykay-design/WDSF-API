@@ -9,7 +9,7 @@
     {
         [XmlIgnore]
         [JsonProperty("kind")]
-        public override string Kind { get { return "onScale3"; } set {; } }
+        public override string Kind { get { return "onScale3"; } }
 
         /// <summary>
         /// Techincal Quality

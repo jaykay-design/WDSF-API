@@ -9,7 +9,7 @@
     {
         [XmlIgnore]
         [JsonProperty("kind")]
-        public override string Kind { get { return "onScale"; } set {; } }
+        public override string Kind { get { return "onScale"; } }
 
         /// <summary>
         /// Posture Balance Coorination

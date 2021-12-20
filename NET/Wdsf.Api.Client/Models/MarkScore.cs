@@ -20,7 +20,7 @@
 
         [XmlIgnore]
         [JsonProperty("kind")]
-        public override string Kind { get { return "mark"; } set {; } }
+        public override string Kind { get { return "mark"; } }
 
         [XmlAttribute("set")]
         [JsonProperty("set")]

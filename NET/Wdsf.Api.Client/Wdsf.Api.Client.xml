@@ -738,6 +738,11 @@
             Maximum allowed deviation of scrores in AJS 3.0
             </summary>
         </member>
+        <member name="P:Wdsf.Api.Client.Models.ThreeFoldScore.Mode">
+            <summary>
+            Seed, RoundRobin, Top4, Top8, Top16, Top32
+            </summary>
+        </member>
         <member name="P:Wdsf.Api.Client.Models.TriviumScore.Mode">
             <summary>
             Seed, RoundRobin, Top4, Top8, Top16, Top32

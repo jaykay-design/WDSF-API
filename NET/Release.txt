@@ -53,6 +53,8 @@
 			+ added option to allow impersonating an other scrutiny (only available to trusted service providers)
 			# remove SecureString usage
 
+2.2.0.0		+ added models for ThreeFold (Breaking discipline)
+
 WDSF Checkin
 
 1.0.0.0			- initial implementation

@@ -25,6 +25,7 @@
         [XmlArrayItem("onScale3", typeof(OnScale3Score))]
         [XmlArrayItem("trivium", typeof(TriviumScore))]
         [XmlArrayItem("threefold", typeof(ThreeFoldScore))]
+        [XmlArrayItem("breakingseed", typeof(BreakingSeedScore))]
         [JsonProperty("scores", ItemConverterType = typeof(Converter.JsonScoreConverter))]
         public List<Score> Scores { get; set; }
         public bool ShouldSerializeScores()

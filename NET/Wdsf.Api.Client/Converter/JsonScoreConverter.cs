@@ -32,6 +32,7 @@
                 case "final": return jObject.ToObject<FinalScore>(serializer);
                 case "trivium": return jObject.ToObject<TriviumScore>(serializer);
                 case "threefold": return jObject.ToObject<ThreeFoldScore>(serializer);
+                case "breakingseed": return jObject.ToObject<BreakingSeedScore>(serializer);
                 default: throw new NotImplementedException($"No JSON reader for type '{objectType.FullName}' implemented.");
             }
         }

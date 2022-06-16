@@ -55,6 +55,8 @@
 
 2.2.0.0		+ added models for ThreeFold (Breaking discipline)
 
+2.3.0.0		+ added models for BreakingSeed (Breaking discipline)
+
 WDSF Checkin
 
 1.0.0.0			- initial implementation

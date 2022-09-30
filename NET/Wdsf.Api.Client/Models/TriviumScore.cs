@@ -12,7 +12,7 @@
         public override string Kind { get { return "trivium"; } }
 
         /// <summary>
-        /// Seed, RoundRobin, Top4, Top8, Top16, Top32
+        /// Seed, RoundRobin, TopX
         /// </summary>
         [XmlAttribute("mode")]
         [JsonProperty("mode")]
@@ -89,5 +89,9 @@
         [XmlAttribute("form")]
         [JsonProperty("form")]
         public int Form { get; set; }
+
+        [XmlAttribute("isred", DataType = "boolean")]
+        [JsonProperty("isred")]
+        public bool IsRed { get; set; }
     }
 }

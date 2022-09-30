@@ -8,7 +8,7 @@
     public sealed class ThreeFoldScore : Score
     {
         /// <summary>
-        /// Seed, RoundRobin, Top4, Top8, Top16, Top32
+        /// Seed, RoundRobin, TopX
         /// </summary>
         [XmlAttribute("mode")]
         [JsonProperty("mode")]
@@ -34,5 +34,9 @@
         [XmlAttribute("artistic")]
         [JsonProperty("artistic")]
         public int Artistic { get; set; }
+
+        [XmlAttribute("isred")]
+        [JsonProperty("isred")]
+        public bool IsRed { get; set; }
     }
 }

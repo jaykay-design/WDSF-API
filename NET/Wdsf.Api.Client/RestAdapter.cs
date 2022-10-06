@@ -342,9 +342,6 @@
 
                 data.Position = 0;
 
-#if !DEBUG
-                Console.WriteLine(Encoding.Default.GetString(data.ToArray()));             
-#endif
                 using (var requestStream = request.GetRequestStream())
                 {
                     data.WriteTo(requestStream);

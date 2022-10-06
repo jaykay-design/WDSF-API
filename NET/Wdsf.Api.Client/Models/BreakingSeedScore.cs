@@ -7,6 +7,10 @@
     [JsonObject("breakingseed")]
     public sealed class BreakingSeedScore : Score
     {
+        [XmlIgnore]
+        [JsonProperty("kind")]
+        public override string Kind { get { return "breakingseed"; } }
+
         [XmlAttribute("score")]
         [JsonProperty("score")]
         public int Score { get; set; }

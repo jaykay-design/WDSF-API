@@ -7,6 +7,10 @@
     [JsonObject("threefold")]
     public sealed class ThreeFoldScore : Score
     {
+        [XmlIgnore]
+        [JsonProperty("kind")]
+        public override string Kind { get { return "threefold"; } }
+
         /// <summary>
         /// Seed, RoundRobin, TopX
         /// </summary>

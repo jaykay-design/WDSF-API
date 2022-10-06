@@ -1,0 +1,14 @@
+﻿Columns:
+"Date"; ignored
+"Event"; ignored
+"Battle"; ignored
+"Mode"; RoundRobin, TOP4, TOP8 or TOP16
+"Judge"; MIN of judeg
+"v1"; RoundRobin: group, TopX: 1 = final, 2 semifinal, etc.
+"v2"; RoundRobin: battle, TopX: branch
+"Rd"; Sub round (round within battles)
+"Dancer1"; MIN of athlete
+"Dancer2"; MIN of athlete
+"F1"; Fader 1 Artistic
+"F2"; Fader 2 Interpretation
+"F3"; Fader 3 Physical

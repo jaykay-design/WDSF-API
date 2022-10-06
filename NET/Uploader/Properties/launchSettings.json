@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "Uploader": {
-      "commandName": "Project",
-      "commandLineArgs": "[your username] [your password] [the comeptition ID] [the results model] [The path to the CSV file]"
-    }
-  }
-}

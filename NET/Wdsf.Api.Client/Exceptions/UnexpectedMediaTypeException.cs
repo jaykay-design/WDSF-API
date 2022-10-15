@@ -15,7 +15,7 @@
         {
             get
             {
-                return string.Format("Type \"{0}\" was expected but \"{1}\" was received", this.ExpectedType.FullName, this.ReceivedType.FullName);
+                return $"Type \"{this.ExpectedType.FullName}\" was expected but \"{this.ReceivedType.FullName}\" was received";
             }
         }
 

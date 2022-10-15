@@ -1,19 +1,14 @@
 ﻿namespace Wdsf.Api.Client.Models
 {
+    using Newtonsoft.Json;
     using System;
     using System.Xml.Serialization;
-    using Wdsf.Api.Client.Attributes;
-    using Newtonsoft.Json;
 
     [XmlType("person", Namespace = "http://services.worlddancesport.org/api")]
     [XmlRoot("person", Namespace = "http://services.worlddancesport.org/api")]
     [JsonObject("person")]
-    public class Person
+    public class Person : EntityWithLinks
     {
-        [XmlArray("link")]
-        [JsonProperty("link")]
-        public Link[] Link { get; set; }
-
         [XmlElement("id")]
         [JsonProperty("id")]
         public int Min { get; set; }

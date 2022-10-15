@@ -1,7 +1,7 @@
 ﻿namespace Wdsf.Api.Client.Models
 {
-    using System.Xml.Serialization;
     using Newtonsoft.Json;
+    using System.Xml.Serialization;
 
     [XmlType("final", Namespace = "http://services.worlddancesport.org/api")]
     [JsonObject("final")]
@@ -20,7 +20,7 @@
 
         [XmlIgnore]
         [JsonProperty("kind")]
-        public override string Kind { get { return "final"; } set { ; } }
+        public override string Kind { get { return "final"; } }
 
         [XmlAttribute("rank")]
         [JsonProperty("rank")]

@@ -1,7 +1,7 @@
 ﻿namespace Wdsf.Api.Client.Models
 {
-    using System.Xml.Serialization;
     using Newtonsoft.Json;
+    using System.Xml.Serialization;
     using Wdsf.Api.Client.Attributes;
 
     [XmlType("participant", Namespace = "http://services.worlddancesport.org/api")]
@@ -10,10 +10,6 @@
     [MediaType("application/vnd.worlddancesport.participant.team")]
     public class ParticipantTeamDetail : ParticipantBaseDetail
     {
-        [XmlElement("link")]
-        [JsonProperty("link")]
-        public override Link[] Link { get; set; }
-
         [XmlElement("teamId")]
         [JsonProperty("teamId")]
         public int TeamId { get; set; }

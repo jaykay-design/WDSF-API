@@ -5,7 +5,7 @@
     public class UnauthorizedException : Exception
     {
         public UnauthorizedException(string method, Uri uri)
-            : base(string.Format("Access to {0} {1} was denied.", method, uri))
+            : base($"Access to {method} {uri} was denied.")
         {
         }
     }

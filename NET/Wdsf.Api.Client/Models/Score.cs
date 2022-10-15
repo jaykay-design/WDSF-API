@@ -1,7 +1,7 @@
 ﻿namespace Wdsf.Api.Client.Models
 {
-    using System.Xml.Serialization;
     using Newtonsoft.Json;
+    using System.Xml.Serialization;
 
     public class Score
     {
@@ -16,11 +16,11 @@
 
         [XmlIgnore]
         [JsonProperty("kind")]
-        public virtual string Kind { get; set; }
+        public virtual string Kind { get; }
 
         [XmlElement("link")]
         [JsonProperty("link", NullValueHandling = NullValueHandling.Ignore)]
-        public Link[] Link { get; set; }
+        public Link Link { get; set; }
 
         [XmlAttribute("adjudicator")]
         [JsonProperty("adjudicator")]

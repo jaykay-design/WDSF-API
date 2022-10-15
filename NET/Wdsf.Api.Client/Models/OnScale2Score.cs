@@ -1,8 +1,7 @@
 ﻿namespace Wdsf.Api.Client.Models
 {
-    using System;
-    using System.Xml.Serialization;
     using Newtonsoft.Json;
+    using System.Xml.Serialization;
 
     [XmlType("onScale2", Namespace = "http://services.worlddancesport.org/api")]
     [JsonObject("onScale2")]
@@ -10,7 +9,7 @@
     {
         [XmlIgnore]
         [JsonProperty("kind")]
-        public override string Kind { get { return "onScale2"; } set { ; } }
+        public override string Kind { get { return "onScale2"; } }
 
         /// <summary>
         /// Techincal Quality

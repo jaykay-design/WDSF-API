@@ -1,20 +1,16 @@
 ﻿namespace Wdsf.Api.Client.Models
 {
+    using Newtonsoft.Json;
     using System.Collections.Generic;
     using System.Xml.Serialization;
     using Wdsf.Api.Client.Attributes;
-    using Newtonsoft.Json;
 
     [XmlType("person", Namespace = "http://services.worlddancesport.org/api")]
     [XmlRoot("person", Namespace = "http://services.worlddancesport.org/api")]
     [MediaType("application/vnd.worlddancesport.person")]
     [JsonObject("person")]
-    public class PersonDetail 
+    public class PersonDetail : EntityWithLinks
     {
-        [XmlElement("link")]
-        [JsonProperty("link")]
-        public Link[] Link  { get; set; }
-
         [XmlElement("id")]
         [JsonProperty("id")]
         public int Min { get; set; }
@@ -45,6 +41,11 @@
 
         [XmlArray("licenses")]
         [JsonProperty("licenses")]
-        public License[] Licenses { get; set; }
+        public List<License> Licenses { get; set; }
+        public bool ShouldSerializeLicenses()
+        {
+            return Licenses != null && Licenses.Count > 0;
+        }
+
     }
 }

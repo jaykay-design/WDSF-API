@@ -1,18 +1,11 @@
 ﻿namespace Wdsf.Api.Client.Models
 {
-    using System;
+    using Newtonsoft.Json;
     using System.Collections.Generic;
     using System.Xml.Serialization;
-    using Newtonsoft.Json;
 
-    public class ParticipantBaseDetail
+    public class ParticipantBaseDetail : EntityWithLinks
     {
-        private List<Round> rounds = new List<Round>();
-
-        [XmlElement("link")]
-        [JsonProperty("link")]
-        public virtual Link[] Link { get; set; }
-
         [XmlElement("id")]
         [JsonProperty("id")]
         public int Id { get; set; }
@@ -40,42 +33,43 @@
         [JsonProperty("competitionId")]
         public int CompetitionId { get; set; }
 
-        [XmlIgnore]
-        [JsonIgnore]
-        private bool CompetitionIdSpecified { get { return this.CompetitionId != 0; } set { } }
+        public bool CompetitionIdSpecified { get { return this.CompetitionId != 0; } }
 
-        /// <summary>
-        /// <para>Do not use this array to process rounds.</para>
-        /// <para>It is used only as a workaround for .NET's XmlSerializer limitations on deserializing lists.</para>
-        /// </summary>
         [XmlArray("rounds")]
         [JsonProperty("rounds")]
-        public Round[] RoundsForSerialization
-        {
-            get
-            {
-                return rounds.Count == 0 ? null : rounds.ToArray();
-            }
-            set
-            {
-                if (value == null)
-                    throw new ArgumentNullException("value");
-
-                rounds = new List<Round>(value);
-            }
-        }
-
         /// <summary>
-        /// Contains the scores. Set to null if the scores shall not be updated.
+        /// Contains the scores. Set to null if the scores shall not be updated. Empty list will clear rounds.
         /// </summary>
-        [XmlIgnore]
-        [JsonIgnore]
-        public IList<Round> Rounds
+        public List<Round> Rounds { get; set; }
+
+        public bool ShouldSerializeRounds()
         {
-            get
-            {
-                return rounds;
-            }
+            return Rounds != null;
         }
+        public bool ShouldSerializePoints()
+        {
+            return !string.IsNullOrEmpty(Points);
+        }
+        public bool ShouldSerializeRank()
+        {
+            return !string.IsNullOrEmpty(Rank);
+        }
+        public bool ShouldSerializeStatus()
+        {
+            return !string.IsNullOrEmpty(Status);
+        }
+        public bool ShouldSerializeCompetitionId()
+        {
+            return CompetitionId != 0;
+        }
+        public bool ShouldSerializeStartNumber()
+        {
+            return StartNumber != 0;
+        }
+        public bool ShouldSerializeId()
+        {
+            return Id != 0;
+        }
+
     }
 }

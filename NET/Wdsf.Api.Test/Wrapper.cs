@@ -54,7 +54,13 @@ namespace Wdsf.Api.Test
     internal class ParticipantWrapper:WrapperBase
     {
         public Wdsf.Api.Client.Models.ParticipantCoupleDetail coupleParticipant;
+        public Wdsf.Api.Client.Models.ParticipantTeamDetail teamParticipant;
 
+        public ParticipantWrapper(Wdsf.Api.Client.Models.ParticipantTeamDetail teamParticipant)
+        {
+            this.teamParticipant = teamParticipant;
+
+        }
         public ParticipantWrapper(Wdsf.Api.Client.Models.ParticipantCoupleDetail coupleParticipant)
         {
             this.coupleParticipant = coupleParticipant;
@@ -71,7 +77,11 @@ namespace Wdsf.Api.Test
             {
                 return this.SourceMessage + " ####  " + this.Exception.Message;
             }
-            return this.coupleParticipant == null ? string.Empty : string.Format("{0,-3} {1,-3} - {2,-60} {3}", this.coupleParticipant.Rank, this.coupleParticipant.StartNumber, this.coupleParticipant.Name, this.coupleParticipant.Country);
+            return this.coupleParticipant != null
+                ? string.Format("{0,-3} {1,-3} - {2,-60} {3}", this.coupleParticipant.Rank, this.coupleParticipant.StartNumber, this.coupleParticipant.Name, this.coupleParticipant.Country)
+                : this.teamParticipant != null
+                ? string.Format("{0,-3} {1,-3} - {2,-60} {3}", this.teamParticipant.Rank, this.teamParticipant.StartNumber, this.teamParticipant.Team, this.teamParticipant.Country)
+                : string.Empty;
         }
     }
     internal class OfficialWrapper

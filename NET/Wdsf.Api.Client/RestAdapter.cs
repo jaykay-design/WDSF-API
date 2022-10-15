@@ -1,60 +1,32 @@
-﻿/*  Copyright (C) 2011-2012 JayKay-Design S.C.
-    Author: John Caprez jay@jaykay-design.com
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Lesser General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Lesser General Public License for more details.
-
-    You should have received a copy of the GNU LEsser General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/lgpl.html>.
- */
-
-namespace Wdsf.Api.Client
+﻿namespace Wdsf.Api.Client
 {
+    using Serializer;
     using System;
     using System.IO;
     using System.IO.Compression;
     using System.Net;
-    using System.Security;
-    using System.Runtime.InteropServices;
+    using System.Text;
     using Wdsf.Api.Client.Exceptions;
     using Wdsf.Api.Client.Models;
-    using Serializer;
-    using Interfaces;
 
     internal class RestAdapter : IDisposable
     {
         public bool IsAssigned { get; set; }
         public bool IsBusy { get; private set; }
-        private object busyLock = new object();
+        private readonly object busyLock = new object();
 
         public ContentTypes ContentType { get; set; }
 
         private readonly WebClient client = new WebClient();
-        private readonly ICredentials credentials;
+        private readonly string username;
+        private readonly string password;
+        private readonly string onBehalfOf;
 
-        public RestAdapter(string username, SecureString password)
+        public RestAdapter(string username, string password, string onBehalfOf = null)
         {
-            IntPtr strPointer = IntPtr.Zero;
-            try
-            {
-                strPointer = Marshal.SecureStringToBSTR(password);
-                this.credentials = new NetworkCredential(username, Marshal.PtrToStringBSTR(strPointer));
-            }
-            finally
-            {
-                if (IntPtr.Zero != strPointer)
-                {
-                    Marshal.ZeroFreeBSTR(strPointer);
-                    strPointer = IntPtr.Zero;
-                }
-            }
+            this.username = username;
+            this.password = password;
+            this.onBehalfOf = onBehalfOf;
 
         }
 
@@ -70,22 +42,22 @@ namespace Wdsf.Api.Client
         {
             CheckAndSetBusy();
 
-            HttpWebRequest request = GetRequest(resourceUri);
-
-            HttpWebResponse response = GetResponse(request);
-            this.IsBusy = false;
-            Type receivedType = TypeHelper.GetApiModelType(response.ContentType);
-            if (receivedType == null)
+            var request = GetRequest(resourceUri);
+            using (var response = GetResponse(request))
             {
-                throw new UnknownMediaTypeException(response.ContentType);
+                this.IsBusy = false;
+                var receivedType = TypeHelper.GetApiModelType(response.ContentType);
+                if (receivedType == null)
+                {
+                    throw new UnknownMediaTypeException(response.ContentType);
+                }
+
+                var serializer = SerializerFactory.GetSerializer(this.ContentType);
+                var result = serializer.Deserialize(receivedType, response.GetResponseStream());
+
+                response.Close();
+                return result;
             }
-
-            ISerializer serializer = SerializerFactory.GetSerializer(this.ContentType);
-            object result = serializer.Deserialize(receivedType, response.GetResponseStream());
-
-            response.Close();
-
-            return result;
         }
 
         /// <summary>
@@ -103,21 +75,23 @@ namespace Wdsf.Api.Client
         {
             CheckAndSetBusy();
 
-            HttpWebRequest request = GetRequest(resourceUri);
-            
-            HttpWebResponse response = GetResponse(request);
-            this.IsBusy = false;
-            
-            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            var request = GetRequest(resourceUri);
+
+            using (var response = GetResponse(request))
             {
-                throw new UnauthorizedException("GET", resourceUri);
+                this.IsBusy = false;
+
+                if (response.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    throw new UnauthorizedException("GET", resourceUri);
+                }
+
+                CheckResourceType<T>(response);
+                T result = ReadReponseBody<T>(response);
+                response.Close();
+
+                return result;
             }
-
-            CheckResourceType<T>(response);
-            T result =  ReadReponseBody<T>(response);
-            response.Close();
-
-            return result;
         }
 
         /// <summary>
@@ -134,25 +108,27 @@ namespace Wdsf.Api.Client
         {
             CheckAndSetBusy();
 
-            HttpWebRequest request = GetRequestForSending(resourceUri);
+            var request = GetRequestForSending(resourceUri);
             request.Method = "PUT";
             request.ContentType = GetContentType(typeof(T));
-            WriteRequestBody<T>(model, request);
+            WriteRequestBody(model, request);
 
-            HttpWebResponse response = GetResponse(request);
-            this.IsBusy = false;
-
-            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            using (var response = GetResponse(request))
             {
-                throw new UnauthorizedException("PUT", resourceUri);
+                this.IsBusy = false;
+
+                if (response.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    throw new UnauthorizedException("PUT", resourceUri);
+                }
+
+                CheckResourceType<StatusMessage>(response);
+
+                var message = ReadReponseBody<StatusMessage>(response);
+                response.Close();
+
+                return message;
             }
-
-            CheckResourceType<StatusMessage>(response);
-
-            StatusMessage message = ReadReponseBody<StatusMessage>(response);
-            response.Close();
-
-            return message;
         }
 
         /// <summary>
@@ -169,24 +145,26 @@ namespace Wdsf.Api.Client
         {
             CheckAndSetBusy();
 
-            HttpWebRequest request = GetRequestForSending(resourceUri);
+            var request = GetRequestForSending(resourceUri);
             request.Method = "POST";
             request.ContentType = GetContentType(typeof(T));
-            WriteRequestBody<T>(model, request);
+            WriteRequestBody(model, request);
 
-            HttpWebResponse response = GetResponse(request);
-            this.IsBusy = false;
-
-            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            using (var response = GetResponse(request))
             {
-                throw new UnauthorizedException("POST", resourceUri);
+                this.IsBusy = false;
+
+                if (response.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    throw new UnauthorizedException("POST", resourceUri);
+                }
+
+                CheckResourceType<StatusMessage>(response);
+                StatusMessage message = ReadReponseBody<StatusMessage>(response);
+                response.Close();
+
+                return message;
             }
-
-            CheckResourceType<StatusMessage>(response);
-            StatusMessage message = ReadReponseBody<StatusMessage>(response);
-            response.Close();
-
-            return message;
         }
 
         /// <summary>
@@ -202,23 +180,25 @@ namespace Wdsf.Api.Client
         {
             CheckAndSetBusy();
 
-            HttpWebRequest request = GetRequestForSending(resourceUri);
+            var request = GetRequestForSending(resourceUri);
             request.Method = "DELETE";
 
-            HttpWebResponse response = GetResponse(request);
-            this.IsBusy = false;
-
-            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            using (var response = GetResponse(request))
             {
-                throw new UnauthorizedException("DELETE", resourceUri);
+                this.IsBusy = false;
+
+                if (response.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    throw new UnauthorizedException("DELETE", resourceUri);
+                }
+
+                CheckResourceType<StatusMessage>(response);
+
+                var message = ReadReponseBody<StatusMessage>(response);
+                response.Close();
+
+                return message;
             }
-
-            CheckResourceType<StatusMessage>(response);
-
-            StatusMessage message = ReadReponseBody<StatusMessage>(response);
-            response.Close();
-
-            return message;
         }
 
         /// <summary>
@@ -228,18 +208,18 @@ namespace Wdsf.Api.Client
         /// <param name="response">The response containing a content-type header</param>
         private void CheckResourceType<T>(HttpWebResponse response) where T : class
         {
-            Type receivedType = TypeHelper.GetApiModelType(response.ContentType);
+            var receivedType = TypeHelper.GetApiModelType(response.ContentType);
 
             if (receivedType == null)
             {
                 throw new UnknownMediaTypeException(response.ContentType);
             }
 
-            if(receivedType != typeof(T))
+            if (receivedType != typeof(T))
             {
                 if (receivedType == typeof(StatusMessage))
                 {
-                    StatusMessage message = ReadReponseBody<StatusMessage>(response);
+                    var message = ReadReponseBody<StatusMessage>(response);
                     throw new RestException(message);
                 }
                 else
@@ -276,9 +256,9 @@ namespace Wdsf.Api.Client
 
             return response as HttpWebResponse;
         }
-        private T ReadReponseBody<T>(HttpWebResponse response) where T:class
+        private T ReadReponseBody<T>(HttpWebResponse response) where T : class
         {
-            ISerializer serializer = SerializerFactory.GetSerializer(this.ContentType);
+            var serializer = SerializerFactory.GetSerializer(this.ContentType);
             T result = serializer.Deserialize(typeof(T), response.GetResponseStream()) as T;
 
             return result;
@@ -286,27 +266,32 @@ namespace Wdsf.Api.Client
 
         private HttpWebRequest GetRequest(Uri resourceUri)
         {
-            HttpWebRequest request = WebRequest.Create(resourceUri) as HttpWebRequest;
+            var request = WebRequest.Create(resourceUri) as HttpWebRequest;
+            var auth = "Basic " + Convert.ToBase64String(Encoding.Default.GetBytes(username + ":" + password));
 
-            request.Credentials = this.credentials;
             request.PreAuthenticate = true;
+            request.Headers.Add("Authorization", auth);
+
             request.Accept = GetAcceptType();
+            request.Headers.Add("Accept-Encoding", "gzip");
+
             request.UserAgent = "WDSF API Client";
             request.AutomaticDecompression = DecompressionMethods.GZip;
+
+            if (!string.IsNullOrEmpty(onBehalfOf))
+            {
+                request.Headers.Add("X-OnBehalfOf", onBehalfOf);
+            }
 
             return request;
         }
         private HttpWebRequest GetRequestForSending(Uri resourceUri)
         {
-            HttpWebRequest request = WebRequest.Create(resourceUri) as HttpWebRequest;
+            var request = GetRequest(resourceUri);
 
-            request.Credentials = this.credentials;
-            request.PreAuthenticate = true;
-            request.Accept = GetAcceptType();
-            request.UserAgent = "WDSF API Client";
+#if !DEBUG
             request.Headers.Add("Content-Encoding", "gzip");
-
-            request.AutomaticDecompression = DecompressionMethods.GZip;
+#endif
 
             return request;
         }
@@ -325,12 +310,11 @@ namespace Wdsf.Api.Client
         private string GetContentType(Type contentType)
         {
             string typeName = TypeHelper.GetHttpContentType(contentType);
-            string contentTypeFormat = "{0}+{1}";
 
             switch (this.ContentType)
             {
-                case ContentTypes.Xml: { return string.Format(contentTypeFormat, typeName, "xml"); }
-                case ContentTypes.Json: { return string.Format(contentTypeFormat, typeName, "json"); }
+                case ContentTypes.Xml: { return typeName + "+" + "xml"; }
+                case ContentTypes.Json: { return typeName + "+" + "json"; }
                 default:
                     {
                         throw new Exception("ApiDataFormat invalid.");
@@ -340,13 +324,13 @@ namespace Wdsf.Api.Client
 
         private void WriteRequestBody<T>(T model, HttpWebRequest request) where T : class
         {
-            ISerializer serializer = SerializerFactory.GetSerializer(this.ContentType);
+            var serializer = SerializerFactory.GetSerializer(this.ContentType);
 
-            using (MemoryStream data = new MemoryStream())
+            using (var data = new MemoryStream())
             {
                 if (request.Headers["Content-Encoding"] == "gzip")
                 {
-                    using (GZipStream compressor = new GZipStream(data, CompressionMode.Compress, true))
+                    using (var compressor = new GZipStream(data, CompressionMode.Compress, true))
                     {
                         serializer.Serialize(typeof(T), model, compressor);
                     }
@@ -358,20 +342,22 @@ namespace Wdsf.Api.Client
 
                 data.Position = 0;
 
-                Stream requestStream = request.GetRequestStream();
-                data.WriteTo(requestStream);
-                requestStream.Flush();
-                requestStream.Close();
+                using (var requestStream = request.GetRequestStream())
+                {
+                    data.WriteTo(requestStream);
+                    requestStream.Flush();
+                    requestStream.Close();
+                }
             }
         }
 
-        #region IDisposable Members
+#region IDisposable Members
 
         public void Dispose()
         {
- 	        this.client.Dispose();
+            this.client.Dispose();
         }
 
-        #endregion
+#endregion
     }
 }

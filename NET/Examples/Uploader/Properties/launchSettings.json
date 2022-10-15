@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Uploader": {
+      "commandName": "Project",
+      "commandLineArgs": "-u [your username] -p [your password] -i [the competition ID] -t [the type] -d [the path to the data file]"
+    }
+  }
+}

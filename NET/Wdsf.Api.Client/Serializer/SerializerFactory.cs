@@ -1,7 +1,7 @@
 ﻿namespace Wdsf.Api.Client.Serializer
 {
-    using System;
     using Interfaces;
+    using System;
 
     internal static class SerializerFactory
     {

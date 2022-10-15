@@ -1,19 +1,14 @@
 ﻿namespace Wdsf.Api.Client.Models
 {
-    using System;
+    using Newtonsoft.Json;
     using System.Xml.Serialization;
     using Wdsf.Api.Client.Attributes;
-    using Newtonsoft.Json;
 
     [XmlType("rank", Namespace = "http://services.worlddancesport.org/api")]
     [MediaType("application/vnd.worlddancesport.rank")]
     [JsonObject("rank")]
-    public class Ranking
+    public class Ranking : EntityWithLinks
     {
-        [XmlElement("link")]
-        [JsonProperty("link")]
-        public Link[] Links { get; set; }
-
         [XmlElement("name")]
         [JsonProperty("name")]
         public string Couple { get; set; }
@@ -25,7 +20,7 @@
         [XmlElement("rank")]
         [JsonProperty("rank")]
         public int Rank { get; set; }
-        
+
         [XmlElement("points")]
         [JsonProperty("points")]
         public int Points { get; set; }

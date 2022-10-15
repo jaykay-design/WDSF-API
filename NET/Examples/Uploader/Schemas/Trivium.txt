@@ -1,0 +1,37 @@
+﻿Columns:
+"Date"; ignored
+"Event"; ignored
+"Battle"; ignored
+"Mode"; RoundRobin, TOP4, TOP8 or TOP16
+"Judge"; MIN of judeg
+"v1"; RoundRobin: group, TopX: 1 = final, 2 semifinal, etc.
+"v2"; RoundRobin: battle, TopX: branch
+"Rd"; Sub round (round within battles)
+"Dancer1"; MIN of athlete
+"Dancer2"; MIN of athlete
+"F1"; Fader 1 Technique
+"F2"; Fader 2 Variety
+"F3"; Fader 3 Performativity
+"F4"; Fader 4 Musicality
+"F5"; Fader 5 Creativity
+"F6"; Fader 6 Personality
+"C1D1"; Crash 1 Dancer 1
+"C1D2"; Crash 1 Dancer 2
+"C2D1"; Crash 2 Dancer 1
+"C2D2"; Crash 2 Dancer 2
+"C3D1"; Crash 3 Dancer 1
+"C3D2"; Crash 3 Dancer 2
+"M1"; Misbehaviour Dancer 1
+"M2"; Misbehaviour Dancer 2
+"R1"; Repeat Dancer 1
+"R2"; Repeat Dancer 2
+"B1"; Bite Dancer 1
+"B2"; Bite Dancer 2
+"S1"; Spontaneity Dancer 1
+"S2"; Spontaneity Dancer 2
+"C1"; Confidence Dancer 1
+"C2"; Confidence Dancer 2
+"E1"; Execution Dancer 1
+"E2"; Execution Dancer 2
+"F1"; Form Dancer 1
+"F2" Form Dancer 2

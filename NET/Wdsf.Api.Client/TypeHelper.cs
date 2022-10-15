@@ -1,21 +1,4 @@
-﻿/*  Copyright (C) 2011-2012 JayKay-Design S.C.
-    Author: John Caprez jay@jaykay-design.com
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Lesser General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Lesser General Public License for more details.
-
-    You should have received a copy of the GNU LEsser General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/lgpl.html>.
- */
-
-namespace Wdsf.Api.Client
+﻿namespace Wdsf.Api.Client
 {
     using System;
     using System.Collections.Generic;
@@ -25,13 +8,13 @@ namespace Wdsf.Api.Client
 
     public static class TypeHelper
     {
-        private static Dictionary<string, Type> mediaTypeTypeMap =
+        private static readonly Dictionary<string, Type> mediaTypeTypeMap =
             Assembly.GetExecutingAssembly()
             .GetTypes()
             .Where(t => t.Namespace == "Wdsf.Api.Client.Models")
             .Where<Type>(t => t.GetCustomAttributes(typeof(MediaTypeAttribute), false).Length != 0)
             .ToDictionary(
-                k => ((MediaTypeAttribute)k.GetCustomAttributes(typeof(MediaTypeAttribute), false).First()).MediaType, 
+                k => ((MediaTypeAttribute)k.GetCustomAttributes(typeof(MediaTypeAttribute), false).First()).MediaType,
                 v => v);
 
         /// <summary>

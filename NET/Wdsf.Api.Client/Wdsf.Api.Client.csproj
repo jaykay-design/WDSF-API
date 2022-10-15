@@ -1,179 +1,31 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{EB80C37C-ADC8-4B97-87B8-D2026CC36542}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Wdsf.Api.Client</RootNamespace>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Wdsf.Api.Client</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>none</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>
-    </DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
-    <DocumentationFile>bin\Release\Wdsf.Api.Client.XML</DocumentationFile>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup>
+    <RootNamespace>Wdsf.Api.Client</RootNamespace>
+    <Version>2.3.1</Version>
+    <Authors>John Caprez</Authors>
+    <Company>JayKay-Design S.C.</Company>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Description>A .NET library which connects to the World DanceSport Federation's API using strongly typed models.</Description>
+    <PackageReleaseNotes>added missing properties for JSON serialisation</PackageReleaseNotes>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageProjectUrl></PackageProjectUrl>
+    <RepositoryUrl>https://github.com/jaykay-design/WDSF-API/</RepositoryUrl>
+    <PackageTags>wdsf,api, dancesport</PackageTags>
     <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
     <AssemblyOriginatorKeyFile>Wdsf.Api.Client.snk</AssemblyOriginatorKeyFile>
+    <DelaySign>false</DelaySign>
+    <AssemblyVersion>2.3.1.0</AssemblyVersion>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net35\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Attributes\MediaTypeAttribute.cs" />
-    <Compile Include="CertificatePolicy.cs" />
-    <Compile Include="Client.cs" />
-    <Compile Include="ContentTypes.cs" />
-    <Compile Include="Converter\JsonScoreConverter.cs" />
-    <Compile Include="Enumerations.cs" />
-    <Compile Include="Exceptions\ApiException.cs" />
-    <Compile Include="Exceptions\BusyException.cs" />
-    <Compile Include="Exceptions\UnauthorizedException.cs" />
-    <Compile Include="Exceptions\UnexpectedMediaTypeException.cs" />
-    <Compile Include="Exceptions\RestException.cs" />
-    <Compile Include="Exceptions\UnknownMediaTypeException.cs" />
-    <Compile Include="FilterNames.cs" />
-    <Compile Include="Interfaces\IClient.cs" />
-    <Compile Include="Interfaces\ISerializer.cs" />
-    <Compile Include="Models\AgeClass.cs" />
-    <Compile Include="Models\CompetitionDetail.cs" />
-    <Compile Include="Models\Competition.cs" />
-    <Compile Include="Models\License.cs" />
-    <Compile Include="Models\OnScale3Score.cs" />
-    <Compile Include="Models\OnScaleIdoScore.cs" />
-    <Compile Include="Models\ListOfTeam.cs" />
-    <Compile Include="Models\ListOfSingleParticipant.cs" />
-    <Compile Include="Models\ParticipantSingleDetail.cs" />
-    <Compile Include="Models\ParticipantSingle.cs" />
-    <Compile Include="Models\OnScale2Score.cs" />
-    <Compile Include="Models\Country.cs" />
-    <Compile Include="Models\CoupleBase.cs" />
-    <Compile Include="Models\CoupleDetail.cs" />
-    <Compile Include="Models\Couple.cs" />
-    <Compile Include="Models\CoupleExport.cs" />
-    <Compile Include="Models\Dance.cs" />
-    <Compile Include="Models\FinalScore.cs" />
-    <Compile Include="Models\Link.cs" />
-    <Compile Include="Models\ListOfAgeClass.cs" />
-    <Compile Include="Models\ListOfCompetition.cs" />
-    <Compile Include="Models\ListOfCountry.cs" />
-    <Compile Include="Models\ListOfCoupleExport.cs" />
-    <Compile Include="Models\ListOfCoupleParticipant.cs" />
-    <Compile Include="Models\ListOfCouple.cs" />
-    <Compile Include="Models\ListOfOfficial.cs" />
-    <Compile Include="Models\ListOfPerson.cs" />
-    <Compile Include="Models\ListOfRanking.cs" />
-    <Compile Include="Models\ListOfTeamParticipant.cs" />
-    <Compile Include="Models\MarkScore.cs" />
-    <Compile Include="Models\OfficialDetail.cs" />
-    <Compile Include="Models\Official.cs" />
-    <Compile Include="Models\OnScaleScore.cs" />
-    <Compile Include="Models\ParticipantBaseDetail.cs" />
-    <Compile Include="Models\ParticipantBase.cs" />
-    <Compile Include="Models\ParticipantCoupleDetail.cs" />
-    <Compile Include="Models\ParticipantCouple.cs" />
-    <Compile Include="Models\ParticipantTeamDetail.cs" />
-    <Compile Include="Models\ParticipantTeam.cs" />
-    <Compile Include="Models\PersonDetail.cs" />
-    <Compile Include="Models\Person.cs" />
-    <Compile Include="Models\Ranking.cs" />
-    <Compile Include="Models\Round.cs" />
-    <Compile Include="Models\Score.cs" />
-    <Compile Include="Models\StatusMessage.cs" />
-    <Compile Include="Models\Team.cs" />
-    <Compile Include="Models\TeamBase.cs" />
-    <Compile Include="Models\TeamDetail.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Relations.cs" />
-    <Compile Include="RestAdapter.cs" />
-    <Compile Include="Serializer\JsonSerializer.cs" />
-    <Compile Include="Serializer\SerializerFactory.cs" />
-    <Compile Include="Serializer\XmlSerializer.cs" />
-    <Compile Include="TypeHelper.cs" />
-    <Compile Include="WdsfEndPoint.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-    <None Include="Wdsf.Api.Client.nuspec" />
-    <None Include="Wdsf.Api.Client.snk" />
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>Wdsf.Api.Client.xml</DocumentationFile>
   </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+  </ItemGroup>
+
 </Project>

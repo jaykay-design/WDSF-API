@@ -1,17 +1,13 @@
 ﻿namespace Wdsf.Api.Client.Models
 {
-    using System.Xml.Serialization;
     using Newtonsoft.Json;
+    using System.Xml.Serialization;
 
     [XmlType("participant", Namespace = "http://services.worlddancesport.org/api")]
     [XmlRoot("participant", Namespace = "http://services.worlddancesport.org/api")]
     [JsonObject("participant")]
     public class ParticipantTeam : ParticipantBase
     {
-        [XmlElement("link")]
-        [JsonProperty("link")]
-        public override Link[] Link { get; set; }
-
         [XmlElement("name")]
         [JsonProperty("name")]
         public string Name { get; set; }

@@ -1,7 +1,7 @@
 ﻿namespace Wdsf.Api.Client.Models
 {
-    using System.Xml.Serialization;
     using Newtonsoft.Json;
+    using System.Xml.Serialization;
 
     [XmlType("mark", Namespace = "http://services.worlddancesport.org/api")]
     [JsonObject("mark")]
@@ -20,13 +20,10 @@
 
         [XmlIgnore]
         [JsonProperty("kind")]
-        public override string Kind { get { return "mark"; } set { ; } }
+        public override string Kind { get { return "mark"; } }
 
         [XmlAttribute("set")]
         [JsonProperty("set")]
         public bool IsSet { get; set; }
-
-        [XmlIgnore, JsonIgnore]
-        public bool IsSetSpecified { get { return this.IsSet; } set { ;} }
     }
 }

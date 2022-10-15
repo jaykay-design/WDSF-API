@@ -34,6 +34,31 @@
 1.0.6281	+ added JudgingSyste 3 maxDeviation property
 			
 
+2.0.0.0		+ targeting .netstandard 2.0
+			+ allow creating teams including their members
+			+ added division to member details
+			# propperly disposing response
+			# only serialize certain proerties if neccesary
+			
+			! BREAKING CHANGES: 
+				All model properties which returned an array now return a List
+				All models inheriting from ParticipantBase: The property Link was renamed to Links
+				Round.MaxDeviation is now a decimal, was a string.
+				Score.Link is not an array anymore as it wil always just have one single link
+
+2.0.3.0		# downgrade Newtonsoft.JSON as that seems the last version wich works correctly with NetStandard 2.0
+
+2.0.4.0		+ added model and method for batch result uploads
+
+2.1.0.0		+ added models for Trivium (Breaking discipline)
+			+ added option to allow impersonating an other scrutiny (only available to trusted service providers)
+			# remove SecureString usage
+
+2.2.0.0		+ added models for ThreeFold (Breaking discipline)
+
+2.3.0.0		+ added models for BreakingSeed (Breaking discipline)
+2.3.1.0		+ added missing properties for JSON serialisation
+
 WDSF Checkin
 
 1.0.0.0			- initial implementation
@@ -41,3 +66,4 @@ WDSF Checkin
 				! needs to implement personal username/password for API access
 				! needs to implement start number assignation
 				! needs to implement output for scrutiny SW or upload to API
+

@@ -1,21 +1,4 @@
-﻿/*  Copyright (C) 2011-2012 JayKay-Design S.C.
-    Author: John Caprez jay@jaykay-design.com
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Lesser General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Lesser General Public License for more details.
-
-    You should have received a copy of the GNU LEsser General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/lgpl.html>.
- */
-
-namespace Wdsf.Api.Client
+﻿namespace Wdsf.Api.Client
 {
     using System;
     using System.Collections.Generic;
@@ -25,7 +8,7 @@ namespace Wdsf.Api.Client
     using Wdsf.Api.Client.Exceptions;
     using Wdsf.Api.Client.Interfaces;
     using Wdsf.Api.Client.Models;
-    
+
     /// <summary>
     /// <para>Provides access to the WDSF API throught stongly typed models.</para>
     /// <para>This class is threadsafe and multiple request can be made to the same instance.</para>
@@ -33,321 +16,381 @@ namespace Wdsf.Api.Client
     public class Client : IDisposable, IClient
     {
         private readonly string username;
-        private readonly SecureString password;
+        private readonly string password;
+        private readonly string onBehalfOf;
         private readonly string apiUriBase;
 
         private List<RestAdapter> adapters;
         private readonly object adapterLock = new object();
 
+        ///<inheritdoc/>
         public ContentTypes ContentType { get; set; }
 
-        /// <summary>
-        /// Contains the last message returned from the API
-        /// </summary>
+        ///<inheritdoc/>
         public string LastApiMessage { get; private set; }
 
-        public Client(string username, string password, WdsfEndpoint endPoint) :
-            this(username, MakeSecureString(password), endPoint)
+        ///<inheritdoc/>
+        public Client(string username, SecureString password, WdsfEndpoint endPoint, string onBehalfOf = null) :
+            this(username, ExtractSecureString(password), endPoint == WdsfEndpoint.Services ? "https://services.worlddancesport.org/API/1/" : "https://sandbox.worlddancesport.org/API/1/", onBehalfOf)
         {
         }
 
-        public Client(string username, SecureString password, WdsfEndpoint endPoint) :
-            this(username, password, endPoint == WdsfEndpoint.Services ? "https://services.worlddancesport.org/API/1/" : "https://sandbox.worlddancesport.org/API/1/")
+        ///<inheritdoc/>
+        public Client(string username, string password, WdsfEndpoint endPoint, string onBehalfOf = null) :
+            this(username, password, endPoint == WdsfEndpoint.Services ? "https://services.worlddancesport.org/API/1/" : "https://sandbox.worlddancesport.org/API/1/", onBehalfOf)
         {
         }
 
-        public Client(string username, string password, string baseUrl) :
-            this(username, MakeSecureString(password), baseUrl)
+        ///<inheritdoc/>
+        public Client(string username, string password, string baseUrl, string onBehalfOf = null)
         {
-        }
+            apiUriBase = baseUrl ?? throw new ArgumentNullException(nameof(baseUrl));
+            this.username = username ?? throw new ArgumentNullException(nameof(username));
+            this.password = password ?? throw new ArgumentNullException(nameof(password));
+            this.onBehalfOf = onBehalfOf;
 
-        public Client(string username, SecureString password, string baseUrl)
-        {
-            if (username == null)
-                throw new ArgumentNullException("username");
-            if (password == null)
-                throw new ArgumentNullException("password");
-            if (baseUrl == null)
-                throw new ArgumentNullException("baseUrl");
-
-            apiUriBase = baseUrl;
-
-            this.username = username;
-            this.password = password;
-
-            this.adapters = new List<RestAdapter>() {};
+            this.adapters = new List<RestAdapter>() { };
 
 #if DEBUG
-            System.Net.ServicePointManager.ServerCertificateValidationCallback = CertificatePolicy.ValidateSSLCertificate;
+            // Ignore TLS errors when in debug mode (self signed certs)
+            ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
 #endif
         }
 
-        private static SecureString MakeSecureString(string val)
+        private static string ExtractSecureString(SecureString val)
         {
             if (val == null)
                 return null;
 
-            SecureString retVal = new SecureString();
-
-            if (val.Length == 0)
-                return retVal;
-
-            for (int i = 0; i < val.Length; i++)
-                retVal.AppendChar(val[i]);
-
-            retVal.MakeReadOnly();
-            return retVal;
+            return val.ToString();
         }
 
 
+        ///<inheritdoc/>
         public IList<Person> GetPersons(IDictionary<string, string> filter)
         {
             if (filter == null)
-                throw new ArgumentNullException("filter");
+                throw new ArgumentNullException(nameof(filter));
 
-            string query = string.Join("&", filter.Select(e => string.Format("{0}={1}", e.Key, e.Value)).ToArray());
+            string query = string.Join("&", filter.Select(e => e.Key + "=" + e.Value).ToArray());
 
-            return GetResourceList<ListOfPerson, Person>(string.Format("person?{0}", query));
+            return GetResourceList<ListOfPerson, Person>("person?" + query);
         }
+        ///<inheritdoc/>
         public PersonDetail GetPerson(int min)
         {
-            return GetResource<PersonDetail>(string.Format("person/{0}", min));
+            return GetResource<PersonDetail>("person/" + min);
         }
+        ///<inheritdoc/>
         public bool UpdatePerson(PersonDetail person)
         {
             if (person == null)
-                throw new ArgumentNullException("person");
+                throw new ArgumentNullException(nameof(person));
 
-            return UpdateResource<PersonDetail>(person, string.Format("person/{0}", person.Min));
+            return UpdateResource<PersonDetail>(person, "person/" + person.Min);
         }
 
 
+        ///<inheritdoc/>
         public IList<Competition> GetCompetitions(IDictionary<string, string> filter)
         {
             if (filter == null)
-                throw new ArgumentNullException("filter");
+                throw new ArgumentNullException(nameof(filter));
 
-            string query = string.Join("&", filter.Select(e => string.Format("{0}={1}", e.Key, e.Value)).ToArray());
+            string query = string.Join("&", filter.Select(e => e.Key + "=" + e.Value).ToArray());
 
-            return GetResourceList<ListOfCompetition, Competition>(string.Format("competition?{0}", query));
+            return GetResourceList<ListOfCompetition, Competition>("competition?" + query);
         }
+        ///<inheritdoc/>
         public CompetitionDetail GetCompetition(int id)
         {
-            return GetResource<CompetitionDetail>(string.Format("competition/{0}", id));
+            return GetResource<CompetitionDetail>("competition/" + id);
         }
+        ///<inheritdoc/>
         public bool UpdateCompetition(CompetitionDetail competition)
         {
             if (competition == null)
-                throw new ArgumentNullException("competition");
+                throw new ArgumentNullException(nameof(competition));
 
             // not used for updating
             competition.Links = null;
 
-            return UpdateResource<CompetitionDetail>(competition, string.Format("competition/{0}", competition.Id));
+            return UpdateResource(competition, "competition/" + competition.Id);
         }
 
+        ///<inheritdoc/>
         public ParticipantCoupleDetail GetCoupleParticipant(int id)
         {
-            return GetResource<ParticipantCoupleDetail>(string.Format("participant/{0}", id));
+            return GetResource<ParticipantCoupleDetail>("participant/" + id);
         }
+        ///<inheritdoc/>
         public IList<ParticipantCouple> GetCoupleParticipants(int competitionId)
         {
             return GetResourceList<ListOfCoupleParticipant, ParticipantCouple>(
-                string.Format("participant?competitionId={0}", competitionId)
+                "participant?competitionId=" + competitionId
             );
         }
+        ///<inheritdoc/>
         public bool UpdateCoupleParticipant(ParticipantCoupleDetail participant)
         {
             if (participant == null)
-                throw new ArgumentNullException("participant");
+                throw new ArgumentNullException(nameof(participant));
 
             ClearLinks(participant);
 
-            return UpdateResource<ParticipantCoupleDetail>(participant, string.Format("participant/{0}", participant.Id));
+            return UpdateResource(participant, "participant/" + participant.Id);
         }
+        ///<inheritdoc/>
         public Uri SaveCoupleParticipant(ParticipantCoupleDetail participant)
         {
             if (participant == null)
-                throw new ArgumentNullException("participant");
+                throw new ArgumentNullException(nameof(participant));
 
             ClearLinks(participant);
 
-            return SaveResource<ParticipantCoupleDetail>(participant, "participant");
+            return SaveResource(participant, "participant");
         }
+        ///<inheritdoc/>
         public bool DeleteCoupleParticipant(int id)
         {
-            return DeleteResource(string.Format("participant/{0}", id));
+            return DeleteResource("participant/" + id);
         }
 
 
+        ///<inheritdoc/>
         public ParticipantTeamDetail GetTeamParticipant(int id)
         {
-            return GetResource<ParticipantTeamDetail>(string.Format("participant/{0}", id));
+            return GetResource<ParticipantTeamDetail>("participant/" + id);
         }
+        ///<inheritdoc/>
         public IList<ParticipantTeam> GetTeamParticipants(int competitionId)
         {
             return GetResourceList<ListOfTeamParticipant, ParticipantTeam>(
-                string.Format("participant?competitionId={0}", competitionId)
+                "participant?competitionId=" + competitionId
             );
         }
+        ///<inheritdoc/>
         public bool UpdateTeamParticipant(ParticipantTeamDetail participant)
         {
             if (participant == null)
-                throw new ArgumentNullException("participant");
+                throw new ArgumentNullException(nameof(participant));
 
             ClearLinks(participant);
 
-            return UpdateResource<ParticipantTeamDetail>(participant, string.Format("participant/{0}", participant.Id));
+            return UpdateResource(participant, "participant/" + participant.Id);
         }
+        ///<inheritdoc/>
         public Uri SaveTeamParticipant(ParticipantTeamDetail participant)
         {
             if (participant == null)
-                throw new ArgumentNullException("participant");
+                throw new ArgumentNullException(nameof(participant));
 
             ClearLinks(participant);
 
-            return SaveResource<ParticipantTeamDetail>(participant, "participant");
+            return SaveResource(participant, "participant");
         }
+        ///<inheritdoc/>
         public bool DeleteTeamParticipant(int id)
         {
-            return DeleteResource(string.Format("participant/{0}", id));
+            return DeleteResource("participant/" + id);
         }
 
 
+        ///<inheritdoc/>
         public ParticipantSingleDetail GetSingleParticipant(int id)
         {
-            return GetResource<ParticipantSingleDetail>(string.Format("participant/{0}", id));
+            return GetResource<ParticipantSingleDetail>("participant/" + id);
         }
+        ///<inheritdoc/>
         public IList<ParticipantSingle> GetSingleParticipants(int competitionId)
         {
             return GetResourceList<ListOfSingleParticipant, ParticipantSingle>(
-                string.Format("participant?competitionId={0}", competitionId)
+                "participant?competitionId=" + competitionId
             );
         }
+        ///<inheritdoc/>
         public bool UpdateSingleParticipant(ParticipantSingleDetail participant)
         {
             if (participant == null)
-                throw new ArgumentNullException("participant");
+                throw new ArgumentNullException(nameof(participant));
 
             ClearLinks(participant);
 
-            return UpdateResource<ParticipantSingleDetail>(participant, string.Format("participant/{0}", participant.Id));
+            return UpdateResource(participant, "participant/" + participant.Id);
         }
+        ///<inheritdoc/>
         public Uri SaveSingleParticipant(ParticipantSingleDetail participant)
         {
             if (participant == null)
-                throw new ArgumentNullException("participant");
+                throw new ArgumentNullException(nameof(participant));
 
             ClearLinks(participant);
 
-            return SaveResource<ParticipantSingleDetail>(participant, "participant");
+            return SaveResource(participant, "participant");
         }
+        ///<inheritdoc/>
         public bool DeleteSingleParticipant(int id)
         {
-            return DeleteResource(string.Format("participant/{0}", id));
+            return DeleteResource("participant/" + id);
         }
 
 
+        ///<inheritdoc/>
+        public bool UploadResults(IEnumerable<Result> results, int competitionId)
+        {
+            if (results == null)
+                throw new ArgumentNullException(nameof(results));
+
+            if (results.Count() == 0)
+                return true;
+
+            var model = new ListOfResults();
+            model.AddRange(results);
+
+            return UpdateResource(model, "result/" + competitionId);
+        }
+
+        ///<inheritdoc/>
         public OfficialDetail GetOfficial(int id)
         {
-            return GetResource<OfficialDetail>(string.Format("official/{0}", id));
+            return GetResource<OfficialDetail>("official/" + id);
         }
+        ///<inheritdoc/>
         public IList<Official> GetOfficials(int competitionId)
         {
             return GetResourceList<ListOfOfficial, Official>(
-                string.Format("official?competitionId={0}", competitionId)
+                "official?competitionId=" + competitionId
             );
         }
+        ///<inheritdoc/>
         public bool UpdateOfficial(OfficialDetail official)
         {
             if (official == null)
-                throw new ArgumentNullException("official");
+                throw new ArgumentNullException(nameof(official));
 
-            return UpdateResource<OfficialDetail>(official, string.Format("official/{0}", official.Id));
+            return UpdateResource(official, "official/" + official.Id);
         }
+        ///<inheritdoc/>
         public Uri SaveOfficial(OfficialDetail official)
         {
             if (official == null)
-                throw new ArgumentNullException("official");
+                throw new ArgumentNullException(nameof(official));
 
-            return SaveResource<OfficialDetail>(official, "official");
+            return SaveResource(official, "official");
         }
+        ///<inheritdoc/>
         public bool DeleteOfficial(int id)
         {
-            return DeleteResource(string.Format("official/{0}", id));
+            return DeleteResource("official/" +  id);
         }
 
 
+        ///<inheritdoc/>
         public IList<CoupleExport> GetCouples()
         {
             return GetResourceList<ListOfCoupleExport, CoupleExport>("couple/export");
         }
+        ///<inheritdoc/>
         public IList<Couple> GetCouples(IDictionary<string, string> filter)
         {
             if (filter == null)
-                throw new ArgumentNullException("filter");
+                throw new ArgumentNullException(nameof(filter));
 
-            string query = string.Join("&", filter.Select(e => string.Format("{0}={1}", e.Key, e.Value)).ToArray());
+            string query = string.Join("&", filter.Select(e => e.Key + "=" + e.Value).ToArray());
 
-            return GetResourceList<ListOfCouple, Couple>(string.Format("couple?{0}", query));
+            return GetResourceList<ListOfCouple, Couple>("couple?" + query);
         }
+        ///<inheritdoc/>
         public CoupleDetail GetCouple(string id)
         {
             if (string.IsNullOrEmpty(id))
-                throw new ArgumentException("Couple ID must be specified.", "id");
+                throw new ArgumentException("Couple ID must be specified.", nameof(id));
 
-            return GetResource<CoupleDetail>(string.Format("couple/{0}", id));
+            return GetResource<CoupleDetail>("couple/" + id);
         }
+        ///<inheritdoc/>
         public bool UpdateCouple(CoupleDetail couple)
         {
             if (couple == null)
-                throw new ArgumentNullException("couple");
+                throw new ArgumentNullException(nameof(couple));
 
-            return UpdateResource<CoupleDetail>(couple, string.Format("couple/{0}", couple.Id));
+            return UpdateResource(couple, "couple/" + couple.Id);
         }
+        ///<inheritdoc/>
         public Uri SaveCouple(CoupleDetail couple)
         {
             if (couple == null)
-                throw new ArgumentNullException("couple");
+                throw new ArgumentNullException(nameof(couple));
 
-            return SaveResource<CoupleDetail>(couple, "couple");
+            return SaveResource(couple, "couple");
         }
 
+        ///<inheritdoc/>
+        public IList<Team> GetTeams(IDictionary<string, string> filter)
+        {
+            if (filter == null)
+                throw new ArgumentNullException(nameof(filter));
 
+            string query = string.Join("&", filter.Select(e => e.Key + "=" + e.Value).ToArray());
+
+            return GetResourceList<ListOfTeam, Team>("team?" + query);
+        }
+        ///<inheritdoc/>
+        public TeamDetail GetTeam(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                throw new ArgumentException("team ID must be specified.", nameof(id));
+
+            return GetResource<TeamDetail>("team/" + id);
+        }
+        ///<inheritdoc/>
+        public bool UpdateTeam(TeamDetail team)
+        {
+            if (team == null)
+                throw new ArgumentNullException(nameof(team));
+
+            return UpdateResource(team, "team/" + team.Id);
+        }
+        ///<inheritdoc/>
+        public Uri SaveTeam(TeamDetail team)
+        {
+            if (team == null)
+                throw new ArgumentNullException(nameof(team));
+
+            return SaveResource(team, "team");
+        }
+
+        ///<inheritdoc/>
         public IList<Ranking> GetWorldRanking(string discipline, string ageGroup, string division)
         {
             return GetWorldRanking(discipline, ageGroup, division, DateTime.MinValue);
         }
-		public IList<Ranking> GetWorldRanking(string discipline, string ageGroup, string division, DateTime date)
+        ///<inheritdoc/>
+        public IList<Ranking> GetWorldRanking(string discipline, string ageGroup, string division, DateTime date)
         {
             if (string.IsNullOrEmpty(discipline))
-            {
-                throw new ArgumentException("Discipline must be set.", "discipline");
-            }
+                throw new ArgumentException("Discipline must be set.", nameof(discipline));
 
             if (string.IsNullOrEmpty(ageGroup))
-            {
-                throw new ArgumentException("Age group must be set.", "ageGroup");
-            }
+                throw new ArgumentException("Age group must be set.", nameof(ageGroup));
 
             if (string.IsNullOrEmpty(division))
-            {
-                throw new ArgumentException("Division must be set.", "division");
-            }
+                throw new ArgumentException("Division must be set.", nameof(division));
 
-            string resourceUri = 
-                date != DateTime.MinValue ?
-                string.Format("ranking?agegroup={0}&discipline={1}&division={2}&date={3:yyyy/MM/dd}", ageGroup, discipline, division, date) :
-                string.Format("ranking?agegroup={0}&discipline={1}&division={2}", ageGroup, discipline, division);
+            string resourceUri = $"ranking?agegroup={ageGroup}&discipline={discipline}&division={division}";
+            if (date != DateTime.MinValue)
+                resourceUri += "&date=" + date.ToString("yyyy/MM/dd");
 
             return GetResourceList<ListOfRanking, Ranking>(resourceUri);
         }
 
+        ///<inheritdoc/>
         public IList<AgeClass> GetAges()
         {
             return GetResourceList<ListOfAgeClass, AgeClass>("age");
         }
 
+        ///<inheritdoc/>
         public IList<Country> GetCountries()
         {
             return GetResourceList<ListOfCountry, Country>("country");
@@ -361,12 +404,12 @@ namespace Wdsf.Api.Client
         /// <param name="resourceUri">The resourceUri</param>
         /// <exception cref="ApiException">The request failed. See inner exception for details.</exception>
         /// <returns>The resource</returns>
-        public T Get<T>(Uri resourceUri) where T:class
+        public T Get<T>(Uri resourceUri) where T : class
         {
             if (null == resourceUri)
-                throw new ArgumentNullException("resourceUri");
+                throw new ArgumentNullException(nameof(resourceUri));
 
-            RestAdapter adapter = GetAdapter();
+            var adapter = GetAdapter();
             try
             {
                 return adapter.Get<T>(resourceUri);
@@ -390,9 +433,9 @@ namespace Wdsf.Api.Client
         public object Get(Uri resourceUri)
         {
             if (null == resourceUri)
-                throw new ArgumentNullException("resourceUri");
+                throw new ArgumentNullException(nameof(resourceUri));
 
-            RestAdapter adapter = GetAdapter();
+            var adapter = GetAdapter();
             try
             {
                 return adapter.Get(resourceUri);
@@ -407,38 +450,9 @@ namespace Wdsf.Api.Client
             }
         }
 
-        private T Get<T>(string resourceUri) where T : class
-        {
-            if (null == resourceUri)
-                throw new ArgumentNullException("resourceUri");
-
-            return GetResource<T>(resourceUri);
-        }
-
-        private object Get(string resourceUri)
-        {
-            if (null == resourceUri)
-                throw new ArgumentNullException("resourceUri");
-
-            RestAdapter adapter = GetAdapter();
-            try
-            {
-                return adapter.Get(new Uri(this.apiUriBase + resourceUri));
-            }
-            catch (Exception ex)
-            {
-                throw new ApiException(ex);
-            }
-            finally
-            {
-                ReleaseAdapter(adapter);
-            }
-
-        }
-
         private T GetResource<T>(string resourceUri) where T : class
         {
-            RestAdapter adapter = GetAdapter();
+            var adapter = GetAdapter();
             try
             {
                 return adapter.Get<T>(new Uri(this.apiUriBase + resourceUri));
@@ -458,10 +472,10 @@ namespace Wdsf.Api.Client
             where TItem : class
         {
 
-            RestAdapter adapter = GetAdapter();
+            var adapter = GetAdapter();
             try
             {
-                TContainer items = adapter.Get<TContainer>(new Uri(this.apiUriBase + resourceUri));
+                var items = adapter.Get<TContainer>(new Uri(this.apiUriBase + resourceUri));
                 return new List<TItem>(items);
             }
             catch (Exception ex)
@@ -474,15 +488,15 @@ namespace Wdsf.Api.Client
             }
 
         }
-        private bool UpdateResource<T>(T competition, string resourceUri) where T : class
+        private bool UpdateResource<T>(T model, string resourceUri) where T : class
         {
             this.LastApiMessage = string.Empty;
 
             StatusMessage message;
-            RestAdapter adapter = GetAdapter();
+            var adapter = GetAdapter();
             try
             {
-                message = adapter.Put<T>(new Uri(this.apiUriBase + resourceUri), competition);
+                message = adapter.Put(new Uri(this.apiUriBase + resourceUri), model);
             }
             catch (Exception ex)
             {
@@ -502,7 +516,7 @@ namespace Wdsf.Api.Client
             this.LastApiMessage = string.Empty;
 
             StatusMessage message;
-            RestAdapter adapter = GetAdapter();
+            var adapter = GetAdapter();
             try
             {
                 message = adapter.Post<T>(new Uri(this.apiUriBase + resourceUri), participant);
@@ -529,11 +543,12 @@ namespace Wdsf.Api.Client
         {
             this.LastApiMessage = string.Empty;
 
-            StatusMessage message;
-            RestAdapter adapter = GetAdapter();
+            var adapter = GetAdapter();
             try
             {
-                message = adapter.Delete(new Uri(this.apiUriBase + resourceUri));
+                var message = adapter.Delete(new Uri(this.apiUriBase + resourceUri));
+                this.LastApiMessage = message.Message;
+                return message.Code == (int)HttpStatusCode.OK;
             }
             catch (Exception ex)
             {
@@ -544,8 +559,6 @@ namespace Wdsf.Api.Client
                 ReleaseAdapter(adapter);
             }
 
-            this.LastApiMessage = message.Message;
-            return message.Code == (int)HttpStatusCode.OK;
         }
 
         /// <summary>
@@ -554,18 +567,18 @@ namespace Wdsf.Api.Client
         /// <param name="participant"></param>
         private void ClearLinks(ParticipantBaseDetail participant)
         {
-            participant.Link = null;
+            participant.Links = null;
 
             if (participant.Rounds == null)
             {
                 return;
             }
 
-            foreach (Round round in participant.Rounds)
+            foreach (var round in participant.Rounds)
             {
-                foreach (Dance dance in round.Dances)
+                foreach (var dance in round.Dances)
                 {
-                    foreach (Score score in dance.Scores)
+                    foreach (var score in dance.Scores)
                     {
                         score.Link = null;
                     }
@@ -580,11 +593,13 @@ namespace Wdsf.Api.Client
                 if (null == this.adapters)
                     throw new ObjectDisposedException(GetType().FullName);
 
-                RestAdapter adapter = this.adapters.FirstOrDefault(a => a.IsBusy == false && a.IsAssigned == false);
+                var adapter = this.adapters.FirstOrDefault(a => a.IsBusy == false && a.IsAssigned == false);
                 if (adapter == null)
                 {
-                    adapter = new RestAdapter(this.username, this.password);
-                    adapter.ContentType = this.ContentType;
+                    adapter = new RestAdapter(this.username, this.password, this.onBehalfOf)
+                    {
+                        ContentType = this.ContentType
+                    };
                     this.adapters.Add(adapter);
                 }
 
@@ -618,7 +633,7 @@ namespace Wdsf.Api.Client
                 {
                     if (this.adapters != null)
                     {
-                        foreach (RestAdapter adapter in this.adapters)
+                        foreach (var adapter in this.adapters)
                         {
                             adapter.Dispose();
                         }

@@ -1,11 +1,11 @@
 ﻿namespace Wdsf.Api.Client.Converter
 {
-    using System;
+    using Models;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
-    using Models;
+    using System;
 
-    class JsonScoreConverter:JsonConverter
+    class JsonScoreConverter : JsonConverter
     {
         public override bool CanConvert(Type objectType)
         {
@@ -19,7 +19,7 @@
                 return new Score();
             }
 
-            JObject jObject = JObject.Load(reader);
+            var jObject = JObject.Load(reader);
 
             switch (jObject["kind"].Value<string>())
             {
@@ -27,10 +27,13 @@
                 case "onScale2": return jObject.ToObject<OnScale2Score>(serializer);
                 case "onScale": return jObject.ToObject<OnScaleScore>(serializer);
                 case "onScaleIdo": return jObject.ToObject<OnScaleIdoScore>(serializer);
-//                case "nomark": return jObject.ToObject<NoMarkScore>(serializer);
+                //                case "nomark": return jObject.ToObject<NoMarkScore>(serializer);
                 case "mark": return jObject.ToObject<MarkScore>(serializer);
                 case "final": return jObject.ToObject<FinalScore>(serializer);
-                default: throw new NotImplementedException(string.Format("No JSON reader for type {0} implemented.", objectType.FullName));
+                case "trivium": return jObject.ToObject<TriviumScore>(serializer);
+                case "threefold": return jObject.ToObject<ThreeFoldScore>(serializer);
+                case "breakingseed": return jObject.ToObject<BreakingSeedScore>(serializer);
+                default: throw new NotImplementedException($"No JSON reader for type '{objectType.FullName}' implemented.");
             }
         }
 

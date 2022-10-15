@@ -2,9 +2,12 @@
 {
     using System;
     using System.Collections.Generic;
-    using Wdsf.Api.Client.Models;
     using Wdsf.Api.Client.Exceptions;
+    using Wdsf.Api.Client.Models;
 
+    /// <summary>
+    /// <para>Provides access to the WDSF API throught stongly typed models.</para>
+    /// </summary>
     public interface IClient
     {
         /// <summary>
@@ -138,6 +141,14 @@
         bool DeleteSingleParticipant(int id);
 
         /// <summary>
+        /// Uploads multipel results at once.
+        /// </summary>
+        /// <param name="results">The results</param>
+        /// <param name="competitionId">What competition these belong to</param>
+        /// <returns>true on success</returns>
+        bool UploadResults(IEnumerable<Result> results, int competitionId);
+
+        /// <summary>
         /// Gets officials of specified competition
         /// </summary>
         /// <param name="competitionId">The competition ID</param>
@@ -204,6 +215,34 @@
         /// <param name="couple">The couple model.</param>
         /// <exception cref="ApiException">The request failed. See inner exception for details.</exception>
         bool UpdateCouple(CoupleDetail couple);
+
+        /// <summary>
+        /// Gets a list of teams.
+        /// </summary>
+        /// <param name="filter">A dictionaly containing filter parameters. See API documentation for details.</param>
+        /// <exception cref="ApiException">The request failed. See inner exception for details.</exception>
+        /// <returns>A list of teams</returns>
+        IList<Team> GetTeams(IDictionary<string, string> filter);
+        /// <summary>
+        /// Saves a new team.
+        /// </summary>
+        /// <param name="team">The official model.</param>
+        /// <exception cref="ApiException">The request failed. See inner exception for details.</exception>
+        /// <returns>The Uri to the newly created team</returns>
+        Uri SaveTeam(TeamDetail team);
+        /// <summary>
+        /// Gets a team
+        /// </summary>
+        /// <param name="id">The team ID</param>
+        /// <exception cref="ApiException">The request failed. See inner exception for details.</exception>
+        /// <returns>The team</returns>
+        TeamDetail GetTeam(string id);
+        /// <summary>
+        /// Updates a team
+        /// </summary>
+        /// <param name="team">The team model.</param>
+        /// <exception cref="ApiException">The request failed. See inner exception for details.</exception>
+        bool UpdateTeam(TeamDetail team);
 
         /// <summary>
         /// Gets a list of persons.

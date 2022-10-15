@@ -63,6 +63,8 @@
             this.buttonFillWithParticipants = new System.Windows.Forms.Button();
             this.buttonLoadParticipants = new System.Windows.Forms.Button();
             this.tabPageOfficials = new System.Windows.Forms.TabPage();
+            this.textBoxNewOfficialMIN = new System.Windows.Forms.TextBox();
+            this.label24 = new System.Windows.Forms.Label();
             this.textBoxOfficialsCount = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
@@ -122,6 +124,11 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.form1BindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.label25 = new System.Windows.Forms.Label();
+            this.comboBoxNewOfficialTask = new System.Windows.Forms.ComboBox();
+            this.buttonAddNewOfficial = new System.Windows.Forms.Button();
+            this.label123 = new System.Windows.Forms.Label();
+            this.textBoxNewOfficialChar = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabPagePersons.SuspendLayout();
             this.tabPageCouples.SuspendLayout();
@@ -506,6 +513,13 @@
             // 
             // tabPageOfficials
             // 
+            this.tabPageOfficials.Controls.Add(this.textBoxNewOfficialChar);
+            this.tabPageOfficials.Controls.Add(this.label123);
+            this.tabPageOfficials.Controls.Add(this.buttonAddNewOfficial);
+            this.tabPageOfficials.Controls.Add(this.comboBoxNewOfficialTask);
+            this.tabPageOfficials.Controls.Add(this.label25);
+            this.tabPageOfficials.Controls.Add(this.textBoxNewOfficialMIN);
+            this.tabPageOfficials.Controls.Add(this.label24);
             this.tabPageOfficials.Controls.Add(this.textBoxOfficialsCount);
             this.tabPageOfficials.Controls.Add(this.label10);
             this.tabPageOfficials.Controls.Add(this.button1);
@@ -519,6 +533,23 @@
             this.tabPageOfficials.TabIndex = 4;
             this.tabPageOfficials.Text = "Officials";
             this.tabPageOfficials.UseVisualStyleBackColor = true;
+            // 
+            // textBoxNewOfficialMIN
+            // 
+            this.textBoxNewOfficialMIN.Location = new System.Drawing.Point(52, 77);
+            this.textBoxNewOfficialMIN.MaxLength = 8;
+            this.textBoxNewOfficialMIN.Name = "textBoxNewOfficialMIN";
+            this.textBoxNewOfficialMIN.Size = new System.Drawing.Size(100, 22);
+            this.textBoxNewOfficialMIN.TabIndex = 13;
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(18, 83);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(36, 17);
+            this.label24.TabIndex = 12;
+            this.label24.Text = "MIN:";
             // 
             // textBoxOfficialsCount
             // 
@@ -554,9 +585,9 @@
             this.listBoxOfficials.Font = new System.Drawing.Font("Courier New", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listBoxOfficials.FormattingEnabled = true;
             this.listBoxOfficials.ItemHeight = 16;
-            this.listBoxOfficials.Location = new System.Drawing.Point(3, 93);
+            this.listBoxOfficials.Location = new System.Drawing.Point(3, 125);
             this.listBoxOfficials.Name = "listBoxOfficials";
-            this.listBoxOfficials.Size = new System.Drawing.Size(579, 564);
+            this.listBoxOfficials.Size = new System.Drawing.Size(546, 468);
             this.listBoxOfficials.TabIndex = 8;
             // 
             // buttonFillWithOfficials
@@ -1082,6 +1113,47 @@
             // 
             this.form1BindingSource.DataSource = typeof(Wdsf.Api.Test.Form1);
             // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(159, 82);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(39, 17);
+            this.label25.TabIndex = 14;
+            this.label25.Text = "Task";
+            // 
+            // comboBoxNewOfficialTask
+            // 
+            this.comboBoxNewOfficialTask.FormattingEnabled = true;
+            this.comboBoxNewOfficialTask.Items.AddRange(new object[] {
+            "Chairman",
+            "Adjudicator",
+            "Invigilator"});
+            this.comboBoxNewOfficialTask.Location = new System.Drawing.Point(205, 73);
+            this.comboBoxNewOfficialTask.Name = "comboBoxNewOfficialTask";
+            this.comboBoxNewOfficialTask.Size = new System.Drawing.Size(121, 24);
+            this.comboBoxNewOfficialTask.TabIndex = 15;
+            // 
+            // buttonAddNewOfficial
+            // 
+            // 
+            // label123
+            // 
+            this.label123.AutoSize = true;
+            this.label123.Location = new System.Drawing.Point(333, 79);
+            this.label123.Name = "label123";
+            this.label123.Size = new System.Drawing.Size(38, 17);
+            this.label123.TabIndex = 17;
+            this.label123.Text = "Char";
+            // 
+            // textBoxNewOfficialChar
+            // 
+            this.textBoxNewOfficialChar.Location = new System.Drawing.Point(394, 77);
+            this.textBoxNewOfficialChar.MaxLength = 3;
+            this.textBoxNewOfficialChar.Name = "textBoxNewOfficialChar";
+            this.textBoxNewOfficialChar.Size = new System.Drawing.Size(44, 22);
+            this.textBoxNewOfficialChar.TabIndex = 18;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -1253,6 +1325,13 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.TabPage tabPageError;
         private System.Windows.Forms.ListBox listBoxErrors;
+        private System.Windows.Forms.TextBox textBoxNewOfficialMIN;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.TextBox textBoxNewOfficialChar;
+        private System.Windows.Forms.Label label123;
+        private System.Windows.Forms.Button buttonAddNewOfficial;
+        private System.Windows.Forms.ComboBox comboBoxNewOfficialTask;
+        private System.Windows.Forms.Label label25;
     }
 }
 

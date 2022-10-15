@@ -1,0 +1,7 @@
+﻿Columns:
+"Date"; ignored
+"Event"; ignored
+"Battle"; ignored
+"Mode"; ignored
+"Dancer"; MIN of athlete
+"Score"; Score

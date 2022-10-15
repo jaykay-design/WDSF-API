@@ -1,14 +1,10 @@
 ﻿namespace Wdsf.Api.Client.Models
 {
-    using System.Xml.Serialization;
     using Newtonsoft.Json;
+    using System.Xml.Serialization;
 
-    public class ParticipantBase
+    public class ParticipantBase : EntityWithLinks
     {
-        [XmlElement("link")]
-        [JsonProperty("link")]
-        public virtual Link[] Link { get; set; }
-
         [XmlIgnore]
         [JsonIgnore]
         public int CompetitionId { get; set; }

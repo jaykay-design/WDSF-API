@@ -32,6 +32,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wdsf.Api.Client", "Wdsf.Api
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Breaking Uploader", "Examples\Uploader\Breaking Uploader.csproj", "{EF55B3A9-E28A-4FB4-91FA-809FFA29E6A4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Breaking Uploader 2", "Examples\Breaking Uploader 2\Breaking Uploader 2.csproj", "{C7984C39-CADE-46AB-B155-07768D201B48}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -146,6 +148,18 @@ Global
 		{EF55B3A9-E28A-4FB4-91FA-809FFA29E6A4}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{EF55B3A9-E28A-4FB4-91FA-809FFA29E6A4}.Release|x86.ActiveCfg = Release|Any CPU
 		{EF55B3A9-E28A-4FB4-91FA-809FFA29E6A4}.Release|x86.Build.0 = Release|Any CPU
+		{C7984C39-CADE-46AB-B155-07768D201B48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7984C39-CADE-46AB-B155-07768D201B48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7984C39-CADE-46AB-B155-07768D201B48}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{C7984C39-CADE-46AB-B155-07768D201B48}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{C7984C39-CADE-46AB-B155-07768D201B48}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C7984C39-CADE-46AB-B155-07768D201B48}.Debug|x86.Build.0 = Debug|Any CPU
+		{C7984C39-CADE-46AB-B155-07768D201B48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7984C39-CADE-46AB-B155-07768D201B48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7984C39-CADE-46AB-B155-07768D201B48}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{C7984C39-CADE-46AB-B155-07768D201B48}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{C7984C39-CADE-46AB-B155-07768D201B48}.Release|x86.ActiveCfg = Release|Any CPU
+		{C7984C39-CADE-46AB-B155-07768D201B48}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -158,6 +172,7 @@ Global
 		{D998DF37-8BDF-4C7B-8033-B34B485ED122} = {081A54EE-EBAB-471D-9DD0-54EB71F40EA1}
 		{0396BFF4-4048-41A9-BDBA-A7613C878A81} = {081A54EE-EBAB-471D-9DD0-54EB71F40EA1}
 		{EF55B3A9-E28A-4FB4-91FA-809FFA29E6A4} = {081A54EE-EBAB-471D-9DD0-54EB71F40EA1}
+		{C7984C39-CADE-46AB-B155-07768D201B48} = {081A54EE-EBAB-471D-9DD0-54EB71F40EA1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {13C0F660-B70F-4171-87C3-D3234D38DAAD}

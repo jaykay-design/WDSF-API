@@ -212,7 +212,8 @@
 
             if (receivedType == null)
             {
-                throw new UnknownMediaTypeException(response.ContentType);
+                var content = new StreamReader(response.GetResponseStream()).ReadToEnd();
+                throw new UnknownMediaTypeException(response.ContentType, content);
             }
 
             if (receivedType != typeof(T))

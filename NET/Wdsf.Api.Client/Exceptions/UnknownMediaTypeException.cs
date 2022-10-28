@@ -9,15 +9,23 @@
         {
             this.ReceivedType = receivedType;
         }
+        public UnknownMediaTypeException(string receivedType, string receivedContent) :
+            base()
+        {
+            this.ReceivedType = receivedType;
+            ReceivedContent = receivedContent;
+        }
+
 
         public override string Message
         {
             get
             {
-                return "An unknown media type was received: " + this.ReceivedType;
+                return "An unknown media type was received: " + this.ReceivedType + ' ' + this.ReceivedContent;
             }
         }
 
         public string ReceivedType { get; set; }
+        public string ReceivedContent { get; }
     }
 }

@@ -13,6 +13,6 @@
 
         [XmlAttribute("score")]
         [JsonProperty("score")]
-        public int Score { get; set; }
+        public decimal Score { get; set; }
     }
 }

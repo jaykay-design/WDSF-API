@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Breaking Uploader 2": {
+      "commandName": "Project",
+      "commandLineArgs": "-u [your API user name] -p [your API password] -i [the competition ID] -t trivium -d [the location of the JSON data]"
+    }
+  }
+}

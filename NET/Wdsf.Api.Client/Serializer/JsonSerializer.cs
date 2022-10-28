@@ -2,6 +2,7 @@
 namespace Wdsf.Api.Client.Serializer
 {
     using Interfaces;
+    using Newtonsoft.Json;
     using System;
     using System.IO;
     using System.Text;
@@ -9,6 +10,12 @@ namespace Wdsf.Api.Client.Serializer
 
     internal class JsonSerializer : ISerializer
     {
+
+        public JsonSerializer()
+        {
+            JsonConvert.DefaultSettings = () => new JsonSerializerSettings { MaxDepth = 16 };
+        }
+
         public object Deserialize(Type type, Stream data)
         {
             n.JsonSerializer serializer = new n.JsonSerializer();

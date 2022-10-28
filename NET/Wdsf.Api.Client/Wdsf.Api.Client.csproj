@@ -4,12 +4,14 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Wdsf.Api.Client</AssemblyName>
     <RootNamespace>Wdsf.Api.Client</RootNamespace>
-    <Version>2.3.1</Version>
+    <Version>2.4</Version>
     <Authors>John Caprez</Authors>
     <Company>JayKay-Design S.C.</Company>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Description>A .NET library which connects to the World DanceSport Federation's API using strongly typed models.</Description>
-    <PackageReleaseNotes>added missing properties for JSON serialisation</PackageReleaseNotes>
+    <PackageReleaseNotes>- fix Newtonsoft.JSON DoS
+- show recievd content if media-type does not match
+- allow decimals for BreakingSeedScores</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageProjectUrl></PackageProjectUrl>
     <RepositoryUrl>https://github.com/jaykay-design/WDSF-API/</RepositoryUrl>

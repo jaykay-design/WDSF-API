@@ -38,7 +38,7 @@
 			+ allow creating teams including their members
 			+ added division to member details
 			# propperly disposing response
-			# only serialize certain proerties if neccesary
+			# only serialize certain properties if neccesary
 			
 			! BREAKING CHANGES: 
 				All model properties which returned an array now return a List
@@ -58,6 +58,11 @@
 
 2.3.0.0		+ added models for BreakingSeed (Breaking discipline)
 2.3.1.0		+ added missing properties for JSON serialisation
+2.4.0.0		# fix Newtonsoft.JSON DoS
+			+ show recievd content if media-type does not match
+			# allow decimals for BreakingSeedScores
+2.5.0.0		# Changed property Score to Rank in BreakingSeedScore
+2.5.0.1		# BreakingSeedScore. Rank is now int again
 
 WDSF Checkin
 

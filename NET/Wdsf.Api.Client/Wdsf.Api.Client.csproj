@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Wdsf.Api.Client</AssemblyName>
     <RootNamespace>Wdsf.Api.Client</RootNamespace>
-    <Version>2.5</Version>
+    <Version>2.5.0.1</Version>
     <Authors>John Caprez</Authors>
     <Company>JayKay-Design S.C.</Company>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -13,18 +13,27 @@
 - show recievd content if media-type does not match
 - allow decimals for BreakingSeedScores</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageProjectUrl></PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/jaykay-design/WDSF-API/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/jaykay-design/WDSF-API/</RepositoryUrl>
     <PackageTags>wdsf,api, dancesport</PackageTags>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Wdsf.Api.Client.snk</AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>
-    <AssemblyVersion>2.3.1.0</AssemblyVersion>
+    <AssemblyVersion>2.5.0.1</AssemblyVersion>
+    <RepositoryType>git</RepositoryType>
+    <PackageReadmeFile>Readme.md</PackageReadmeFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DocumentationFile>Wdsf.Api.Client.xml</DocumentationFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\Readme.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />

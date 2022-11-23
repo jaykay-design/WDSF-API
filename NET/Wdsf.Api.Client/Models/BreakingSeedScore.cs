@@ -11,8 +11,8 @@
         [JsonProperty("kind")]
         public override string Kind { get { return "breakingseed"; } }
 
-        [XmlAttribute("score")]
-        [JsonProperty("score")]
-        public decimal Score { get; set; }
+        [XmlAttribute("rank")]
+        [JsonProperty("rank")]
+        public decimal Rank { get; set; }
     }
 }

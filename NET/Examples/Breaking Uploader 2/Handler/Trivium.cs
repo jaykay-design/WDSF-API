@@ -105,8 +105,23 @@
             }
         }
 
+
         private void LoadPreselection(Battle[] battles)
         {
+            var scoresByJudge = new Dictionary<string, List<decimal>>();
+            var judges = battles.SelectMany( b=> b.SoloPlayer.ScoreDetails.Select(d=> d.Judge.Min)).Distinct();
+            foreach (var judge in judges)
+            {
+                var s = new List<decimal>();
+                foreach (var b in battles)
+                {
+                    if (!b.SoloPlayer.ScoreDetails.Any(s => s.Judge.Min == judge)) continue;
+                    s.Add(b.SoloPlayer.ScoreDetails.First(sd => sd.Judge.Min == judge).Score);
+                }
+                scoresByJudge.Add(judge, s);
+            }
+
+
             foreach (var battle in battles)
             {
                 var dancer = Participants.FirstOrDefault(p => p.PersonId == battle.SoloPlayer.Min);
@@ -129,10 +144,9 @@
                     dance.Scores.Add(new BreakingSeedScore()
                     {
                         OfficialId = official.Id,
-                        Score = score.Score
+                        Rank = scoresByJudge[score.Judge.Min].Count(s => s > score.Score) + 1
                     });
                 }
-
             }
         }
 

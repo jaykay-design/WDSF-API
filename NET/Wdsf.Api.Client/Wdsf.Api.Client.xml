@@ -754,6 +754,11 @@
             Seed, RoundRobin, TopX
             </summary>
         </member>
+        <member name="P:Wdsf.Api.Client.Models.WdsfBreakingScore.Mode">
+            <summary>
+            Seed, RoundRobin, TopX
+            </summary>
+        </member>
         <member name="F:Wdsf.Api.Client.ResourceRelation.Self">
             <summary>
             The resource itself

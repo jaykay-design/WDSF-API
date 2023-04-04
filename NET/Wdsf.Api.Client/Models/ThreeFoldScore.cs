@@ -3,13 +3,15 @@
     using System.Xml.Serialization;
     using Newtonsoft.Json;
 
-    [XmlType("threefold", Namespace = "http://services.worlddancesport.org/api")]
-    [JsonObject("threefold")]
+    [XmlType(SerializerTypeName, Namespace = "http://services.worlddancesport.org/api")]
+    [JsonObject(SerializerTypeName)]
     public sealed class ThreeFoldScore : Score
     {
+        public const string SerializerTypeName = "threefold";
+
         [XmlIgnore]
         [JsonProperty("kind")]
-        public override string Kind { get { return "threefold"; } }
+        public override string Kind => SerializerTypeName;
 
         /// <summary>
         /// Seed, RoundRobin, TopX

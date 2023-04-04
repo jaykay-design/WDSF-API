@@ -3,14 +3,14 @@
     using Newtonsoft.Json;
     using System.Xml.Serialization;
 
-    [XmlType("mark", Namespace = "http://services.worlddancesport.org/api")]
-    [JsonObject("mark")]
+    [XmlType(SerializerTypeName, Namespace = "http://services.worlddancesport.org/api")]
+    [JsonObject(SerializerTypeName)]
     public class MarkScore : Score
     {
+        public const string SerializerTypeName = "mark";
         public MarkScore()
             : base()
         {
-
         }
         public MarkScore(int officialId, bool isSet)
             : base(officialId)
@@ -20,7 +20,7 @@
 
         [XmlIgnore]
         [JsonProperty("kind")]
-        public override string Kind { get { return "mark"; } }
+        public override string Kind => SerializerTypeName;
 
         [XmlAttribute("set")]
         [JsonProperty("set")]

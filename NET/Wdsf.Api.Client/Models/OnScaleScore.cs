@@ -3,13 +3,15 @@
     using Newtonsoft.Json;
     using System.Xml.Serialization;
 
-    [XmlType("onScale", Namespace = "http://services.worlddancesport.org/api")]
-    [JsonObject("onScale")]
+    [XmlType(SerializerTypeName, Namespace = "http://services.worlddancesport.org/api")]
+    [JsonObject(SerializerTypeName)]
     public class OnScaleScore : Score
     {
+        public const string SerializerTypeName = "onScale";
+
         [XmlIgnore]
         [JsonProperty("kind")]
-        public override string Kind { get { return "onScale"; } }
+        public override string Kind => SerializerTypeName;
 
         /// <summary>
         /// Posture Balance Coorination

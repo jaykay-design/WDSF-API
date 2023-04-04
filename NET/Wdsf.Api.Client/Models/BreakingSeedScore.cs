@@ -3,13 +3,15 @@
     using System.Xml.Serialization;
     using Newtonsoft.Json;
 
-    [XmlType("breakingseed", Namespace = "http://services.worlddancesport.org/api")]
-    [JsonObject("breakingseed")]
+    [XmlType(SerializerTypeName, Namespace = "http://services.worlddancesport.org/api")]
+    [JsonObject(SerializerTypeName)]
     public sealed class BreakingSeedScore : Score
     {
+        public const string SerializerTypeName = "breakingseed";
+
         [XmlIgnore]
         [JsonProperty("kind")]
-        public override string Kind { get { return "breakingseed"; } }
+        public override string Kind => SerializerTypeName;
 
         [XmlAttribute("rank")]
         [JsonProperty("rank")]

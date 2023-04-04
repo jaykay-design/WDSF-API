@@ -17,15 +17,16 @@
         public bool IsGroupDance { get; set; }
 
         [XmlArray("scores")]
-        [XmlArrayItem("mark", typeof(MarkScore))]
-        [XmlArrayItem("final", typeof(FinalScore))]
-        [XmlArrayItem("onScale", typeof(OnScaleScore))]
-        [XmlArrayItem("onScaleIdo", typeof(OnScaleIdoScore))]
-        [XmlArrayItem("onScale2", typeof(OnScale2Score))]
-        [XmlArrayItem("onScale3", typeof(OnScale3Score))]
-        [XmlArrayItem("trivium", typeof(TriviumScore))]
-        [XmlArrayItem("threefold", typeof(ThreeFoldScore))]
-        [XmlArrayItem("breakingseed", typeof(BreakingSeedScore))]
+        [XmlArrayItem(MarkScore.SerializerTypeName, typeof(MarkScore))]
+        [XmlArrayItem(FinalScore.SerializerTypeName, typeof(FinalScore))]
+        [XmlArrayItem(OnScaleScore.SerializerTypeName, typeof(OnScaleScore))]
+        [XmlArrayItem(OnScaleIdoScore.SerializerTypeName, typeof(OnScaleIdoScore))]
+        [XmlArrayItem(OnScale2Score.SerializerTypeName, typeof(OnScale2Score))]
+        [XmlArrayItem(OnScale3Score.SerializerTypeName, typeof(OnScale3Score))]
+        [XmlArrayItem(WdsfBreakingScore.SerializerTypeName, typeof(WdsfBreakingScore))]
+        [XmlArrayItem(TriviumScore.SerializerTypeName, typeof(TriviumScore))]
+        [XmlArrayItem(ThreeFoldScore.SerializerTypeName, typeof(ThreeFoldScore))]
+        [XmlArrayItem(BreakingSeedScore.SerializerTypeName, typeof(BreakingSeedScore))]
         [JsonProperty("scores", ItemConverterType = typeof(Converter.JsonScoreConverter))]
         public List<Score> Scores { get; set; }
         public bool ShouldSerializeScores()

@@ -3,13 +3,15 @@
     using Newtonsoft.Json;
     using System.Xml.Serialization;
 
-    [XmlType("onScale2", Namespace = "http://services.worlddancesport.org/api")]
-    [JsonObject("onScale2")]
+    [XmlType(SerializerTypeName, Namespace = "http://services.worlddancesport.org/api")]
+    [JsonObject(SerializerTypeName)]
     public class OnScale2Score : Score
     {
+        public const string SerializerTypeName = "onScale2";
+
         [XmlIgnore]
         [JsonProperty("kind")]
-        public override string Kind { get { return "onScale2"; } }
+        public override string Kind => SerializerTypeName;
 
         /// <summary>
         /// Techincal Quality

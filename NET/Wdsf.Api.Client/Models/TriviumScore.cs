@@ -3,13 +3,15 @@
     using System.Xml.Serialization;
     using Newtonsoft.Json;
 
-    [XmlType("trivium", Namespace = "http://services.worlddancesport.org/api")]
-    [JsonObject("trivium")]
+    [XmlType(SerializerTypeName, Namespace = "http://services.worlddancesport.org/api")]
+    [JsonObject(SerializerTypeName)]
     public sealed class TriviumScore : Score
     {
+        public const string SerializerTypeName = "trivium";
+
         [XmlIgnore]
         [JsonProperty("kind")]
-        public override string Kind { get { return "trivium"; } }
+        public override string Kind => SerializerTypeName;
 
         /// <summary>
         /// Seed, RoundRobin, TopX

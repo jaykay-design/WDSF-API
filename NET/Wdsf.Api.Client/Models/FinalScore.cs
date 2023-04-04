@@ -3,10 +3,11 @@
     using Newtonsoft.Json;
     using System.Xml.Serialization;
 
-    [XmlType("final", Namespace = "http://services.worlddancesport.org/api")]
-    [JsonObject("final")]
+    [XmlType(SerializerTypeName, Namespace = "http://services.worlddancesport.org/api")]
+    [JsonObject(SerializerTypeName)]
     public class FinalScore : Score
     {
+        public const string SerializerTypeName = "final";
         public FinalScore() :
             base()
         {
@@ -20,7 +21,7 @@
 
         [XmlIgnore]
         [JsonProperty("kind")]
-        public override string Kind { get { return "final"; } }
+        public override string Kind => SerializerTypeName;
 
         [XmlAttribute("rank")]
         [JsonProperty("rank")]

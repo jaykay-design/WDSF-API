@@ -7,7 +7,7 @@
     [JsonObject(SerializerTypeName)]
     public sealed class WdsfBreakingScore : Score
     {
-        public const string SerializerTypeName = "breakingseed";
+        public const string SerializerTypeName = "wdsfbreaking";
 
         [XmlIgnore]
         [JsonProperty("kind")]

@@ -64,6 +64,7 @@
 2.5.0.0		# Changed property Score to Rank in BreakingSeedScore
 2.5.0.1		# BreakingSeedScore. Rank is now int again
 2.6.0.0		# Added WdsfBreakingScore model
+2.6.0.1		# Fixed WdsfBreakingScore model kind
 
 WDSF Checkin
 

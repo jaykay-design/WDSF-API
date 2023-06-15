@@ -4,12 +4,12 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Wdsf.Api.Client</AssemblyName>
     <RootNamespace>Wdsf.Api.Client</RootNamespace>
-    <Version>2.7.0.0</Version>
+    <Version>2.8.0.0</Version>
     <Authors>John Caprez</Authors>
     <Company>JayKay-Design S.C.</Company>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Description>A .NET library which connects to the World DanceSport Federation's API using strongly typed models.</Description>
-    <PackageReleaseNotes>- Changed Breaking score components from int to decimal</PackageReleaseNotes>
+    <PackageReleaseNotes>+ Added BreakingSeedByScore score</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageProjectUrl>https://github.com/jaykay-design/WDSF-API/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/jaykay-design/WDSF-API/</RepositoryUrl>
@@ -17,7 +17,7 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Wdsf.Api.Client.snk</AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>
-    <AssemblyVersion>2.7.0.0</AssemblyVersion>
+    <AssemblyVersion>2.8.0.0</AssemblyVersion>
     <RepositoryType>git</RepositoryType>
     <PackageReadmeFile>Readme.md</PackageReadmeFile>
   </PropertyGroup>

@@ -14,6 +14,7 @@
                 { TriviumScore.SerializerTypeName,     typeof(TriviumScore) },
                 { ThreeFoldScore.SerializerTypeName, typeof(ThreeFoldScore) },
                 { BreakingSeedScore.SerializerTypeName, typeof(BreakingSeedScore) },
+                { BreakingSeedByScoreScore.SerializerTypeName, typeof(BreakingSeedByScoreScore) },
 
                 { OnScaleScore.SerializerTypeName, typeof(OnScaleScore) },
                 { OnScale2Score.SerializerTypeName, typeof(OnScale2Score) },

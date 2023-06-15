@@ -27,6 +27,7 @@
         [XmlArrayItem(TriviumScore.SerializerTypeName, typeof(TriviumScore))]
         [XmlArrayItem(ThreeFoldScore.SerializerTypeName, typeof(ThreeFoldScore))]
         [XmlArrayItem(BreakingSeedScore.SerializerTypeName, typeof(BreakingSeedScore))]
+        [XmlArrayItem(BreakingSeedByScoreScore.SerializerTypeName, typeof(BreakingSeedByScoreScore))]
         [JsonProperty("scores", ItemConverterType = typeof(Converter.JsonScoreConverter))]
         public List<Score> Scores { get; set; }
         public bool ShouldSerializeScores()

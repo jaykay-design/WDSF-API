@@ -31,15 +31,15 @@
 
         [XmlAttribute("physical")]
         [JsonProperty("physical")]
-        public int Physical { get; set; }
+        public decimal Physical { get; set; }
 
         [XmlAttribute("interpretation")]
         [JsonProperty("interpretation")]
-        public int Interpretation { get; set; }
+        public decimal Interpretation { get; set; }
 
         [XmlAttribute("artistic")]
         [JsonProperty("artistic")]
-        public int Artistic { get; set; }
+        public decimal Artistic { get; set; }
 
         [XmlAttribute("isred")]
         [JsonProperty("isred")]

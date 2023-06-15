@@ -31,23 +31,23 @@
 
         [XmlAttribute("technique")]
         [JsonProperty("technique")]
-        public int Technique { get; set; }
+        public decimal Technique { get; set; }
 
         [XmlAttribute("vocabulary")]
         [JsonProperty("vocabulary")]
-        public int Vocabulary { get; set; }
+        public decimal Vocabulary { get; set; }
 
         [XmlAttribute("originality")]
         [JsonProperty("originality")]
-        public int Originality { get; set; }
+        public decimal Originality { get; set; }
 
         [XmlAttribute("execution")]
         [JsonProperty("execution")]
-        public int Execution { get; set; }
+        public decimal Execution { get; set; }
 
         [XmlAttribute("musicality")]
         [JsonProperty("musicality")]
-        public int Musicality { get; set; }
+        public decimal Musicality { get; set; }
 
 
         [XmlAttribute("misbehaviour")]

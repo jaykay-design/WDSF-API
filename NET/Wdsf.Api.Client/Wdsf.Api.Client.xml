@@ -673,6 +673,36 @@
             This participant was allowed to skip the round it set to true
             </summary>
         </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScaleDisco3Score.T">
+            <summary>
+            Technique
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScaleDisco3Score.P">
+            <summary>
+            Performance
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScaleDisco3Score.C">
+            <summary>
+            Choreography
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScaleDiscoScore.T">
+            <summary>
+            Technique
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScaleDiscoScore.P">
+            <summary>
+            Performance
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScaleDiscoScore.C">
+            <summary>
+            Choreography
+            </summary>
+        </member>
         <member name="P:Wdsf.Api.Client.Models.OnScaleIdoScore.T">
             <summary>
             Technique
@@ -726,6 +756,36 @@
         <member name="P:Wdsf.Api.Client.Models.OnScaleScore.Reduction">
             <summary>
             Reduction by Chairman
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScaleSkatingScore.TQ">
+            <summary>
+            Technical quality
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScaleSkatingScore.MM">
+            <summary>
+            Movement to music
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScaleSkatingScore.PS">
+            <summary>
+            Partnering skill
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScaleSkatingScore.CP">
+            <summary>
+            Choreography and Presentation
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScaleSkatingScore.Reduction">
+            <summary>
+            Reduction by Chairman
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScaleSkatingScore.IsSet">
+            <summary>
+            If true this participant was allowed to skip the round
             </summary>
         </member>
         <member name="P:Wdsf.Api.Client.Models.ParticipantBaseDetail.Status">
@@ -902,7 +962,7 @@
             <exception cref="!:HttpWebException">A general failure.</exception>
             <returns>A status message.</returns>
         </member>
-        <member name="M:Wdsf.Api.Client.RestAdapter.CheckResourceType``1(System.Net.HttpWebResponse)">
+        <member name="M:Wdsf.Api.Client.RestAdapter.CheckResourceType``1(System.Net.Http.HttpResponseMessage)">
             <summary>
             Verifies if the received content-type corresponds to the requested one.
             </summary>

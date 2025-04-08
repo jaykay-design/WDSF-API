@@ -16,5 +16,13 @@
         [XmlAttribute("score")]
         [JsonProperty("score")]
         public decimal Score { get; set; }
+
+        [XmlAttribute("isIgnored")]
+        [JsonProperty("isIgnored")]
+        public bool IsIgnored { get; set; }
+
+        [XmlAttribute("isTieBreak")]
+        [JsonProperty("isTieBreak")]
+        public bool IsTieBreak { get; set; }
     }
 }

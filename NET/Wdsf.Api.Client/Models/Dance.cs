@@ -23,6 +23,11 @@
         [XmlArrayItem(OnScaleIdoScore.SerializerTypeName, typeof(OnScaleIdoScore))]
         [XmlArrayItem(OnScale2Score.SerializerTypeName, typeof(OnScale2Score))]
         [XmlArrayItem(OnScale3Score.SerializerTypeName, typeof(OnScale3Score))]
+        [XmlArrayItem(OnScaleSkatingScore.SerializerTypeName, typeof(OnScaleSkatingScore))]
+        [XmlArrayItem(OnScaleDiscoScore.SerializerTypeName, typeof(OnScaleDiscoScore))]
+        [XmlArrayItem(OnScaleDisco3Score.SerializerTypeName, typeof(OnScaleDisco3Score))]
+        [XmlArrayItem(DiscoTieBreakScore.SerializerTypeName, typeof(DiscoTieBreakScore))]
+
         [XmlArrayItem(WdsfBreakingScore.SerializerTypeName, typeof(WdsfBreakingScore))]
         [XmlArrayItem(TriviumScore.SerializerTypeName, typeof(TriviumScore))]
         [XmlArrayItem(ThreeFoldScore.SerializerTypeName, typeof(ThreeFoldScore))]

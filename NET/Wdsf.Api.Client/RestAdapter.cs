@@ -3,8 +3,8 @@
     using Serializer;
     using System;
     using System.IO;
-    using System.IO.Compression;
     using System.Net;
+    using System.Net.Http;
     using System.Text;
     using Wdsf.Api.Client.Exceptions;
     using Wdsf.Api.Client.Models;
@@ -17,17 +17,29 @@
 
         public ContentTypes ContentType { get; set; }
 
-        private readonly WebClient client = new WebClient();
-        private readonly string username;
-        private readonly string password;
-        private readonly string onBehalfOf;
+        private readonly HttpClient client;
 
         public RestAdapter(string username, string password, string onBehalfOf = null)
         {
-            this.username = username;
-            this.password = password;
-            this.onBehalfOf = onBehalfOf;
+            HttpMessageHandler handler = new HttpClientHandler()
+            {
+                PreAuthenticate = true,
+                AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
+            };
+            this.client = new HttpClient(handler);
 
+
+            client.DefaultRequestHeaders.Add("Accept-Encoding", "gzip");
+            client.DefaultRequestHeaders.Add("User-Agent", "WDSF API Client");
+
+            var auth = "Basic " + Convert.ToBase64String(Encoding.Default.GetBytes(username + ":" + password));
+            client.DefaultRequestHeaders.Add("Authorization", auth);
+            client.Timeout = TimeSpan.FromSeconds(600);
+
+            if (!string.IsNullOrEmpty(onBehalfOf))
+            {
+                client.DefaultRequestHeaders.Add("X-OnBehalfOf", onBehalfOf);
+            }
         }
 
         /// <summary>
@@ -42,20 +54,21 @@
         {
             CheckAndSetBusy();
 
-            var request = GetRequest(resourceUri);
-            using (var response = GetResponse(request))
+            using (var response = GetResponse(resourceUri))
             {
                 this.IsBusy = false;
-                var receivedType = TypeHelper.GetApiModelType(response.ContentType);
+                var contentTypeHeader = response.Content.Headers.ContentType.ToString();
+                var receivedType = TypeHelper.GetApiModelType(contentTypeHeader);
+
                 if (receivedType == null)
                 {
-                    throw new UnknownMediaTypeException(response.ContentType);
+                    throw new UnknownMediaTypeException(contentTypeHeader);
                 }
 
                 var serializer = SerializerFactory.GetSerializer(this.ContentType);
-                var result = serializer.Deserialize(receivedType, response.GetResponseStream());
+                var result = serializer.Deserialize(receivedType, response.Content.ReadAsStreamAsync().Result);
 
-                response.Close();
+                response.Dispose();
                 return result;
             }
         }
@@ -75,20 +88,24 @@
         {
             CheckAndSetBusy();
 
-            var request = GetRequest(resourceUri);
-
-            using (var response = GetResponse(request))
+            using (var response = GetResponse(resourceUri))
             {
-                this.IsBusy = false;
+                if (response == null)
+                {
+                    this.IsBusy = false;
+                    throw new Exception("Connection failed");
+                }
 
                 if (response.StatusCode == HttpStatusCode.Unauthorized)
                 {
+                    this.IsBusy = false;
                     throw new UnauthorizedException("GET", resourceUri);
                 }
 
                 CheckResourceType<T>(response);
                 T result = ReadReponseBody<T>(response);
-                response.Close();
+
+                this.IsBusy = false;
 
                 return result;
             }
@@ -108,12 +125,7 @@
         {
             CheckAndSetBusy();
 
-            var request = GetRequestForSending(resourceUri);
-            request.Method = "PUT";
-            request.ContentType = GetContentType(typeof(T));
-            WriteRequestBody(model, request);
-
-            using (var response = GetResponse(request))
+            using (var response = GetResponse(resourceUri, "PUT", GetContentType(typeof(T)), model))
             {
                 this.IsBusy = false;
 
@@ -125,7 +137,6 @@
                 CheckResourceType<StatusMessage>(response);
 
                 var message = ReadReponseBody<StatusMessage>(response);
-                response.Close();
 
                 return message;
             }
@@ -145,12 +156,7 @@
         {
             CheckAndSetBusy();
 
-            var request = GetRequestForSending(resourceUri);
-            request.Method = "POST";
-            request.ContentType = GetContentType(typeof(T));
-            WriteRequestBody(model, request);
-
-            using (var response = GetResponse(request))
+            using (var response = GetResponse(resourceUri, "POST", GetContentType(typeof(T)), model))
             {
                 this.IsBusy = false;
 
@@ -161,7 +167,6 @@
 
                 CheckResourceType<StatusMessage>(response);
                 StatusMessage message = ReadReponseBody<StatusMessage>(response);
-                response.Close();
 
                 return message;
             }
@@ -180,10 +185,7 @@
         {
             CheckAndSetBusy();
 
-            var request = GetRequestForSending(resourceUri);
-            request.Method = "DELETE";
-
-            using (var response = GetResponse(request))
+            using (var response = GetResponse<object>(resourceUri, "DELETE", string.Empty, null))
             {
                 this.IsBusy = false;
 
@@ -195,7 +197,6 @@
                 CheckResourceType<StatusMessage>(response);
 
                 var message = ReadReponseBody<StatusMessage>(response);
-                response.Close();
 
                 return message;
             }
@@ -206,14 +207,15 @@
         /// </summary>
         /// <typeparam name="T">The type expected</typeparam>
         /// <param name="response">The response containing a content-type header</param>
-        private void CheckResourceType<T>(HttpWebResponse response) where T : class
+        private void CheckResourceType<T>(HttpResponseMessage response) where T : class
         {
-            var receivedType = TypeHelper.GetApiModelType(response.ContentType);
+            var contentTypeHeader = response.Content.Headers.ContentType.ToString();
+            var receivedType = TypeHelper.GetApiModelType(contentTypeHeader);
 
             if (receivedType == null)
             {
-                var content = new StreamReader(response.GetResponseStream()).ReadToEnd();
-                throw new UnknownMediaTypeException(response.ContentType, content);
+                var content = new StreamReader(response.Content.ReadAsStringAsync().Result).ReadToEnd();
+                throw new UnknownMediaTypeException(contentTypeHeader, content);
             }
 
             if (receivedType != typeof(T))
@@ -243,59 +245,71 @@
             }
         }
 
-        private HttpWebResponse GetResponse(HttpWebRequest request)
+        private HttpResponseMessage GetResponse(Uri resourceUri)
         {
-            WebResponse response;
+            client.DefaultRequestHeaders.Add("Accept", GetAcceptType());
+
+            HttpResponseMessage response;
             try
             {
-                response = request.GetResponse();
+                response = client.GetAsync(resourceUri).Result;
             }
-            catch (WebException ex)
+            catch (HttpRequestException)
             {
-                response = ex.Response;
+                response = null;
             }
 
-            return response as HttpWebResponse;
+            return response;
         }
-        private T ReadReponseBody<T>(HttpWebResponse response) where T : class
+
+        private HttpResponseMessage GetResponse<T>(Uri resourceUri, string method, string contentType = null, T data = default) where T : class
+        {
+            client.DefaultRequestHeaders.Add("Accept", GetAcceptType());
+
+            HttpResponseMessage response;
+            try
+            {
+                switch (method)
+                {
+                    case "PUT":
+                        {
+                            var content = GetRequestBody(data);
+                            response = client.PutAsync(resourceUri, content).Result;
+                            break;
+                        }
+                    case "POST":
+                        {
+                            var content = GetRequestBody(data);
+                            response = client.PostAsync(resourceUri, content).Result;
+                            break;
+                        }
+                    case "DELETE":
+                        {
+                            response = client.DeleteAsync(resourceUri).Result;
+                            break;
+                        }
+                    default:
+                    {
+                        throw new Exception("Method not supported");
+                    }
+                }
+            }
+            catch (HttpRequestException)
+            {
+                response = null;
+            }
+
+            return response;
+        }
+        private T ReadReponseBody<T>(HttpResponseMessage response) where T : class
         {
             var serializer = SerializerFactory.GetSerializer(this.ContentType);
-            T result = serializer.Deserialize(typeof(T), response.GetResponseStream()) as T;
+            T result = serializer.Deserialize(typeof(T), response.Content.ReadAsStreamAsync().Result) as T;
 
             return result;
         }
 
-        private HttpWebRequest GetRequest(Uri resourceUri)
-        {
-            var request = WebRequest.Create(resourceUri) as HttpWebRequest;
-            var auth = "Basic " + Convert.ToBase64String(Encoding.Default.GetBytes(username + ":" + password));
 
-            request.PreAuthenticate = true;
-            request.Headers.Add("Authorization", auth);
-
-            request.Accept = GetAcceptType();
-            request.Headers.Add("Accept-Encoding", "gzip");
-
-            request.UserAgent = "WDSF API Client";
-            request.AutomaticDecompression = DecompressionMethods.GZip;
-
-            if (!string.IsNullOrEmpty(onBehalfOf))
-            {
-                request.Headers.Add("X-OnBehalfOf", onBehalfOf);
-            }
-
-            return request;
-        }
-        private HttpWebRequest GetRequestForSending(Uri resourceUri)
-        {
-            var request = GetRequest(resourceUri);
-
-#if !DEBUG
-            request.Headers.Add("Content-Encoding", "gzip");
-#endif
-
-            return request;
-        }
         private string GetAcceptType()
         {
             switch (this.ContentType)
@@ -323,36 +337,32 @@
             }
         }
 
-        private void WriteRequestBody<T>(T model, HttpWebRequest request) where T : class
+        private HttpContent GetRequestBody<T>(T model) where T : class
         {
             var serializer = SerializerFactory.GetSerializer(this.ContentType);
 
-            using (var data = new MemoryStream())
-            {
-                if (request.Headers["Content-Encoding"] == "gzip")
-                {
+            var data = new MemoryStream();
+#if !DEBUG
                     using (var compressor = new GZipStream(data, CompressionMode.Compress, true))
                     {
                         serializer.Serialize(typeof(T), model, compressor);
                     }
-                }
-                else
-                {
-                    serializer.Serialize(typeof(T), model, data);
-                }
+#else
+            serializer.Serialize(typeof(T), model, data);
+#endif
 
-                data.Position = 0;
+            data.Position = 0;
 
-                using (var requestStream = request.GetRequestStream())
-                {
-                    data.WriteTo(requestStream);
-                    requestStream.Flush();
-                    requestStream.Close();
-                }
-            }
+            var content = new StreamContent(data);
+            content.Headers.Add("Content-Type", GetContentType(typeof(T)));
+#if !DEBUG
+            content.Headers.Add("Content-Encoding", "gzip");
+#endif
+
+            return content;
         }
 
-#region IDisposable Members
+        #region IDisposable Members
 
         public void Dispose()
         {

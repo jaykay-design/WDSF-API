@@ -46,7 +46,7 @@
 				Round.MaxDeviation is now a decimal, was a string.
 				Score.Link is not an array anymore as it wil always just have one single link
 
-2.0.3.0		# downgrade Newtonsoft.JSON as that seems the last version wich works correctly with NetStandard 2.0
+2.0.3.0		# downgrade Newtonsoft.JSON as that seems the last version which works correctly with NetStandard 2.0
 
 2.0.4.0		+ added model and method for batch result uploads
 
@@ -65,6 +65,11 @@
 2.5.0.1		# BreakingSeedScore. Rank is now int again
 2.6.0.0		# Added WdsfBreakingScore model
 2.6.0.1		# Fixed WdsfBreakingScore model kind
+2.7.0.0		# Changed Breaking score components from in to decimal
+2.8.0.0		+ Added BreakingSeedByScore score
+2.9.0.0		+ Added IsIgnored and IsTieBreak to BreakingSeedByScore
+			+ Added OnScaleDiscoScore, OnScaleDisco3Score, OnScaleSkatingScore and DiscoTieBreakScore models
+2.10.0.0	# Replace WebClient with HttpClient
 
 WDSF Checkin
 

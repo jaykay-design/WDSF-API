@@ -54,6 +54,10 @@
         [JsonProperty("misbehaviour")]
         public int Misbehaviour { get; set; }
 
+        [XmlAttribute("routine")]
+        [JsonProperty("routine")]
+        public int Routine { get; set; }
+
         [XmlAttribute("isred")]
         [JsonProperty("isred")]
         public bool IsRed { get; set; }

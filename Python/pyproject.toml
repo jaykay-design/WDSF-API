@@ -1,0 +1,45 @@
+[project]
+name = "wdsf-python-sdk"
+version = "0.1.0"
+description = "Python client SDK for World DanceSport Federation API"
+authors = [
+    {name = "Alibek Cholponbaev", email = "Volume99917@gmail.com"}
+]
+readme = "README.md"
+license-files = ["LICENSE.txt"]
+license = "LGPL-3.0-or-later"
+requires-python = ">= 3.11"
+keywords = ["wdsf", "dancesport", "api", "sdk", "ballroom-dance"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "pydantic (>=2.11.7,<3.0.0)",
+    "requests (>=2.32.4,<3.0.0)",
+]
+
+[project.urls]
+Homepage = "https://github.com/jaykay-design/WDSF-API"
+Repository = "https://github.com/jaykay-design/WDSF-API"
+Issues = "https://github.com/jaykay-design/WDSF-API/issues"
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.5"
+ruff = "^0.11.11"
+python-dotenv = "^1.1.0"
+responses = "^0.25.7"
+pytest-httpserver = "^1.1.3"
+
+[tool.ruff]
+target-version = "py311"

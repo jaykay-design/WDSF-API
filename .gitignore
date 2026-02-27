@@ -6,3 +6,16 @@ Obj
 *.user
 *.suo
 .vs
+
+# python
+.idea
+.python-version
+__pycache__
+Python/local/
+Python/dist/
+Python/build/
+Python/*.egg-info/
+
+# Claude config
+CLAUDE.md
+.claude

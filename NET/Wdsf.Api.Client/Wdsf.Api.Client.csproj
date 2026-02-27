@@ -9,7 +9,7 @@
     <Company>JayKay-Design S.C.</Company>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Description>A .NET library which connects to the World DanceSport Federation's API using strongly typed models.</Description>
-    <PackageReleaseNotes>+ Added BreakingSeedByScore score</PackageReleaseNotes>
+    <PackageReleaseNotes>Added OnScaleTcpsScore and OnScaleTvoemScore models</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageProjectUrl>https://github.com/jaykay-design/WDSF-API/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/jaykay-design/WDSF-API/</RepositoryUrl>
@@ -17,7 +17,7 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Wdsf.Api.Client.snk</AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>
-    <AssemblyVersion>2.11.0.0</AssemblyVersion>
+    <AssemblyVersion>2.12.0.0</AssemblyVersion>
     <RepositoryType>git</RepositoryType>
     <PackageReadmeFile>Readme.md</PackageReadmeFile>
   </PropertyGroup>

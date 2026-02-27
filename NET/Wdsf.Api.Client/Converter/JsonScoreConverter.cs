@@ -19,7 +19,13 @@
                 { OnScaleScore.SerializerTypeName, typeof(OnScaleScore) },
                 { OnScale2Score.SerializerTypeName, typeof(OnScale2Score) },
                 { OnScale3Score.SerializerTypeName, typeof(OnScale3Score) },
+                { OnScaleDiscoScore.SerializerTypeName, typeof(OnScaleDiscoScore) },
+                { OnScaleDisco3Score.SerializerTypeName, typeof(OnScaleDisco3Score) },
                 { OnScaleIdoScore.SerializerTypeName, typeof(OnScaleIdoScore) },
+                { OnScaleSkatingScore.SerializerTypeName, typeof(OnScaleSkatingScore) },
+                { OnScaleTcpsScore.SerializerTypeName, typeof(OnScaleTcpsScore) },
+                { OnScaleTcpsScore.SerializerTypeName, typeof(OnScaleTcpsScore) },
+
                 { MarkScore.SerializerTypeName, typeof(MarkScore) },
                 { FinalScore.SerializerTypeName, typeof(FinalScore) }
             };

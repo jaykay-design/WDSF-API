@@ -71,6 +71,7 @@
 			+ Added OnScaleDiscoScore, OnScaleDisco3Score, OnScaleSkatingScore and DiscoTieBreakScore models
 2.10.0.0	# Replace WebClient with HttpClient
 2.11.0.0	+ Added Routine property to WdsfBreakingScore
+2.12.0.0	+ Added OnScaleTcpsScore and OnScaleTvoemScore models
 
 WDSF Checkin
 

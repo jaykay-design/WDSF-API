@@ -788,6 +788,51 @@
             If true this participant was allowed to skip the round
             </summary>
         </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScaleTcpsScore.T">
+            <summary>
+            Technique
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScaleTcpsScore.C">
+            <summary>
+            Creativity
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScaleTcpsScore.P">
+            <summary>
+            Performance
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScaleTcpsScore.S">
+            <summary>
+            Show (leave empty for non-show dances)
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScaleTvoemScore.T">
+            <summary>
+            Technique
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScaleTvoemScore.V">
+            <summary>
+            Vocabulary
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScaleTvoemScore.O">
+            <summary>
+            Originality
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScaleTvoemScore.E">
+            <summary>
+            Execution
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScaleTvoemScore.M">
+            <summary>
+            Musicality
+            </summary>
+        </member>
         <member name="P:Wdsf.Api.Client.Models.ParticipantBaseDetail.Status">
             <summary>
             Present, Noshow, Excused, Disqualified

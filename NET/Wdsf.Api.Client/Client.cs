@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Net;
     using System.Security;
@@ -15,8 +16,7 @@
     /// </summary>
     public class Client : IDisposable, IClient
     {
-        private readonly string username;
-        private readonly string password;
+        private readonly string apiKey;
         private readonly string onBehalfOf;
         private readonly string apiUriBase;
 
@@ -29,24 +29,65 @@
         ///<inheritdoc/>
         public string LastApiMessage { get; private set; }
 
-        ///<inheritdoc/>
-        public Client(string username, SecureString password, WdsfEndpoint endPoint, string onBehalfOf = null) :
-            this(username, ExtractSecureString(password), endPoint == WdsfEndpoint.Services ? "https://services.worlddancesport.org/API/1/" : "https://sandbox.worlddancesport.org/API/1/", onBehalfOf)
+        /// <summary>
+        /// The base URL of the live WDSF API (v2).
+        /// </summary>
+        public const string ServicesBaseUrl = "https://api.wdsf.org/api/2/";
+
+        /// <summary>
+        /// The base URL of the WDSF API sandbox (v2), for testing.
+        /// </summary>
+        public const string SandboxBaseUrl = "https://api-staging.wdsf.org/api/2/";
+
+        /// <summary>
+        /// The request header that carries the API key.
+        /// </summary>
+        public const string ApiKeyHeaderName = "X-WDSF-API-Key";
+
+        /// <summary>
+        /// Creates a client for the live API or the sandbox.
+        /// </summary>
+        /// <param name="apiKey">Your API key (a token created in My WDSF, My API Tokens).</param>
+        /// <param name="endPoint">The live API or the sandbox.</param>
+        /// <param name="onBehalfOf">The MIN of a scrutineer to act for (sent as X-OnBehalfOf). Needs a token that may impersonate; the person must hold an active scrutiny licence.</param>
+        public Client(SecureString apiKey, WdsfEndpoint endPoint, string onBehalfOf = null) :
+            this(ExtractSecureString(apiKey), new Uri(GetBaseUrl(endPoint)), onBehalfOf)
         {
         }
 
-        ///<inheritdoc/>
-        public Client(string username, string password, WdsfEndpoint endPoint, string onBehalfOf = null) :
-            this(username, password, endPoint == WdsfEndpoint.Services ? "https://services.worlddancesport.org/API/1/" : "https://sandbox.worlddancesport.org/API/1/", onBehalfOf)
+        /// <summary>
+        /// Creates a client for the live API or the sandbox.
+        /// </summary>
+        /// <param name="apiKey">Your API key (a token created in My WDSF, My API Tokens).</param>
+        /// <param name="endPoint">The live API or the sandbox.</param>
+        /// <param name="onBehalfOf">The MIN of a scrutineer to act for (sent as X-OnBehalfOf). Needs a token that may impersonate; the person must hold an active scrutiny licence.</param>
+        public Client(string apiKey, WdsfEndpoint endPoint, string onBehalfOf = null) :
+            this(apiKey, new Uri(GetBaseUrl(endPoint)), onBehalfOf)
         {
         }
 
-        ///<inheritdoc/>
-        public Client(string username, string password, string baseUrl, string onBehalfOf = null)
+        private static string GetBaseUrl(WdsfEndpoint endPoint)
         {
-            apiUriBase = baseUrl ?? throw new ArgumentNullException(nameof(baseUrl));
-            this.username = username ?? throw new ArgumentNullException(nameof(username));
-            this.password = password ?? throw new ArgumentNullException(nameof(password));
+            return endPoint == WdsfEndpoint.Services ? ServicesBaseUrl : SandboxBaseUrl;
+        }
+
+        /// <summary>
+        /// Creates a client for an API at another address (e.g. a local test server).
+        /// </summary>
+        /// <param name="apiKey">Your API key (a token created in My WDSF, My API Tokens).</param>
+        /// <param name="baseUrl">The API's base URL including the version, e.g. https://api.wdsf.org/api/2/.</param>
+        /// <param name="onBehalfOf">The MIN of a scrutineer to act for (sent as X-OnBehalfOf). Needs a token that may impersonate; the person must hold an active scrutiny licence.</param>
+        public Client(string apiKey, Uri baseUrl, string onBehalfOf = null)
+        {
+            if (baseUrl == null)
+                throw new ArgumentNullException(nameof(baseUrl));
+
+            if (string.IsNullOrWhiteSpace(apiKey))
+                throw new ArgumentException("The API key must be set.", nameof(apiKey));
+
+            var url = baseUrl.ToString();
+            apiUriBase = url.EndsWith("/") ? url : url + "/";
+            this.apiKey = apiKey.Trim();
             this.onBehalfOf = onBehalfOf;
 
             this.adapters = new List<RestAdapter>() { };
@@ -62,7 +103,12 @@
             if (val == null)
                 return null;
 
-            return val.ToString();
+            return new NetworkCredential(string.Empty, val).Password;
+        }
+
+        private static string BuildQuery(IDictionary<string, string> filter)
+        {
+            return string.Join("&", filter.Select(e => Uri.EscapeDataString(e.Key) + "=" + Uri.EscapeDataString(e.Value ?? string.Empty)).ToArray());
         }
 
 
@@ -72,9 +118,15 @@
             if (filter == null)
                 throw new ArgumentNullException(nameof(filter));
 
-            string query = string.Join("&", filter.Select(e => e.Key + "=" + e.Value).ToArray());
+            return GetResourceList<ListOfPerson, Person>("person?" + BuildQuery(filter));
+        }
+        ///<inheritdoc/>
+        public IList<PersonExport> GetPersonExport(IDictionary<string, string> filter)
+        {
+            if (filter == null)
+                throw new ArgumentNullException(nameof(filter));
 
-            return GetResourceList<ListOfPerson, Person>("person?" + query);
+            return GetResourceList<ListOfPersonExport, PersonExport>("person/export?" + BuildQuery(filter));
         }
         ///<inheritdoc/>
         public PersonDetail GetPerson(int min)
@@ -97,9 +149,7 @@
             if (filter == null)
                 throw new ArgumentNullException(nameof(filter));
 
-            string query = string.Join("&", filter.Select(e => e.Key + "=" + e.Value).ToArray());
-
-            return GetResourceList<ListOfCompetition, Competition>("competition?" + query);
+            return GetResourceList<ListOfCompetition, Competition>("competition?" + BuildQuery(filter));
         }
         ///<inheritdoc/>
         public CompetitionDetail GetCompetition(int id)
@@ -296,9 +346,7 @@
             if (filter == null)
                 throw new ArgumentNullException(nameof(filter));
 
-            string query = string.Join("&", filter.Select(e => e.Key + "=" + e.Value).ToArray());
-
-            return GetResourceList<ListOfCouple, Couple>("couple?" + query);
+            return GetResourceList<ListOfCouple, Couple>("couple?" + BuildQuery(filter));
         }
         ///<inheritdoc/>
         public CoupleDetail GetCouple(string id)
@@ -331,9 +379,7 @@
             if (filter == null)
                 throw new ArgumentNullException(nameof(filter));
 
-            string query = string.Join("&", filter.Select(e => e.Key + "=" + e.Value).ToArray());
-
-            return GetResourceList<ListOfTeam, Team>("team?" + query);
+            return GetResourceList<ListOfTeam, Team>("team?" + BuildQuery(filter));
         }
         ///<inheritdoc/>
         public TeamDetail GetTeam(string id)
@@ -368,6 +414,21 @@
         ///<inheritdoc/>
         public IList<Ranking> GetWorldRanking(string discipline, string ageGroup, string division, DateTime date)
         {
+            return GetResourceList<ListOfRanking, Ranking>(BuildRankingUri(discipline, ageGroup, division, date, null, null));
+        }
+        ///<inheritdoc/>
+        public IList<RankingSingle> GetSingleWorldRanking(string discipline, string ageGroup, string division, string gender = null, DateTime? date = null)
+        {
+            return GetResourceList<ListOfRankingSingle, RankingSingle>(BuildRankingUri(discipline, ageGroup, division, date ?? DateTime.MinValue, gender, null));
+        }
+        ///<inheritdoc/>
+        public IList<RankingTeam> GetTeamWorldRanking(string discipline, string ageGroup, string division, DateTime? date = null)
+        {
+            return GetResourceList<ListOfRankingTeam, RankingTeam>(BuildRankingUri(discipline, ageGroup, division, date ?? DateTime.MinValue, null, null));
+        }
+
+        private static string BuildRankingUri(string discipline, string ageGroup, string division, DateTime date, string gender, string form)
+        {
             if (string.IsNullOrEmpty(discipline))
                 throw new ArgumentException("Discipline must be set.", nameof(discipline));
 
@@ -377,11 +438,121 @@
             if (string.IsNullOrEmpty(division))
                 throw new ArgumentException("Division must be set.", nameof(division));
 
-            string resourceUri = $"ranking?agegroup={ageGroup}&discipline={discipline}&division={division}";
-            if (date != DateTime.MinValue)
-                resourceUri += "&date=" + date.ToString("yyyy/MM/dd");
+            var filter = new Dictionary<string, string>
+            {
+                { FilterNames.Ranking.AgeGroup, ageGroup },
+                { FilterNames.Ranking.Discipline, discipline },
+                { FilterNames.Ranking.Division, division },
+            };
 
-            return GetResourceList<ListOfRanking, Ranking>(resourceUri);
+            if (date != DateTime.MinValue)
+                filter.Add(FilterNames.Ranking.Date, date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture));
+
+            if (!string.IsNullOrEmpty(gender))
+                filter.Add(FilterNames.Ranking.Gender, gender);
+
+            if (!string.IsNullOrEmpty(form))
+                filter.Add(FilterNames.Ranking.Form, form);
+
+            return "ranking?" + BuildQuery(filter);
+        }
+
+        ///<inheritdoc/>
+        public IList<AgeVerification> CheckAgeForCompetition(IEnumerable<int> mins, IEnumerable<int> competitionIds)
+        {
+            if (mins == null)
+                throw new ArgumentNullException(nameof(mins));
+
+            if (competitionIds == null)
+                throw new ArgumentNullException(nameof(competitionIds));
+
+            var minList = mins.ToList();
+            if (minList.Count < 1 || minList.Count > 2)
+                throw new ArgumentException("One MIN (solo) or two MIN (couple) must be given.", nameof(mins));
+
+            var idList = competitionIds.ToList();
+            if (idList.Count == 0)
+                throw new ArgumentException("At least one competition id must be given.", nameof(competitionIds));
+
+            return GetResourceList<ListOfAgeVerification, AgeVerification>(
+                "age/CheckForCompetition/" + string.Join(",", minList) + "/" + string.Join(",", idList));
+        }
+
+        ///<inheritdoc/>
+        public IList<EventGroup> GetEventGroups(IDictionary<string, string> filter)
+        {
+            if (filter == null)
+                throw new ArgumentNullException(nameof(filter));
+
+            return GetResourceList<ListOfEventGroup, EventGroup>("group?" + BuildQuery(filter));
+        }
+        ///<inheritdoc/>
+        public EventGroupDetail GetEventGroup(int id)
+        {
+            return GetResource<EventGroupDetail>("group/" + id);
+        }
+
+        ///<inheritdoc/>
+        public IList<ScheduleEntry> GetSchedule(int groupId)
+        {
+            return GetResourceList<ListOfScheduleEntry, ScheduleEntry>("schedule?groupId=" + groupId);
+        }
+        ///<inheritdoc/>
+        public ScheduleEntry GetScheduleEntry(Guid id)
+        {
+            return GetResource<ScheduleEntry>("schedule/" + id);
+        }
+        ///<inheritdoc/>
+        public Uri SaveScheduleEntry(ScheduleEntry entry)
+        {
+            if (entry == null)
+                throw new ArgumentNullException(nameof(entry));
+
+            return SaveResource(entry, "schedule");
+        }
+        ///<inheritdoc/>
+        public bool UpdateScheduleEntry(ScheduleEntry entry)
+        {
+            if (entry == null)
+                throw new ArgumentNullException(nameof(entry));
+
+            if (entry.Id == Guid.Empty)
+                throw new ArgumentException("The schedule entry's Id must be set.", nameof(entry));
+
+            return UpdateResource(entry, "schedule/" + entry.Id);
+        }
+        ///<inheritdoc/>
+        public bool DeleteScheduleEntry(Guid id)
+        {
+            return DeleteResource("schedule/" + id);
+        }
+
+        ///<inheritdoc/>
+        public ApiFile GetParticipantMusic(int participantId, DateTimeOffset? ifModifiedSince = null)
+        {
+            return GetFile("participant/" + participantId + "/music", false, ifModifiedSince);
+        }
+        ///<inheritdoc/>
+        public ApiFile GetParticipantMusicInfo(int participantId)
+        {
+            return GetFile("participant/" + participantId + "/music", true, null);
+        }
+
+        private ApiFile GetFile(string resourceUri, bool headersOnly, DateTimeOffset? ifModifiedSince)
+        {
+            var adapter = GetAdapter();
+            try
+            {
+                return adapter.GetFile(new Uri(this.apiUriBase + resourceUri), headersOnly, ifModifiedSince);
+            }
+            catch (Exception ex)
+            {
+                throw new ApiException(ex);
+            }
+            finally
+            {
+                ReleaseAdapter(adapter);
+            }
         }
 
         ///<inheritdoc/>
@@ -596,7 +767,7 @@
                 var adapter = this.adapters.FirstOrDefault(a => a.IsBusy == false && a.IsAssigned == false);
                 if (adapter == null)
                 {
-                    adapter = new RestAdapter(this.username, this.password, this.onBehalfOf)
+                    adapter = new RestAdapter(this.apiKey, this.onBehalfOf)
                     {
                         ContentType = this.ContentType
                     };

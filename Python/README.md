@@ -15,7 +15,6 @@ from datetime import datetime
 from pydantic import HttpUrl, SecretStr
 
 from wdsf_python_sdk.config import (
-    BasicAuthCredentials,
     HttpConfig,
     WdsfHttpClientConfig,
 )
@@ -25,11 +24,8 @@ from wdsf_python_sdk.competition.queries import CompetitionQuery
 
 # Create configuration
 config = WdsfHttpClientConfig(
-    url=HttpUrl("https://api.worlddancesport.org"),
-    auth=BasicAuthCredentials(
-        username="your-username",
-        password=SecretStr("your-password")
-    ),
+    url=HttpUrl("https://api.wdsf.org/api/2/"),  # sandbox: https://api-staging.wdsf.org/api/2/
+    api_key=SecretStr("your-api-key"),  # an API token from My WDSF, My API Tokens
     http=HttpConfig(timeout=10)
 )
 
@@ -37,7 +33,7 @@ config = WdsfHttpClientConfig(
 client = HttpClient(
     config=config.http,
     url=config.url,
-    auth=(config.auth.username, str(config.auth.password.get_secret_value()))
+    api_key=config.api_key.get_secret_value(),
 )
 
 # Create provider

@@ -32,30 +32,23 @@
 					<br> <br>
 				</fieldset>
 				<fieldset >
-				 <legend>Login and Password WDSF</legend>  <!--Login and passcord WDSF area -->
+				 <legend>WDSF API key</legend>  <!-- WDSF API key area -->
 					<?php
-					$login = ""; $mdp = ""; // initializing variables 
-					if ((isset($_POST['Login']) == TRUE) and (isset($_POST['Password']) == TRUE) ) // if variables exist (they exist after pressing the Test button)
+					$apiKey = ""; // initializing variable
+					if (isset($_POST['ApiKey']) == TRUE) // exists after pressing the Test button
 					{
-						$login = $_POST['Login']; $mdp= $_POST['Password']; // Retrieving previous values
+						$apiKey = $_POST['ApiKey']; // Retrieving previous value
 					}
-					echo '	
-						
+					echo '
+
 					<br>
-						<label id = "labelcontrol" >Login</label> 			<br>
-						<input type="text" id="ControlString" name="Login" size="20"maxlength="40" value="'.$login.'" id="Login" >
-					<br> 
-						<label id = "labelcontrol" >PassWord</label> 			<br>
-						<input type="text" id="ControlString" name="Password" size="20"maxlength="40" value="'.$mdp.'" id="Password" >					
+						<label id = "labelcontrol" >API key</label> 			<br>
+						<input type="password" id="ControlString" name="ApiKey" size="40" maxlength="100" value="'.htmlspecialchars($apiKey, ENT_QUOTES).'" id="ApiKey" >
 					<br><br>
-					<a href="http://projects.worlddancesport.org/wiki/display/PUB/Authentication">Authentication </a> 
-					<br>
-					<a href="https://www.worlddancesport.org/Account/Register">Register </a> 
+					An API key is a token created in My WDSF (My API Tokens).
 					';
-					
-					 // Entry box Login WDSF with previous values if existing -
-					// Entry box Poassword WDSF with previous values if existing -
-					// Links for register
+
+					// Entry box API key with previous value if existing
 					?>
 				</fieldset>				
 				
@@ -68,9 +61,9 @@
 				<br>
 			</form>
 			<?php
-			if ((isset($_POST['Man_IDCARD']) == TRUE) and (isset($_POST['Woman_IDCARD']) == TRUE) and (isset($_POST['Login']) == TRUE) and (isset($_POST['Password']) == TRUE) ) // if variables exist (they exist after pressing the Test button)
+			if ((isset($_POST['Man_IDCARD']) == TRUE) and (isset($_POST['Woman_IDCARD']) == TRUE) and (isset($_POST['ApiKey']) == TRUE) ) // if variables exist (they exist after pressing the Test button)
 			{
-				if ( (strlen ($_POST['Login']) > 0) and (strlen($_POST['Password']) > 0) ) // If Login and Password aren't not null
+				if (strlen($_POST['ApiKey']) > 0) // If the API key is not empty
 				{
 					global  $W_FirstName, $M_FirstName, $Country, $W_Categorie, $M_Categorie;
 					
@@ -78,8 +71,8 @@
 					$W_IDCARD 	= $_POST['Woman_IDCARD'];			
 					
 					
-					$ID_Couple_M = Test_Personne($_POST['Login'],$_POST['Password'],$M_IDCARD, "Male");				// Reading information about Man (Name and First Name, Category, sex, ID-COuple)
-					$ID_Couple_W = Test_Personne($_POST['Login'],$_POST['Password'],$W_IDCARD, "Female");			// Reading information about Woman (Name and First Name, Category, sex, ID-COuple)		
+					$ID_Couple_M = Test_Personne($_POST['ApiKey'],$M_IDCARD, "Male");				// Reading information about Man (Name and First Name, Category, sex, ID-COuple)
+					$ID_Couple_W = Test_Personne($_POST['ApiKey'],$W_IDCARD, "Female");			// Reading information about Woman (Name and First Name, Category, sex, ID-COuple)		
 																													//  Display all informations
 					echo  'Man   ==> '.$M_FirstName.'   ('.$M_IDCARD.')     ;    '.$M_Categorie.'     ;    '.$ID_Couple_M.'<br>';
 					echo  'Woman ==> '.$W_FirstName.'   ('.$W_IDCARD.')     ;    '.$W_Categorie.'     ;    '.$ID_Couple_W.'<br>';
@@ -96,8 +89,8 @@
 				
 				}					
 				else
-				{																									// If login and password aren't full  display message error
-					echo '<br> Login and Password missing';
+				{																									// If the API key is empty display message error
+					echo '<br> API key missing';
 				}
 			}
 			?>
@@ -111,13 +104,11 @@
 
 <?php
 
-function Test_Personne ($Login_Wdsf,$Password_Wdsf, $MIN_person, $Man_or_Woman)
+function Test_Personne ($ApiKey_Wdsf, $MIN_person, $Man_or_Woman)
 {
 	$Retour = -2;
-	$mdp = $Login_Wdsf.':'.$Password_Wdsf;
-	$mdp_code = base64_encode($mdp);																					// Encoding login and password
 							
-	$requete_Paypal = "https://services.worlddancesport.org/api/1/person?min=".$MIN_person;								// Construction of the first part of the application curl
+	$requete_Paypal = "https://api.wdsf.org/api/2/person?min=".$MIN_person;								// Construction of the first part of the application curl
 			    
 	$ch = curl_init($requete_Paypal);																					// Mise en forme poru l'execution de CURL
 	curl_setopt($ch, CURLOPT_FRESH_CONNECT	, TRUE);																	// Set Attribute communication WDSF API via curl
@@ -129,9 +120,7 @@ function Test_Personne ($Login_Wdsf,$Password_Wdsf, $MIN_person, $Man_or_Woman)
 	curl_setopt($ch, CURLOPT_PROXY, 'clprox.bull.fr');																	// If nessesary use proxy 
 	curl_setopt($ch, CURLOPT_PROXYPORT, 80);
 
-	curl_setopt($ch, CURLOPT_HTTPHEADER		, array('Content-Type: application/vnd.worlddancesport.couples+xml','Accept: application/xml','Authorization: Basic '.$mdp_code));
-	curl_setopt($ch, CURLOPT_HTTPAUTH		, CURLAUTH_BASIC);														// Set Attribute Authorization  WDSF API via curl
-	curl_setopt($ch, CURLOPT_USERPWD		, $mdp_code);															// Set Attribute Authorization  WDSF API via curl
+	curl_setopt($ch, CURLOPT_HTTPHEADER		, array('Accept: application/xml','X-WDSF-API-Key: '.$ApiKey_Wdsf));	// The API key authenticates the request
 	curl_setopt($ch, CURLOPT_TIMEOUT		, 60);																	// Set Timeout before stop executionn  WDSF API via curl
 	$resultat_paypal = curl_exec($ch);																				// Execute curl function to commuicate withe WDSF API
 				

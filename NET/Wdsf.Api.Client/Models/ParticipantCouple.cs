@@ -16,6 +16,13 @@
         [JsonProperty("country")]
         public string Country { get; set; }
 
+        /// <summary>
+        /// The reference a member federation stores for the couple.
+        /// </summary>
+        [XmlElement("nationalreference")]
+        [JsonProperty("nationalreference")]
+        public string NationalReference { get; set; }
+
         [XmlElement("number")]
         [JsonProperty("number")]
         public string StartNumber { get; set; }

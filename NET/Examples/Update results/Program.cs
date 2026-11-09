@@ -17,7 +17,8 @@
         static void Main(string[] args)
         {
             // prepare the client for access
-            apiClient = new Client("guest", "guest", WdsfEndpoint.Sandbox);
+            apiClient = // your API key: a token from My WDSF, My API Tokens
+            new Client(Environment.GetEnvironmentVariable("WDSF_API_KEY"), WdsfEndpoint.Sandbox);
 
             Console.Write("Enter competition ID:");
             int competitionId;

@@ -40,15 +40,14 @@ namespace WDSF_Checkin.Model
         /// <summary>
         /// Downloads all couples via the WDSF api
         /// </summary>
-        /// <param name="user">Username provided by WDSF</param>
-        /// <param name="password">Password provided by WDSF</param>
+        /// <param name="apiKey">API key (a token from My WDSF, My API Tokens)</param>
         /// <param name="liveSystem">true, if using the live system</param>
-        public void DownloadCouples(string user, string password, bool liveSystem)
+        public void DownloadCouples(string apiKey, bool liveSystem)
         {
             if (ProgressChanged != null)
                 ProgressChanged(this, new ProgressEventArgs() { Progress = 0, State = "Downloading List of Couples" });
 
-            _apiClient = new Client(user, password, liveSystem ? WdsfEndpoint.Services : WdsfEndpoint.Sandbox);
+            _apiClient = new Client(apiKey, liveSystem ? WdsfEndpoint.Services : WdsfEndpoint.Sandbox);
 
             int currentProgress = 0;
             Timer t = new Timer(

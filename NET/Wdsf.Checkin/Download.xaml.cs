@@ -39,8 +39,7 @@ namespace WDSF_Checkin
 
             try
             {
-                client.DownloadCouples(AppSettings.Default.API_User,
-                                        AppSettings.Default.API_Password,
+                client.DownloadCouples(AppSettings.Default.API_Key,
                                         AppSettings.Default.API_ProductionSystem);
             }
             catch (Wdsf.Api.Client.Exceptions.ApiException ex)

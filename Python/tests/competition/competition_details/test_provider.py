@@ -1,4 +1,4 @@
-import os
+import posixpath
 from datetime import datetime, date
 from decimal import Decimal
 
@@ -25,7 +25,7 @@ class TestCompetitionDetailsProvider:
         self, config: WdsfHttpClientConfig, competition_id: int
     ) -> None:
         responses.get(
-            url=os.path.join(str(config.url), f"competition/{competition_id}"),
+            url=posixpath.join(str(config.url), f"competition/{competition_id}"),
             match=[
                 matchers.header_matcher(EXPECTED_HEADERS),
             ],
@@ -41,6 +41,9 @@ class TestCompetitionDetailsProvider:
                 "type": "World Championship",
                 "lastmodifiedDate": "2024-01-01T01:02:03",
                 "status": "Closed",
+                "name": "Berlin World Championship",
+                "eventId": 7,
+                "groupId": 8,
             },
         )
 
@@ -70,4 +73,7 @@ class TestCompetitionDetailsProvider:
             type="World Championship",
             last_modified_date=datetime(2024, 1, 1, 1, 2, 3),
             status=CompetitionStatus.CLOSED,
+            name="Berlin World Championship",
+            event_id=7,
+            group_id=8,
         )

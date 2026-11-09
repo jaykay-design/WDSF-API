@@ -2,11 +2,8 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="WDSF_Checkin" GeneratedClassName="AppSettings">
   <Profiles />
   <Settings>
-    <Setting Name="API_User" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">guest</Value>
-    </Setting>
-    <Setting Name="API_Password" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">guest</Value>
+    <Setting Name="API_Key" Type="System.String" Scope="Application">
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="API_ProductionSystem" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">False</Value>

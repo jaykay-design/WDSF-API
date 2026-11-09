@@ -25,19 +25,10 @@ namespace WDSF_Checkin {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("guest")]
-        public string API_User {
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string API_Key {
             get {
-                return ((string)(this["API_User"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("guest")]
-        public string API_Password {
-            get {
-                return ((string)(this["API_Password"]));
+                return ((string)(this["API_Key"]));
             }
         }
         

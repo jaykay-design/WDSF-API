@@ -20,7 +20,24 @@
         /// </summary>
         [XmlAttribute("maxDeviation")]
         [JsonProperty("maxDeviation")]
+        [JsonConverter(typeof(Converter.NumericStringConverter))]
         public string MaxDeviation { get; set; }
+        public bool ShouldSerializeMaxDeviation()
+        {
+            return !string.IsNullOrEmpty(MaxDeviation);
+        }
+
+        /// <summary>
+        /// The number of participants recalled from this round (Skating rounds).
+        /// </summary>
+        [XmlAttribute("recalls")]
+        [JsonProperty("recalls")]
+        [JsonConverter(typeof(Converter.NumericStringConverter))]
+        public string Recalls { get; set; }
+        public bool ShouldSerializeRecalls()
+        {
+            return !string.IsNullOrEmpty(Recalls);
+        }
 
         /// <summary>
         /// <para>Do not use this array to process dances.</para>

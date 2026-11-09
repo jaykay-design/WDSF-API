@@ -1,10 +1,11 @@
 ﻿namespace Wdsf.Api.Client.Models
 {
     using Newtonsoft.Json;
+    using System.Collections.Generic;
     using System.Xml.Serialization;
 
     [XmlType("license", Namespace = "http://services.worlddancesport.org/api")]
-    [JsonObject("link")]
+    [JsonObject("license")]
     public class License
     {
         [XmlElement("type")]
@@ -18,6 +19,21 @@
         [XmlElement("division")]
         [JsonProperty("division")]
         public string Division { get; set; }
+
+        /// <summary>
+        /// The licence grade; for an ITC licence the level: C Instructor, B Trainer, A Coach.
+        /// Omitted when the licence has none.
+        /// </summary>
+        [XmlElement("grade")]
+        [JsonProperty("grade")]
+        public string Grade { get; set; }
+
+        /// <summary>
+        /// The disciplines the licence covers. Omitted when it names none.
+        /// </summary>
+        [XmlArray("disciplines")]
+        [JsonProperty("disciplines")]
+        public List<string> Disciplines { get; set; }
 
         [XmlElement("expiresOn")]
         [JsonProperty("expiresOn")]

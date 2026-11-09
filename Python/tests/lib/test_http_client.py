@@ -1,4 +1,3 @@
-import base64
 import json
 import os
 import time
@@ -20,7 +19,7 @@ class TestHttpClient:
         return HttpClient(
             config=config.http,
             url=config.url,
-            auth=(config.auth.username, str(config.auth.password.get_secret_value())),
+            api_key=config.api_key.get_secret_value(),
         )
 
     @pytest.fixture
@@ -28,7 +27,7 @@ class TestHttpClient:
         return HttpClient(
             config=config.http,
             url=httpserver.url_for(""),
-            auth=(config.auth.username, str(config.auth.password.get_secret_value())),
+            api_key=config.api_key.get_secret_value(),
         )
 
     @pytest.fixture
@@ -51,10 +50,8 @@ class TestHttpClient:
     def test_init_creates_expected_session(self, http_client, config):
         # Then
         assert http_client.session.headers["Accept"] == "application/json"
-        assert http_client.session.auth == (
-            config.auth.username,
-            str(config.auth.password.get_secret_value()),
-        )
+        assert http_client.session.headers["X-WDSF-API-Key"] == "some-api-key"
+        assert http_client.session.auth is None
 
     @responses.activate
     def test_get_makes_expected_request(self, http_client, config, endpoint_url):
@@ -106,14 +103,11 @@ class TestHttpClient:
         with pytest.raises(ReadTimeout):
             httpserver_client.get(url="some-endpoint")
 
-    def test_get_sends_basic_auth_credentials(
-        self, httpserver, httpserver_client, config
-    ):
+    def test_get_sends_api_key(self, httpserver, httpserver_client, config):
         # Given
-        valid_credentials = base64.b64encode(b"some-user:some-password").decode("utf-8")
-
         def delayed_response(request):
-            assert request.headers["Authorization"] == f"Basic {valid_credentials}"
+            assert request.headers["X-WDSF-API-Key"] == "some-api-key"
+            assert "Authorization" not in request.headers
             return Response(
                 json.dumps({"response": "response"}),
                 status=200,

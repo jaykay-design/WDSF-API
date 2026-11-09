@@ -42,6 +42,19 @@
         /// </summary>
         public List<Round> Rounds { get; set; }
 
+        /// <summary>
+        /// The confirmed WDSF coaches of the entry for the competition's discipline, ordered by
+        /// surname. Read only.
+        /// </summary>
+        [XmlArray("coaches")]
+        [XmlArrayItem("coach")]
+        [JsonProperty("coaches")]
+        public List<ParticipantCoach> Coaches { get; set; }
+        public bool ShouldSerializeCoaches()
+        {
+            return false;
+        }
+
         public bool ShouldSerializeRounds()
         {
             return Rounds != null;

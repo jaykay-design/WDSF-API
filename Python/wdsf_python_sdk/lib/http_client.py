@@ -1,4 +1,4 @@
-import os.path
+import posixpath
 from typing import Any
 from urllib.parse import urljoin
 
@@ -8,16 +8,18 @@ from requests import Session
 from wdsf_python_sdk.config import HttpConfig
 
 
+API_KEY_HEADER = "X-WDSF-API-Key"
+
+
 class HttpClient:
-    def __init__(self, config: HttpConfig, url: HttpUrl, auth: tuple[str, str]) -> None:
-        self.session = self._get_session(auth=auth)
+    def __init__(self, config: HttpConfig, url: HttpUrl, api_key: str) -> None:
+        self.session = self._get_session(api_key=api_key)
         self.base_url = str(url)
         self.config = config
 
-    def _get_session(self, auth: tuple[str, str]) -> Session:
+    def _get_session(self, api_key: str) -> Session:
         session = Session()
-        session.auth = auth
-        session.headers.update({"Accept": "application/json"})
+        session.headers.update({"Accept": "application/json", API_KEY_HEADER: api_key})
         return session
 
     def get(self, url: str, params: dict[str, Any] | None = None) -> dict[str, Any]:
@@ -31,4 +33,5 @@ class HttpClient:
         return response.json()
 
     def build_url(self, *paths: str) -> str:
-        return os.path.join(self.base_url, *paths)
+        # URL paths use "/" on every OS (os.path.join gives "\\" on Windows).
+        return posixpath.join(self.base_url, *paths)

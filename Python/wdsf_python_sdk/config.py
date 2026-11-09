@@ -1,16 +1,12 @@
 from pydantic import BaseModel, HttpUrl, SecretStr
 
 
-class BasicAuthCredentials(BaseModel):
-    username: str
-    password: SecretStr
-
-
 class HttpConfig(BaseModel):
     timeout: int = 10
 
 
 class WdsfHttpClientConfig(BaseModel):
     url: HttpUrl
-    auth: BasicAuthCredentials
+    # An API token from My WDSF (My API Tokens), sent as the X-WDSF-API-Key header.
+    api_key: SecretStr
     http: HttpConfig = HttpConfig()

@@ -35,5 +35,40 @@
         [XmlArrayItem("age")]
         [JsonProperty("allowedToDanceIn")]
         public List<string> AllowedToDanceIn { get; set; }
+
+        /// <summary>
+        /// The divisions the age group exists in.
+        /// </summary>
+        [XmlElement("divisions")]
+        [JsonProperty("divisions")]
+        public List<string> Divisions { get; set; }
+
+        /// <summary>
+        /// The age group applies to a person.
+        /// </summary>
+        [XmlElement("isPerson")]
+        [JsonProperty("isPerson")]
+        public bool IsPerson { get; set; }
+
+        /// <summary>
+        /// The age group applies to a couple.
+        /// </summary>
+        [XmlElement("isCouple")]
+        [JsonProperty("isCouple")]
+        public bool IsCouple { get; set; }
+
+        /// <summary>
+        /// The age group applies to a team.
+        /// </summary>
+        [XmlElement("isTeam")]
+        [JsonProperty("isTeam")]
+        public bool IsTeam { get; set; }
+
+        /// <summary>
+        /// The age group can be used for a competition.
+        /// </summary>
+        [XmlElement("isCompetition")]
+        [JsonProperty("isCompetition")]
+        public bool IsCompetition { get; set; }
     }
 }

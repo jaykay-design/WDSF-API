@@ -31,10 +31,6 @@
         [JsonProperty("sex")]
         public string Sex { get; set; }
 
-        [XmlElement("title")]
-        [JsonProperty("title")]
-        public string Title { get; set; }
-
         [XmlElement("nationality")]
         [JsonProperty("nationality")]
         public string Nationality { get; set; }
@@ -61,6 +57,19 @@
         public bool ShouldSerializeLicenses()
         {
             return Licenses != null && Licenses.Count > 0;
+        }
+
+        /// <summary>
+        /// The person's e-mail addresses, the default one first. Returned to scrutiny and
+        /// service-provider accounts only; null for every other account.
+        /// </summary>
+        [XmlArray("emails")]
+        [XmlArrayItem("email")]
+        [JsonProperty("emails")]
+        public List<string> Emails { get; set; }
+        public bool ShouldSerializeEmails()
+        {
+            return false;
         }
 
     }

@@ -24,10 +24,15 @@
                 { OnScaleIdoScore.SerializerTypeName, typeof(OnScaleIdoScore) },
                 { OnScaleSkatingScore.SerializerTypeName, typeof(OnScaleSkatingScore) },
                 { OnScaleTcpsScore.SerializerTypeName, typeof(OnScaleTcpsScore) },
-                { OnScaleTcpsScore.SerializerTypeName, typeof(OnScaleTcpsScore) },
+                { OnScaleTvoemScore.SerializerTypeName, typeof(OnScaleTvoemScore) },
+                { OnScaleTvoemScore.LegacySerializerTypeName, typeof(OnScaleTvoemScore) },
+                { OnScaleMtcScore.SerializerTypeName, typeof(OnScaleMtcScore) },
+                { DiscoTieBreakScore.SerializerTypeName, typeof(DiscoTieBreakScore) },
+                { EsportsAIScore.SerializerTypeName, typeof(EsportsAIScore) },
 
                 { MarkScore.SerializerTypeName, typeof(MarkScore) },
-                { FinalScore.SerializerTypeName, typeof(FinalScore) }
+                { FinalScore.SerializerTypeName, typeof(FinalScore) },
+                { NoMarkScore.SerializerTypeName, typeof(NoMarkScore) }
             };
 
         public override bool CanConvert(Type objectType)
@@ -43,11 +48,11 @@
             }
 
             var jObject = JObject.Load(reader);
-            var serializedTypeName = jObject["kind"].Value<string>();
+            var serializedTypeName = jObject["kind"]?.Value<string>();
 
-            if (!typeMap.ContainsKey(serializedTypeName))
+            if (serializedTypeName == null || !typeMap.ContainsKey(serializedTypeName))
             {
-                throw new NotImplementedException(string.Format("No JSON reader for type {0} implemented.", objectType.FullName));
+                throw new NotImplementedException(string.Format("No JSON reader for score kind {0} implemented.", serializedTypeName ?? "(none)"));
             }
 
             return jObject.ToObject(typeMap[serializedTypeName], serializer);

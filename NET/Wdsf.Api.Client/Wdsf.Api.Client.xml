@@ -4,6 +4,41 @@
         <name>Wdsf.Api.Client</name>
     </assembly>
     <members>
+        <member name="T:Wdsf.Api.Client.ApiFile">
+            <summary>
+            A file the API returned.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.ApiFile.Content">
+            <summary>
+            The file's content; null for a headers-only (HEAD) request.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.ApiFile.ContentType">
+            <summary>
+            The media type, e.g. audio/mpeg or application/zip.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.ApiFile.FileName">
+            <summary>
+            The file name the API suggests.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.ApiFile.LastModified">
+            <summary>
+            When the file last changed. Pass it back as ifModifiedSince to download only changes.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.ApiFile.IsArchive">
+            <summary>
+            The file is a zip archive of several files.
+            </summary>
+        </member>
+        <member name="T:Wdsf.Api.Client.Attributes.MediaTypeAttribute">
+            <summary>
+            The media type of a model. Every model has its own: the client picks the model of a response by it.
+            </summary>
+        </member>
         <member name="T:Wdsf.Api.Client.Client">
             <summary>
             <para>Provides access to the WDSF API throught stongly typed models.</para>
@@ -16,16 +51,49 @@
         <member name="P:Wdsf.Api.Client.Client.LastApiMessage">
             <inheritdoc/>
         </member>
-        <member name="M:Wdsf.Api.Client.Client.#ctor(System.String,System.Security.SecureString,Wdsf.Api.Client.WdsfEndpoint,System.String)">
-            <inheritdoc/>
+        <member name="F:Wdsf.Api.Client.Client.ServicesBaseUrl">
+            <summary>
+            The base URL of the live WDSF API (v2).
+            </summary>
         </member>
-        <member name="M:Wdsf.Api.Client.Client.#ctor(System.String,System.String,Wdsf.Api.Client.WdsfEndpoint,System.String)">
-            <inheritdoc/>
+        <member name="F:Wdsf.Api.Client.Client.SandboxBaseUrl">
+            <summary>
+            The base URL of the WDSF API sandbox (v2), for testing.
+            </summary>
         </member>
-        <member name="M:Wdsf.Api.Client.Client.#ctor(System.String,System.String,System.String,System.String)">
-            <inheritdoc/>
+        <member name="F:Wdsf.Api.Client.Client.ApiKeyHeaderName">
+            <summary>
+            The request header that carries the API key.
+            </summary>
+        </member>
+        <member name="M:Wdsf.Api.Client.Client.#ctor(System.Security.SecureString,Wdsf.Api.Client.WdsfEndpoint,System.String)">
+            <summary>
+            Creates a client for the live API or the sandbox.
+            </summary>
+            <param name="apiKey">Your API key (a token created in My WDSF, My API Tokens).</param>
+            <param name="endPoint">The live API or the sandbox.</param>
+            <param name="onBehalfOf">The MIN of a scrutineer to act for (sent as X-OnBehalfOf). Needs a token that may impersonate; the person must hold an active scrutiny licence.</param>
+        </member>
+        <member name="M:Wdsf.Api.Client.Client.#ctor(System.String,Wdsf.Api.Client.WdsfEndpoint,System.String)">
+            <summary>
+            Creates a client for the live API or the sandbox.
+            </summary>
+            <param name="apiKey">Your API key (a token created in My WDSF, My API Tokens).</param>
+            <param name="endPoint">The live API or the sandbox.</param>
+            <param name="onBehalfOf">The MIN of a scrutineer to act for (sent as X-OnBehalfOf). Needs a token that may impersonate; the person must hold an active scrutiny licence.</param>
+        </member>
+        <member name="M:Wdsf.Api.Client.Client.#ctor(System.String,System.Uri,System.String)">
+            <summary>
+            Creates a client for an API at another address (e.g. a local test server).
+            </summary>
+            <param name="apiKey">Your API key (a token created in My WDSF, My API Tokens).</param>
+            <param name="baseUrl">The API's base URL including the version, e.g. https://api.wdsf.org/api/2/.</param>
+            <param name="onBehalfOf">The MIN of a scrutineer to act for (sent as X-OnBehalfOf). Needs a token that may impersonate; the person must hold an active scrutiny licence.</param>
         </member>
         <member name="M:Wdsf.Api.Client.Client.GetPersons(System.Collections.Generic.IDictionary{System.String,System.String})">
+            <inheritdoc/>
+        </member>
+        <member name="M:Wdsf.Api.Client.Client.GetPersonExport(System.Collections.Generic.IDictionary{System.String,System.String})">
             <inheritdoc/>
         </member>
         <member name="M:Wdsf.Api.Client.Client.GetPerson(System.Int32)">
@@ -139,6 +207,42 @@
         <member name="M:Wdsf.Api.Client.Client.GetWorldRanking(System.String,System.String,System.String,System.DateTime)">
             <inheritdoc/>
         </member>
+        <member name="M:Wdsf.Api.Client.Client.GetSingleWorldRanking(System.String,System.String,System.String,System.String,System.Nullable{System.DateTime})">
+            <inheritdoc/>
+        </member>
+        <member name="M:Wdsf.Api.Client.Client.GetTeamWorldRanking(System.String,System.String,System.String,System.Nullable{System.DateTime})">
+            <inheritdoc/>
+        </member>
+        <member name="M:Wdsf.Api.Client.Client.CheckAgeForCompetition(System.Collections.Generic.IEnumerable{System.Int32},System.Collections.Generic.IEnumerable{System.Int32})">
+            <inheritdoc/>
+        </member>
+        <member name="M:Wdsf.Api.Client.Client.GetEventGroups(System.Collections.Generic.IDictionary{System.String,System.String})">
+            <inheritdoc/>
+        </member>
+        <member name="M:Wdsf.Api.Client.Client.GetEventGroup(System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Wdsf.Api.Client.Client.GetSchedule(System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Wdsf.Api.Client.Client.GetScheduleEntry(System.Guid)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Wdsf.Api.Client.Client.SaveScheduleEntry(Wdsf.Api.Client.Models.ScheduleEntry)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Wdsf.Api.Client.Client.UpdateScheduleEntry(Wdsf.Api.Client.Models.ScheduleEntry)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Wdsf.Api.Client.Client.DeleteScheduleEntry(System.Guid)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Wdsf.Api.Client.Client.GetParticipantMusic(System.Int32,System.Nullable{System.DateTimeOffset})">
+            <inheritdoc/>
+        </member>
+        <member name="M:Wdsf.Api.Client.Client.GetParticipantMusicInfo(System.Int32)">
+            <inheritdoc/>
+        </member>
         <member name="M:Wdsf.Api.Client.Client.GetAges">
             <inheritdoc/>
         </member>
@@ -168,6 +272,19 @@
             </summary>
             <param name="participant"></param>
         </member>
+        <member name="T:Wdsf.Api.Client.Converter.IntAsStringConverter">
+            <summary>
+            Writes an int property as a JSON string, for fields the v2 API types as text (a team
+            member's MIN), and reads either a number or a string.
+            </summary>
+        </member>
+        <member name="T:Wdsf.Api.Client.Converter.NumericStringConverter">
+            <summary>
+            Writes a string property holding a number as a JSON number (the v2 API rejects numbers
+            sent as strings) and reads either a number or a string. A value that is not a number is
+            written as a string.
+            </summary>
+        </member>
         <member name="F:Wdsf.Api.Client.Gender.Male">
             <summary>
             
@@ -178,19 +295,76 @@
             
             </summary>
         </member>
+        <member name="T:Wdsf.Api.Client.Exceptions.RestException">
+            <summary>
+            The API answered with a status message instead of the requested resource.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Exceptions.RestException.Code">
+            <summary>
+            The HTTP status code.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Exceptions.RestException.MessageId">
+            <summary>
+            The id of the condition (see the API wiki, Localisation).
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Exceptions.RestException.Error">
+            <summary>
+            The details of the condition, if any.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Exceptions.RestException.StatusMessage">
+            <summary>
+            The status message the API returned, if any.
+            </summary>
+        </member>
+        <member name="T:Wdsf.Api.Client.FilterNames">
+            <summary>
+            The query parameter names of the list endpoints. Pass them as keys of the filter dictionary.
+            </summary>
+        </member>
+        <member name="T:Wdsf.Api.Client.FilterNames.Paging">
+            <summary>
+            Paging of the list endpoints that support it (competitions, persons, couples, teams).
+            </summary>
+        </member>
+        <member name="F:Wdsf.Api.Client.FilterNames.Paging.Page">
+            <summary>
+            The page to return, starting at 1.
+            </summary>
+        </member>
+        <member name="F:Wdsf.Api.Client.FilterNames.Paging.PageSize">
+            <summary>
+            The number of entries per page (at least 1).
+            </summary>
+        </member>
         <member name="F:Wdsf.Api.Client.FilterNames.Competition.Since">
             <summary>
-            List all competitions since a date. The date is formated according to ISO YYYY/MM/DD.
+            List all competitions since a date (yyyy-MM-dd).
             </summary>
         </member>
         <member name="F:Wdsf.Api.Client.FilterNames.Competition.Until">
             <summary>
-            List all competitions until a date. The date is formated according to ISO YYYY/MM/DD.
+            List all competitions until a date (yyyy-MM-dd).
+            </summary>
+        </member>
+        <member name="F:Wdsf.Api.Client.FilterNames.Competition.ModifiedSince">
+            <summary>
+            List the competitions changed since a date and time (ISO 8601).
+            </summary>
+        </member>
+        <member name="F:Wdsf.Api.Client.FilterNames.Competition.WorldRanking">
+            <summary>
+            "true" lists only competitions counting for the world ranking.
             </summary>
         </member>
         <member name="F:Wdsf.Api.Client.FilterNames.Competition.Status">
             <summary>
-            List all competitions having a certain status. Allowed values are PreRegistration, Registering, RegistrationClosed, Processing, Closed and Canceled.
+            List all competitions having a certain status. Allowed values are PreRegistration, Registering,
+            RegistrationClosed, InProgress, Closed, Canceled, Processing, Postponed and PostponedTBC.
+            Repeat the parameter for several statuses.
             </summary>
         </member>
         <member name="F:Wdsf.Api.Client.FilterNames.Competition.Location">
@@ -200,7 +374,17 @@
         </member>
         <member name="F:Wdsf.Api.Client.FilterNames.Competition.Division">
             <summary>
-            List only competitions af a certain division. Allowed values are General and Professional.
+            List only competitions of a certain division. Allowed values are General and Professional.
+            </summary>
+        </member>
+        <member name="F:Wdsf.Api.Client.FilterNames.Competition.AgeGroup">
+            <summary>
+            List only competitions of a certain age group (its name, e.g. Adult).
+            </summary>
+        </member>
+        <member name="F:Wdsf.Api.Client.FilterNames.Competition.GroupId">
+            <summary>
+            List only the competitions of an event group (its id).
             </summary>
         </member>
         <member name="F:Wdsf.Api.Client.FilterNames.Person.Name">
@@ -230,12 +414,22 @@
         </member>
         <member name="F:Wdsf.Api.Client.FilterNames.Person.Division">
             <summary>
-            Search for persons being part of a divivion. Allowed values are General and Professional.
+            Search for persons holding a licence of a division (General, Professional, ...). Matches exactly.
             </summary>
         </member>
         <member name="F:Wdsf.Api.Client.FilterNames.Person.Type">
             <summary>
-            Search for persons of a certain type. Allowed values are:Athlete, Adjudicator or Chairman
+            Search for persons holding a licence of a type, e.g. Athlete, Adjudicator, Chairperson or ITC.
+            </summary>
+        </member>
+        <member name="F:Wdsf.Api.Client.FilterNames.Person.Status">
+            <summary>
+            The licence status to match (default Active). Pass Provisional to list provisional ITC licences.
+            </summary>
+        </member>
+        <member name="F:Wdsf.Api.Client.FilterNames.Person.Country">
+            <summary>
+            Search for persons of a country (its WDSF short name).
             </summary>
         </member>
         <member name="F:Wdsf.Api.Client.FilterNames.Couple.Name">
@@ -268,9 +462,49 @@
             Search for couples being part of a divivion. Allowed values are General and Professional.
             </summary>
         </member>
+        <member name="F:Wdsf.Api.Client.FilterNames.Couple.Status">
+            <summary>
+            Search for couples of a status (e.g. Active, Retired).
+            </summary>
+        </member>
+        <member name="F:Wdsf.Api.Client.FilterNames.Couple.Country">
+            <summary>
+            Search for couples of a country (its WDSF short name).
+            </summary>
+        </member>
+        <member name="F:Wdsf.Api.Client.FilterNames.Team.Name">
+            <summary>
+            Searches teams whose name starts with this value.
+            </summary>
+        </member>
+        <member name="F:Wdsf.Api.Client.FilterNames.Team.Division">
+            <summary>
+            Search for teams of a division.
+            </summary>
+        </member>
+        <member name="F:Wdsf.Api.Client.FilterNames.Group.Location">
+            <summary>
+            List the groups at a location (exact match).
+            </summary>
+        </member>
+        <member name="F:Wdsf.Api.Client.FilterNames.Group.FromDate">
+            <summary>
+            List the groups ending on or after a date (yyyy-MM-dd).
+            </summary>
+        </member>
+        <member name="F:Wdsf.Api.Client.FilterNames.Group.ToDate">
+            <summary>
+            List the groups starting on or before a date (yyyy-MM-dd).
+            </summary>
+        </member>
+        <member name="F:Wdsf.Api.Client.FilterNames.Ranking.Date">
+            <summary>
+            WRL of a certain date (yyyy-MM-dd).
+            </summary>
+        </member>
         <member name="F:Wdsf.Api.Client.FilterNames.Ranking.Name">
             <summary>
-            WRL of a certain date. The value is an ISO date, YYYY/MM/DD
+            WRL of a certain date (yyyy-MM-dd).
             </summary>
         </member>
         <member name="F:Wdsf.Api.Client.FilterNames.Ranking.Discipline">
@@ -286,6 +520,21 @@
         <member name="F:Wdsf.Api.Client.FilterNames.Ranking.Division">
             <summary>
             WRL of a certain division. Allowed values are General and Professional.
+            </summary>
+        </member>
+        <member name="F:Wdsf.Api.Client.FilterNames.Ranking.Form">
+            <summary>
+            The dance form, for disciplines that have several.
+            </summary>
+        </member>
+        <member name="F:Wdsf.Api.Client.FilterNames.Ranking.Gender">
+            <summary>
+            The gender of a solo ranking (Male or Female).
+            </summary>
+        </member>
+        <member name="F:Wdsf.Api.Client.FilterNames.Ranking.Limit">
+            <summary>
+            The maximum number of rows (0 or absent: all).
             </summary>
         </member>
         <member name="T:Wdsf.Api.Client.Interfaces.IClient">
@@ -568,6 +817,14 @@
             <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
             <returns>The person model.</returns>
         </member>
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.GetPersonExport(System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            Gets the person export: one row per person with the type and division of each active licence.
+            </summary>
+            <param name="filter">A dictionaly containing filter parameters (see <see cref="T:Wdsf.Api.Client.FilterNames.Person"/>).</param>
+            <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
+            <returns>The exported persons</returns>
+        </member>
         <member name="M:Wdsf.Api.Client.Interfaces.IClient.UpdatePerson(Wdsf.Api.Client.Models.PersonDetail)">
             <summary>
             Updates a person
@@ -599,6 +856,31 @@
             <exception cref="T:System.ArgumentException">Any of the required arguments is missing.</exception>
             <returns>The world ranking list</returns>
         </member>
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.GetSingleWorldRanking(System.String,System.String,System.String,System.String,System.Nullable{System.DateTime})">
+            <summary>
+            Gets a solo (single athlete) world ranking list.
+            </summary>
+            <param name="discipline">The discipline.</param>
+            <param name="ageGroup">The age group.</param>
+            <param name="division">The division.</param>
+            <param name="gender">Male or Female, for disciplines ranked by gender. Can be absent.</param>
+            <param name="date">Date to get ranking for. Can be absent.</param>
+            <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
+            <exception cref="T:System.ArgumentException">Any of the required arguments is missing.</exception>
+            <returns>The world ranking list</returns>
+        </member>
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.GetTeamWorldRanking(System.String,System.String,System.String,System.Nullable{System.DateTime})">
+            <summary>
+            Gets a team world ranking list.
+            </summary>
+            <param name="discipline">The discipline.</param>
+            <param name="ageGroup">The age group.</param>
+            <param name="division">The division.</param>
+            <param name="date">Date to get ranking for. Can be absent.</param>
+            <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
+            <exception cref="T:System.ArgumentException">Any of the required arguments is missing.</exception>
+            <returns>The world ranking list</returns>
+        </member>
         <member name="M:Wdsf.Api.Client.Interfaces.IClient.GetCountries">
             <summary>
             Gets all allowed countries.
@@ -612,6 +894,242 @@
             </summary>
             <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
             <returns>The age groups</returns>
+        </member>
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.CheckAgeForCompetition(System.Collections.Generic.IEnumerable{System.Int32},System.Collections.Generic.IEnumerable{System.Int32})">
+            <summary>
+            Checks whether an athlete (one MIN) or a couple (two MIN) may take part in competitions:
+            age group, and for a solo athlete a same-day entry in another event group.
+            </summary>
+            <param name="mins">One MIN (solo) or two MIN (couple).</param>
+            <param name="competitionIds">The competitions to check.</param>
+            <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
+            <exception cref="T:System.ArgumentException">No or more than two MIN, or no competition.</exception>
+            <returns>One result per competition</returns>
+        </member>
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.GetEventGroups(System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            Gets a list of event groups.
+            </summary>
+            <param name="filter">A dictionaly containing filter parameters (see <see cref="T:Wdsf.Api.Client.FilterNames.Group"/>).</param>
+            <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
+            <returns>The event groups</returns>
+        </member>
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.GetEventGroup(System.Int32)">
+            <summary>
+            Gets an event group with its competitions.
+            </summary>
+            <param name="id">The group id</param>
+            <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
+            <returns>The event group</returns>
+        </member>
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.GetSchedule(System.Int32)">
+            <summary>
+            Gets the time schedule of an event group. Scrutineer accounts only.
+            </summary>
+            <param name="groupId">The event group id</param>
+            <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
+            <returns>The schedule entries</returns>
+        </member>
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.GetScheduleEntry(System.Guid)">
+            <summary>
+            Gets a schedule entry. Scrutineer accounts only.
+            </summary>
+            <param name="id">The entry id</param>
+            <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
+            <returns>The schedule entry</returns>
+        </member>
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.SaveScheduleEntry(Wdsf.Api.Client.Models.ScheduleEntry)">
+            <summary>
+            Saves a new schedule entry. Scrutineer accounts only.
+            </summary>
+            <param name="entry">The entry; Time is required.</param>
+            <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
+            <returns>The Uri to the new entry</returns>
+        </member>
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.UpdateScheduleEntry(Wdsf.Api.Client.Models.ScheduleEntry)">
+            <summary>
+            Updates a schedule entry; properties left null keep their value. Scrutineer accounts only.
+            </summary>
+            <param name="entry">The entry, with its Id.</param>
+            <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
+            <returns>true on success.</returns>
+        </member>
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.DeleteScheduleEntry(System.Guid)">
+            <summary>
+            Deletes a schedule entry. Scrutineer accounts only.
+            </summary>
+            <param name="id">The entry id</param>
+            <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed. See inner exception for details.</exception>
+            <returns>true on success.</returns>
+        </member>
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.GetParticipantMusic(System.Int32,System.Nullable{System.DateTimeOffset})">
+            <summary>
+            Downloads a participant's approved music: one file as itself (usually audio/mpeg), several
+            as one zip archive. Scrutineer and service-provider accounts only.
+            </summary>
+            <param name="participantId">The participant id</param>
+            <param name="ifModifiedSince">The LastModified of an earlier download; the music is downloaded only if it changed since.</param>
+            <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed (e.g. no approved music). See inner exception for details.</exception>
+            <returns>The music, or null when it did not change since ifModifiedSince</returns>
+        </member>
+        <member name="M:Wdsf.Api.Client.Interfaces.IClient.GetParticipantMusicInfo(System.Int32)">
+            <summary>
+            Gets the type, file name and last change of a participant's approved music without downloading it.
+            </summary>
+            <param name="participantId">The participant id</param>
+            <exception cref="T:Wdsf.Api.Client.Exceptions.ApiException">The request failed (e.g. no approved music). See inner exception for details.</exception>
+            <returns>The music's headers; Content is null</returns>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.AgeClass.Divisions">
+            <summary>
+            The divisions the age group exists in.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.AgeClass.IsPerson">
+            <summary>
+            The age group applies to a person.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.AgeClass.IsCouple">
+            <summary>
+            The age group applies to a couple.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.AgeClass.IsTeam">
+            <summary>
+            The age group applies to a team.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.AgeClass.IsCompetition">
+            <summary>
+            The age group can be used for a competition.
+            </summary>
+        </member>
+        <member name="T:Wdsf.Api.Client.Models.AgeVerification">
+            <summary>
+            Whether an athlete (one MIN) or a couple (two MIN) may take part in a competition.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.AgeVerification.Reason">
+            <summary>
+            When not permitted, the reason; otherwise empty.
+            </summary>
+        </member>
+        <member name="T:Wdsf.Api.Client.Models.AthleteInfo">
+            <summary>
+            An athlete of a competition entry.
+            </summary>
+        </member>
+        <member name="F:Wdsf.Api.Client.Models.AthleteInfo.XmlItemName">
+            <summary>
+            The element name the API uses for an athlete inside the athletes list (XML).
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.AthleteInfo.Email">
+            <summary>
+            The athlete's e-mail address. Returned to scrutiny and service-provider accounts only.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.Competition.DanceForm">
+            <summary>
+            The dance form (its xml name). Omitted when the competition has none.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.CompetitionDetail.DanceForm">
+            <summary>
+            The dance form (its xml name). Omitted when the competition has none.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.CompetitionDetail.EventId">
+            <summary>
+            The id of the competition's event.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.CompetitionDetail.GroupId">
+            <summary>
+            The id of the competition's event group.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.Country.Name">
+            <summary>
+            The country's WDSF short name (e.g. "GER").
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.Country.Iso2Code">
+            <summary>
+            The ISO 3166-1 alpha-2 code.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.Country.IsActiveNMB">
+            <summary>
+            The country has an active WDSF member body.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.CoupleBase.NationalReference">
+            <summary>
+            The reference a member federation stores for the couple.
+            </summary>
+        </member>
+        <member name="T:Wdsf.Api.Client.Models.EsportsAIScore">
+            <summary>
+            e-Sports AI score: one score per participant and dance, from a single judge.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.EsportsAIScore.Value">
+            <summary>
+            The score from 0 to 100 with at most 3 decimals.
+            </summary>
+        </member>
+        <member name="T:Wdsf.Api.Client.Models.EventGroup">
+            <summary>
+            An event group (the competitions held together at one place) as the group list returns it.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.EventGroup.Country">
+            <summary>
+            The country's name.
+            </summary>
+        </member>
+        <member name="T:Wdsf.Api.Client.Models.EventGroupCompetition">
+            <summary>
+            A competition of an event group; its link leads to the competition.
+            </summary>
+        </member>
+        <member name="T:Wdsf.Api.Client.Models.EventGroupDetail">
+            <summary>
+            An event group with its competitions.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.EventGroupDetail.Country">
+            <summary>
+            The country's name.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.EventGroupDetail.Competitions">
+            <summary>
+            The group's competitions (provisional ones excluded).
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.License.Grade">
+            <summary>
+            The licence grade; for an ITC licence the level: C Instructor, B Trainer, A Coach.
+            Omitted when the licence has none.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.License.Disciplines">
+            <summary>
+            The disciplines the licence covers. Omitted when it names none.
+            </summary>
+        </member>
+        <member name="T:Wdsf.Api.Client.Models.LicenseExport">
+            <summary>
+            An active licence as the person export lists it: type and division only.
+            </summary>
+        </member>
+        <member name="T:Wdsf.Api.Client.Models.NoMarkScore">
+            <summary>
+            The marker the API returns for a dance recorded without marks (JSON only).
+            </summary>
         </member>
         <member name="P:Wdsf.Api.Client.Models.OnScale2Score.TQ">
             <summary>
@@ -728,6 +1246,21 @@
             Reduction by Chairman
             </summary>
         </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScaleMtcScore.T">
+            <summary>
+            Technique
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScaleMtcScore.M">
+            <summary>
+            Musicality
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.OnScaleMtcScore.C">
+            <summary>
+            Creativity
+            </summary>
+        </member>
         <member name="P:Wdsf.Api.Client.Models.OnScaleScore.PB">
             <summary>
             Posture Balance Coorination
@@ -808,6 +1341,16 @@
             Show (leave empty for non-show dances)
             </summary>
         </member>
+        <member name="F:Wdsf.Api.Client.Models.OnScaleTvoemScore.SerializerTypeName">
+            <summary>
+            The kind the v2 API uses for this score (the legacy v1 API used <see cref="F:Wdsf.Api.Client.Models.OnScaleTvoemScore.LegacySerializerTypeName"/>).
+            </summary>
+        </member>
+        <member name="F:Wdsf.Api.Client.Models.OnScaleTvoemScore.LegacySerializerTypeName">
+            <summary>
+            The kind the legacy v1 API used for this score. Still accepted when reading JSON.
+            </summary>
+        </member>
         <member name="P:Wdsf.Api.Client.Models.OnScaleTvoemScore.T">
             <summary>
             Technique
@@ -833,9 +1376,158 @@
             Musicality
             </summary>
         </member>
+        <member name="P:Wdsf.Api.Client.Models.ParticipantBase.Status">
+            <summary>
+            Present, Noshow, Excused, Disqualified, Entered, ...
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.ParticipantBase.Coach">
+            <summary>
+            Whether the entry has a confirmed WDSF coach for the competition's discipline.
+            </summary>
+        </member>
         <member name="P:Wdsf.Api.Client.Models.ParticipantBaseDetail.Status">
             <summary>
             Present, Noshow, Excused, Disqualified
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.ParticipantBaseDetail.Coaches">
+            <summary>
+            The confirmed WDSF coaches of the entry for the competition's discipline, ordered by
+            surname. Read only.
+            </summary>
+        </member>
+        <member name="T:Wdsf.Api.Client.Models.ParticipantCoach">
+            <summary>
+            A confirmed WDSF coach of a competition entry, for the competition's discipline.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.ParticipantCoach.Links">
+            <summary>
+            The link to the coach's person (rel coach/person).
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.ParticipantCoach.Discipline">
+            <summary>
+            The discipline the coach is linked for (its xml name).
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.ParticipantCoach.Blocked">
+            <summary>
+            True when the coach is an adjudicator of a competition in the same event group and may
+            not act as coach there.
+            </summary>
+        </member>
+        <member name="T:Wdsf.Api.Client.Models.ParticipantCoachStatus">
+            <summary>
+            Whether a competition entry has a confirmed WDSF coach for the competition's discipline.
+            </summary>
+        </member>
+        <member name="F:Wdsf.Api.Client.Models.ParticipantCoachStatus.No">
+            <summary>
+            No confirmed coach for the competition's discipline.
+            </summary>
+        </member>
+        <member name="F:Wdsf.Api.Client.Models.ParticipantCoachStatus.Yes">
+            <summary>
+            At least one confirmed coach who may act as such at the event.
+            </summary>
+        </member>
+        <member name="F:Wdsf.Api.Client.Models.ParticipantCoachStatus.Blocked">
+            <summary>
+            Every confirmed coach is an adjudicator of a competition in the same event group and
+            may not act as coach there.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.ParticipantCouple.NationalReference">
+            <summary>
+            The reference a member federation stores for the couple.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.ParticipantCoupleDetail.NationalReference">
+            <summary>
+            The reference a member federation stores for the couple. Read only.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.ParticipantCoupleDetail.PerformanceName">
+            <summary>
+            The performance name, null when none was entered. Read only.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.ParticipantCoupleDetail.Athletes">
+            <summary>
+            The athletes of the entry. Read only.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.ParticipantSingleDetail.PerformanceName">
+            <summary>
+            The performance name, null when none was entered. Read only.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.ParticipantSingleDetail.Athletes">
+            <summary>
+            The athletes of the entry. Read only.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.ParticipantTeamDetail.Team">
+            <summary>
+            The team's name. In JSON the API sends it as "team".
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.ParticipantTeamDetail.PerformanceName">
+            <summary>
+            The performance name, null when none was entered. Read only.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.ParticipantTeamDetail.Athletes">
+            <summary>
+            The athletes of the entry. Read only.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.Person.ActiveCoupleAgeGroup">
+            <summary>
+            The age group of the active couple.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.Person.AgeGroup">
+            <summary>
+            The person's own age group.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.PersonDetail.Emails">
+            <summary>
+            The person's e-mail addresses, the default one first. Returned to scrutiny and
+            service-provider accounts only; null for every other account.
+            </summary>
+        </member>
+        <member name="T:Wdsf.Api.Client.Models.PersonExport">
+            <summary>
+            A row of the person export.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.PersonExport.Licenses">
+            <summary>
+            The type and division of every active licence the person holds.
+            </summary>
+        </member>
+        <member name="T:Wdsf.Api.Client.Models.RankingSingle">
+            <summary>
+            A row of a solo (single athlete) world ranking.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.RankingSingle.Min">
+            <summary>
+            The athlete's MIN.
+            </summary>
+        </member>
+        <member name="T:Wdsf.Api.Client.Models.RankingTeam">
+            <summary>
+            A row of a team world ranking.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.RankingTeam.Id">
+            <summary>
+            The team's id.
             </summary>
         </member>
         <member name="P:Wdsf.Api.Client.Models.Round.MaxDeviation">
@@ -843,10 +1535,78 @@
             Maximum allowed deviation of scrores in AJS 3.0
             </summary>
         </member>
+        <member name="P:Wdsf.Api.Client.Models.Round.Recalls">
+            <summary>
+            The number of participants recalled from this round (Skating rounds).
+            </summary>
+        </member>
         <member name="P:Wdsf.Api.Client.Models.Round.DancesForSerialization">
             <summary>
             <para>Do not use this array to process dances.</para>
             <para>It is used only as a workaround for .NET's XmlSerializer limitations on deserializing lists.</para>
+            </summary>
+        </member>
+        <member name="T:Wdsf.Api.Client.Models.ScheduleEntry">
+            <summary>
+            An entry of an event group's time schedule. Scrutineer accounts only.
+            </summary>
+            <remarks>
+            On an update every property left null keeps its value. An entry belongs either to a WDSF
+            competition (CompetitionId) or to a custom one (CustomCompetitionId and CustomCompetitionName,
+            with GroupId).
+            </remarks>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.ScheduleEntry.CustomCompetitionId">
+            <summary>
+            Your own id of a competition not held in the WDSF database (at most 36 characters).
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.ScheduleEntry.Time">
+            <summary>
+            The planned start (required when creating an entry).
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.ScheduleEntry.Participants">
+            <summary>
+            A description of the participants (e.g. "48 couples").
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.ScheduleEntry.ParticipantIds">
+            <summary>
+            The ids of the participants dancing in this entry.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.Score.Kind">
+            <summary>
+            The score kind, sent as the JSON discriminator. Defaults to the score type's
+            serializer name.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.StatusMessage.MessageId">
+            <summary>
+            The id of the condition, one per response condition (see the API wiki, Localisation).
+            Use it to localize or branch on the outcome; <see cref="P:Wdsf.Api.Client.Models.StatusMessage.Error"/> holds the details.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.StatusMessage.Error">
+            <summary>
+            Details of the condition (names, dates, ids, or the broken eligibility rules); for an
+            unexpected error (message id 10001) a reference to quote when reporting the problem.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.TeamDetail.Kind">
+            <summary>
+            The team kind (e.g. Formation, Crew).
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.TeamDetail.KindHipHop">
+            <summary>
+            The Hip Hop team kind.
+            </summary>
+        </member>
+        <member name="P:Wdsf.Api.Client.Models.TeamMember.Status">
+            <summary>
+            The status of the member's athlete licence.
             </summary>
         </member>
         <member name="P:Wdsf.Api.Client.Models.ThreeFoldScore.Mode">
@@ -1013,6 +1773,17 @@
             </summary>
             <typeparam name="T">The type expected</typeparam>
             <param name="response">The response containing a content-type header</param>
+        </member>
+        <member name="M:Wdsf.Api.Client.RestAdapter.NoContent(System.Net.Http.HttpResponseMessage)">
+            <summary>
+            The exception for a response without a body (e.g. 406 without an Accept header, 404 for an unknown route).
+            </summary>
+        </member>
+        <member name="M:Wdsf.Api.Client.RestAdapter.GetFile(System.Uri,System.Boolean,System.Nullable{System.DateTimeOffset})">
+            <summary>
+            Downloads a file (participant music). Returns null when the server answers 304 Not Modified.
+            A HEAD request returns the file's headers without its content.
+            </summary>
         </member>
         <member name="M:Wdsf.Api.Client.TypeHelper.GetHttpContentType(System.Type)">
             <summary>

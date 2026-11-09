@@ -18,7 +18,8 @@
         static void Main(string[] args)
         {
             // prepare the client for access
-            apiClient = new Client("guest", "guest", WdsfEndpoint.Sandbox);
+            apiClient = // your API key: a token from My WDSF, My API Tokens
+            new Client(Environment.GetEnvironmentVariable("WDSF_API_KEY"), WdsfEndpoint.Sandbox);
 
             // the participant ID used here is an example. 
             // create a participant ID by using the "Register Participant" example.

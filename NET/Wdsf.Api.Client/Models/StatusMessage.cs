@@ -14,13 +14,25 @@
         [JsonProperty("code")]
         public int Code { get; set; }
 
-        [XmlElement("subcode")]
-        [JsonProperty("subcode")]
-        public int SubCode { get; set; }
+        /// <summary>
+        /// The id of the condition, one per response condition (see the API wiki, Localisation).
+        /// Use it to localize or branch on the outcome; <see cref="Error"/> holds the details.
+        /// </summary>
+        [XmlElement("messageId")]
+        [JsonProperty("messageId")]
+        public int MessageId { get; set; }
 
         [XmlElement("message")]
         [JsonProperty("message")]
         public string Message { get; set; }
+
+        /// <summary>
+        /// Details of the condition (names, dates, ids, or the broken eligibility rules); for an
+        /// unexpected error (message id 10001) a reference to quote when reporting the problem.
+        /// </summary>
+        [XmlElement("error")]
+        [JsonProperty("error")]
+        public string Error { get; set; }
 
         [XmlElement("id")]
         [JsonProperty("id")]

@@ -259,6 +259,13 @@
         /// <returns>The person model.</returns>
         PersonDetail GetPerson(int min);
         /// <summary>
+        /// Gets the person export: one row per person with the type and division of each active licence.
+        /// </summary>
+        /// <param name="filter">A dictionaly containing filter parameters (see <see cref="FilterNames.Person"/>).</param>
+        /// <exception cref="ApiException">The request failed. See inner exception for details.</exception>
+        /// <returns>The exported persons</returns>
+        IList<PersonExport> GetPersonExport(IDictionary<string, string> filter);
+        /// <summary>
         /// Updates a person
         /// </summary>
         /// <param name="person">The person model.</param>
@@ -288,6 +295,29 @@
         /// <exception cref="ArgumentException">Any of the required arguments is missing.</exception>
         /// <returns>The world ranking list</returns>
         IList<Ranking> GetWorldRanking(string discipline, string ageGroup, string division, DateTime date);
+        /// <summary>
+        /// Gets a solo (single athlete) world ranking list.
+        /// </summary>
+        /// <param name="discipline">The discipline.</param>
+        /// <param name="ageGroup">The age group.</param>
+        /// <param name="division">The division.</param>
+        /// <param name="gender">Male or Female, for disciplines ranked by gender. Can be absent.</param>
+        /// <param name="date">Date to get ranking for. Can be absent.</param>
+        /// <exception cref="ApiException">The request failed. See inner exception for details.</exception>
+        /// <exception cref="ArgumentException">Any of the required arguments is missing.</exception>
+        /// <returns>The world ranking list</returns>
+        IList<RankingSingle> GetSingleWorldRanking(string discipline, string ageGroup, string division, string gender = null, DateTime? date = null);
+        /// <summary>
+        /// Gets a team world ranking list.
+        /// </summary>
+        /// <param name="discipline">The discipline.</param>
+        /// <param name="ageGroup">The age group.</param>
+        /// <param name="division">The division.</param>
+        /// <param name="date">Date to get ranking for. Can be absent.</param>
+        /// <exception cref="ApiException">The request failed. See inner exception for details.</exception>
+        /// <exception cref="ArgumentException">Any of the required arguments is missing.</exception>
+        /// <returns>The world ranking list</returns>
+        IList<RankingTeam> GetTeamWorldRanking(string discipline, string ageGroup, string division, DateTime? date = null);
 
         /// <summary>
         /// Gets all allowed countries.
@@ -301,6 +331,85 @@
         /// <exception cref="ApiException">The request failed. See inner exception for details.</exception>
         /// <returns>The age groups</returns>
         IList<AgeClass> GetAges();
+
+        /// <summary>
+        /// Checks whether an athlete (one MIN) or a couple (two MIN) may take part in competitions:
+        /// age group, and for a solo athlete a same-day entry in another event group.
+        /// </summary>
+        /// <param name="mins">One MIN (solo) or two MIN (couple).</param>
+        /// <param name="competitionIds">The competitions to check.</param>
+        /// <exception cref="ApiException">The request failed. See inner exception for details.</exception>
+        /// <exception cref="ArgumentException">No or more than two MIN, or no competition.</exception>
+        /// <returns>One result per competition</returns>
+        IList<AgeVerification> CheckAgeForCompetition(IEnumerable<int> mins, IEnumerable<int> competitionIds);
+
+        /// <summary>
+        /// Gets a list of event groups.
+        /// </summary>
+        /// <param name="filter">A dictionaly containing filter parameters (see <see cref="FilterNames.Group"/>).</param>
+        /// <exception cref="ApiException">The request failed. See inner exception for details.</exception>
+        /// <returns>The event groups</returns>
+        IList<EventGroup> GetEventGroups(IDictionary<string, string> filter);
+        /// <summary>
+        /// Gets an event group with its competitions.
+        /// </summary>
+        /// <param name="id">The group id</param>
+        /// <exception cref="ApiException">The request failed. See inner exception for details.</exception>
+        /// <returns>The event group</returns>
+        EventGroupDetail GetEventGroup(int id);
+
+        /// <summary>
+        /// Gets the time schedule of an event group. Scrutineer accounts only.
+        /// </summary>
+        /// <param name="groupId">The event group id</param>
+        /// <exception cref="ApiException">The request failed. See inner exception for details.</exception>
+        /// <returns>The schedule entries</returns>
+        IList<ScheduleEntry> GetSchedule(int groupId);
+        /// <summary>
+        /// Gets a schedule entry. Scrutineer accounts only.
+        /// </summary>
+        /// <param name="id">The entry id</param>
+        /// <exception cref="ApiException">The request failed. See inner exception for details.</exception>
+        /// <returns>The schedule entry</returns>
+        ScheduleEntry GetScheduleEntry(Guid id);
+        /// <summary>
+        /// Saves a new schedule entry. Scrutineer accounts only.
+        /// </summary>
+        /// <param name="entry">The entry; Time is required.</param>
+        /// <exception cref="ApiException">The request failed. See inner exception for details.</exception>
+        /// <returns>The Uri to the new entry</returns>
+        Uri SaveScheduleEntry(ScheduleEntry entry);
+        /// <summary>
+        /// Updates a schedule entry; properties left null keep their value. Scrutineer accounts only.
+        /// </summary>
+        /// <param name="entry">The entry, with its Id.</param>
+        /// <exception cref="ApiException">The request failed. See inner exception for details.</exception>
+        /// <returns>true on success.</returns>
+        bool UpdateScheduleEntry(ScheduleEntry entry);
+        /// <summary>
+        /// Deletes a schedule entry. Scrutineer accounts only.
+        /// </summary>
+        /// <param name="id">The entry id</param>
+        /// <exception cref="ApiException">The request failed. See inner exception for details.</exception>
+        /// <returns>true on success.</returns>
+        bool DeleteScheduleEntry(Guid id);
+
+        /// <summary>
+        /// Downloads a participant's approved music: one file as itself (usually audio/mpeg), several
+        /// as one zip archive. Scrutineer and service-provider accounts only.
+        /// </summary>
+        /// <param name="participantId">The participant id</param>
+        /// <param name="ifModifiedSince">The LastModified of an earlier download; the music is downloaded only if it changed since.</param>
+        /// <exception cref="ApiException">The request failed (e.g. no approved music). See inner exception for details.</exception>
+        /// <returns>The music, or null when it did not change since ifModifiedSince</returns>
+        ApiFile GetParticipantMusic(int participantId, DateTimeOffset? ifModifiedSince = null);
+        /// <summary>
+        /// Gets the type, file name and last change of a participant's approved music without downloading it.
+        /// </summary>
+        /// <param name="participantId">The participant id</param>
+        /// <exception cref="ApiException">The request failed (e.g. no approved music). See inner exception for details.</exception>
+        /// <returns>The music's headers; Content is null</returns>
+        ApiFile GetParticipantMusicInfo(int participantId);
 
         T Get<T>(Uri resourceUri) where T : class;
         object Get(Uri resourceUri);

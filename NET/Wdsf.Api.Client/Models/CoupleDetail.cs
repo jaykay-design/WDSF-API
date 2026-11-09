@@ -31,7 +31,7 @@
         public string Status { get; set; }
 
         [XmlElement("retiredOn")]
-        [JsonProperty("retiredOn")]
+        [JsonProperty("retireOn")]
         public string RetiredOn { get; set; }
 
         [XmlElement("wrlBLockedUntil")]

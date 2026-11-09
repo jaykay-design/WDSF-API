@@ -73,6 +73,55 @@
 2.11.0.0	+ Added Routine property to WdsfBreakingScore
 2.12.0.0	+ Added OnScaleTcpsScore and OnScaleTvoemScore models
 2.13.0.0	+ Added properties on PesonDetail model
+3.0.0.0		! Breaking: the client targets the WDSF API v2. WdsfEndpoint.Services is https://api.wdsf.org/api/2/,
+			  WdsfEndpoint.Sandbox is https://api-staging.wdsf.org/api/2/ (Client.ServicesBaseUrl / SandboxBaseUrl).
+			  The v1 URLs are no longer used.
+			! Breaking: authentication is an API key (a token created in My WDSF, My API Tokens), sent as the
+			  X-WDSF-API-Key header. The user name and password constructors are gone:
+			  new Client(apiKey, WdsfEndpoint.Services), or new Client(apiKey, new Uri(baseUrl)) for another
+			  address. onBehalfOf (a MIN) is sent as X-OnBehalfOf; the v2 API honours it for tokens with the
+			  Can impersonate permission when the person holds an active scrutiny licence, and the request then
+			  has that person's rights, not the token's.
+			! StatusMessage: SubCode removed (v2 has none), added MessageId and Error. RestException likewise
+			  (Code, MessageId, Error, StatusMessage); its message includes the error details.
+			! Person.AgeGroup is now the person's own age group; the active couple's is Person.ActiveCoupleAgeGroup.
+			! PersonDetail.Title removed (not sent by the API).
+			! Score.Link is a List<Link> (the API always sent an array).
+			! OnScaleTvoemScore.SerializerTypeName is "hipHop", the kind v2 uses ("onScaleTvoem" is still read).
+			! Country is read from v2's XML shape (Name, Iso2Code, IsActiveNMB elements).
+			+ Added fields: Competition (discipline, danceform, age, coefficient, date, status, division, country,
+			  location, competitionType), CompetitionDetail (name, danceform, eventId, groupId), AgeClass (divisions,
+			  isPerson, isCouple, isTeam, isCompetition), Country (iso2Code, isActiveNMB), License (grade,
+			  disciplines), PersonDetail (emails), Person (ageGroup), Couple (division, ageGroup, status),
+			  CoupleBase (nationalReference), TeamDetail (kind, kindHipHop, size, age, retiredOn), TeamMember
+			  (gender), Round (recalls), participant lists (status, coach, couple nationalreference) and
+			  participant details (coaches, athletes, performanceName, couple nationalreference)
+			+ Added models ParticipantCoach, ParticipantCoachStatus, AthleteInfo, OnScaleMtcScore, EsportsAIScore,
+			  NoMarkScore, RankingSingle, RankingTeam, PersonExport, LicenseExport
+			+ Added GetSingleWorldRanking, GetTeamWorldRanking and GetPersonExport
+			+ Added the v2 endpoints: event groups (GetEventGroups, GetEventGroup), the time schedule
+			  (GetSchedule, GetScheduleEntry, SaveScheduleEntry, UpdateScheduleEntry, DeleteScheduleEntry;
+			  scrutineers only), participant music (GetParticipantMusic with If-Modified-Since,
+			  GetParticipantMusicInfo; scrutineers and service providers only) and the age check
+			  (CheckAgeForCompetition, one MIN for a solo athlete or two for a couple)
+			+ Added models EventGroup, EventGroupDetail, EventGroupCompetition, ScheduleEntry, AgeVerification,
+			  ApiFile and filter names for groups
+			+ The group and schedule lists are read with the API's plural media types (groups, schedules);
+			  the API version deployed before 2026-11 answered with the singular ones, which 3.0 does not read
+			# A response without a body (401, 406, ...) raises an UnauthorizedException or a RestException
+			  with the HTTP status instead of a NullReferenceException
+			+ Added filter names: paging, competition modifiedSince/worldRanking/ageGroup/groupId, person
+			  status/country, couple status/country, team name/division, ranking form/gender/limit
+			# JSON score reads failed for every kind (duplicate key in the score converter); six kinds
+			  (discoTieBreak, onScaleDisco, onScaleDisco3, onScaleSkating, onScaleTcps, onScaleTvoem) were
+			  uploaded without a kind
+			# JSON writes the v2 API rejects: maxDeviation and personId are sent as numbers, team member ids
+			  as strings, a couple's retiredOn as "retireOn"
+			# Competition division filter name was misspelled ("divivion")
+			# Filter values are URL-encoded; ranking dates are sent as yyyy-MM-dd in every culture
+			# The Accept header was repeated on every request of a reused connection
+			# The SecureString constructor sent the text "System.Security.SecureString" as password
+			# Competition dates are read from XML date-only values
 
 WDSF Checkin
 

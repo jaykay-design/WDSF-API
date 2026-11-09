@@ -8,6 +8,7 @@
 
     public static class TypeHelper
     {
+        // One model per media type; ToDictionary fails at first use if two models share one.
         private static readonly Dictionary<string, Type> mediaTypeTypeMap =
             Assembly.GetExecutingAssembly()
             .GetTypes()
@@ -24,14 +25,7 @@
         /// <returns>the HTTP content-type string or null if there is no related type.</returns>
         public static string GetHttpContentType(Type type)
         {
-            if (mediaTypeTypeMap.ContainsValue(type))
-            {
-                return mediaTypeTypeMap.First(m => m.Value == type).Key;
-            }
-            else
-            {
-                return null;
-            }
+            return mediaTypeTypeMap.FirstOrDefault(m => m.Value == type).Key;
         }
 
         /// <summary>
@@ -41,17 +35,15 @@
         /// <returns>The API model or null if there is no related type.</returns>
         public static Type GetApiModelType(string mediaType)
         {
-            // remove media-type format (+xml, +json, etc)
-            mediaType = mediaType.ToLower().Split('+')[0];
-
-            if (mediaTypeTypeMap.ContainsKey(mediaType))
-            {
-                return mediaTypeTypeMap[mediaType];
-            }
-            else
+            if (string.IsNullOrEmpty(mediaType))
             {
                 return null;
             }
+
+            // remove parameters (; charset=...) and the media-type format (+xml, +json, etc)
+            mediaType = mediaType.ToLowerInvariant().Split(';')[0].Split('+')[0].Trim();
+
+            return mediaTypeTypeMap.TryGetValue(mediaType, out var type) ? type : null;
         }
     }
 }

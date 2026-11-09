@@ -56,8 +56,18 @@
         [JsonProperty("activeCoupleId")]
         public string ActiveCoupleId { get; set; }
 
+        /// <summary>
+        /// The age group of the active couple.
+        /// </summary>
         [XmlElement("activeCoupleAgeGroup")]
         [JsonProperty("activeCoupleAgeGroup")]
+        public string ActiveCoupleAgeGroup { get; set; }
+
+        /// <summary>
+        /// The person's own age group.
+        /// </summary>
+        [XmlElement("ageGroup")]
+        [JsonProperty("ageGroup")]
         public string AgeGroup { get; set; }
     }
 }

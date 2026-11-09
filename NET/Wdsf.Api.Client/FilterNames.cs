@@ -1,19 +1,49 @@
 ﻿namespace Wdsf.Api.Client
 {
+    using System;
+
+    /// <summary>
+    /// The query parameter names of the list endpoints. Pass them as keys of the filter dictionary.
+    /// </summary>
     public sealed class FilterNames
     {
+        /// <summary>
+        /// Paging of the list endpoints that support it (competitions, persons, couples, teams).
+        /// </summary>
+        public sealed class Paging
+        {
+            /// <summary>
+            /// The page to return, starting at 1.
+            /// </summary>
+            public const string Page = "page";
+            /// <summary>
+            /// The number of entries per page (at least 1).
+            /// </summary>
+            public const string PageSize = "pageSize";
+        }
+
         public sealed class Competition
         {
             /// <summary>
-            /// List all competitions since a date. The date is formated according to ISO YYYY/MM/DD.
+            /// List all competitions since a date (yyyy-MM-dd).
             /// </summary>
             public const string Since = "from";
             /// <summary>
-            /// List all competitions until a date. The date is formated according to ISO YYYY/MM/DD.
+            /// List all competitions until a date (yyyy-MM-dd).
             /// </summary>
             public const string Until = "to";
             /// <summary>
-            /// List all competitions having a certain status. Allowed values are PreRegistration, Registering, RegistrationClosed, Processing, Closed and Canceled.
+            /// List the competitions changed since a date and time (ISO 8601).
+            /// </summary>
+            public const string ModifiedSince = "modifiedSince";
+            /// <summary>
+            /// "true" lists only competitions counting for the world ranking.
+            /// </summary>
+            public const string WorldRanking = "worldRanking";
+            /// <summary>
+            /// List all competitions having a certain status. Allowed values are PreRegistration, Registering,
+            /// RegistrationClosed, InProgress, Closed, Canceled, Processing, Postponed and PostponedTBC.
+            /// Repeat the parameter for several statuses.
             /// </summary>
             public const string Status = "status";
             /// <summary>
@@ -21,9 +51,17 @@
             /// </summary>
             public const string Location = "location";
             /// <summary>
-            /// List only competitions af a certain division. Allowed values are General and Professional.
+            /// List only competitions of a certain division. Allowed values are General and Professional.
             /// </summary>
-            public const string Division = "divivion";
+            public const string Division = "division";
+            /// <summary>
+            /// List only competitions of a certain age group (its name, e.g. Adult).
+            /// </summary>
+            public const string AgeGroup = "ageGroup";
+            /// <summary>
+            /// List only the competitions of an event group (its id).
+            /// </summary>
+            public const string GroupId = "groupId";
         }
         public sealed class Person
         {
@@ -48,13 +86,21 @@
             /// </summary>
             public const string AgeGroup = "ageGroup";
             /// <summary>
-            /// Search for persons being part of a divivion. Allowed values are General and Professional.
+            /// Search for persons holding a licence of a division (General, Professional, ...). Matches exactly.
             /// </summary>
             public const string Division = "division";
             /// <summary>
-            /// Search for persons of a certain type. Allowed values are:Athlete, Adjudicator or Chairman
+            /// Search for persons holding a licence of a type, e.g. Athlete, Adjudicator, Chairperson or ITC.
             /// </summary>
             public const string Type = "type";
+            /// <summary>
+            /// The licence status to match (default Active). Pass Provisional to list provisional ITC licences.
+            /// </summary>
+            public const string Status = "status";
+            /// <summary>
+            /// Search for persons of a country (its WDSF short name).
+            /// </summary>
+            public const string Country = "country";
         }
         public sealed class Couple
         {
@@ -82,14 +128,54 @@
             /// Search for couples being part of a divivion. Allowed values are General and Professional.
             /// </summary>
             public const string Division = "division";
+            /// <summary>
+            /// Search for couples of a status (e.g. Active, Retired).
+            /// </summary>
+            public const string Status = "status";
+            /// <summary>
+            /// Search for couples of a country (its WDSF short name).
+            /// </summary>
+            public const string Country = "country";
+        }
+        public sealed class Team
+        {
+            /// <summary>
+            /// Searches teams whose name starts with this value.
+            /// </summary>
+            public const string Name = "name";
+            /// <summary>
+            /// Search for teams of a division.
+            /// </summary>
+            public const string Division = "division";
+        }
+
+        public sealed class Group
+        {
+            /// <summary>
+            /// List the groups at a location (exact match).
+            /// </summary>
+            public const string Location = "location";
+            /// <summary>
+            /// List the groups ending on or after a date (yyyy-MM-dd).
+            /// </summary>
+            public const string FromDate = "fromDate";
+            /// <summary>
+            /// List the groups starting on or before a date (yyyy-MM-dd).
+            /// </summary>
+            public const string ToDate = "toDate";
         }
 
         public sealed class Ranking
         {
             /// <summary>
-            /// WRL of a certain date. The value is an ISO date, YYYY/MM/DD
+            /// WRL of a certain date (yyyy-MM-dd).
             /// </summary>
-            public const string Name = "date";
+            public const string Date = "date";
+            /// <summary>
+            /// WRL of a certain date (yyyy-MM-dd).
+            /// </summary>
+            [Obsolete("Use Date.")]
+            public const string Name = Date;
 
             /// <summary>
             /// WRL of a certain discipline. Allowd values are Latin, Standard and Ten Dance
@@ -103,6 +189,18 @@
             /// WRL of a certain division. Allowed values are General and Professional.
             /// </summary>
             public const string Division = "division";
+            /// <summary>
+            /// The dance form, for disciplines that have several.
+            /// </summary>
+            public const string Form = "form";
+            /// <summary>
+            /// The gender of a solo ranking (Male or Female).
+            /// </summary>
+            public const string Gender = "gender";
+            /// <summary>
+            /// The maximum number of rows (0 or absent: all).
+            /// </summary>
+            public const string Limit = "limit";
         }
     }
 }

@@ -2,6 +2,10 @@
 {
     using System;
 
+    /// <summary>
+    /// The media type of a model. Every model has its own: the client picks the model of a response by it.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Class)]
     public class MediaTypeAttribute : Attribute
     {
         public MediaTypeAttribute(string mediaType)

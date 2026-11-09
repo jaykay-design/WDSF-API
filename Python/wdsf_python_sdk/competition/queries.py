@@ -15,6 +15,10 @@ class CompetitionQuery:
     division: CompetitionDivision | None = None
     status: CompetitionStatus | None = None
     location: str | None = None
+    age_group: str | None = None
+    group_id: int | None = None
+    page: int | None = None
+    page_size: int | None = None
 
 
 class CompetitionQuerySerializer(Serializer[CompetitionQuery]):
@@ -35,4 +39,12 @@ class CompetitionQuerySerializer(Serializer[CompetitionQuery]):
             serialised["status"] = obj.status
         if obj.location:
             serialised["location"] = obj.location
+        if obj.age_group:
+            serialised["ageGroup"] = obj.age_group
+        if obj.group_id is not None:
+            serialised["groupId"] = obj.group_id
+        if obj.page is not None:
+            serialised["page"] = obj.page
+        if obj.page_size is not None:
+            serialised["pageSize"] = obj.page_size
         return serialised

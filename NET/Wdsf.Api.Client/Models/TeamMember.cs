@@ -9,6 +9,7 @@
     {
         [XmlElement("id")]
         [JsonProperty("id")]
+        [JsonConverter(typeof(Converter.IntAsStringConverter))]
         public int Min { get; set; }
 
         [XmlElement("name")]
@@ -23,6 +24,13 @@
         [JsonProperty("ageGroup")]
         public string AgeGroup { get; set; }
 
+        [XmlElement("gender")]
+        [JsonProperty("gender")]
+        public string Gender { get; set; }
+
+        /// <summary>
+        /// The status of the member's athlete licence.
+        /// </summary>
         [XmlElement("status")]
         [JsonProperty("status")]
         public string Status { get; set; }

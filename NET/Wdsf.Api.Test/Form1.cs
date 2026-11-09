@@ -26,28 +26,16 @@
         }
         private void Form1_Load(object sender, EventArgs e)
         {
-            string username = args.FirstOrDefault(a => a.StartsWith("username"));
-            if (username == null)
+            string apiKey = args.FirstOrDefault(a => a.StartsWith("apikey="));
+            if (apiKey == null)
             {
-                MessageBox.Show("No API user name given");
+                MessageBox.Show("No API key given (apikey=...)");
                 Application.Exit();
                 return;
             }
             else
             {
-                username = username.Replace("username=", string.Empty);
-            }
-
-            string password = args.FirstOrDefault(a => a.StartsWith("password"));
-            if (password == null)
-            {
-                MessageBox.Show("No API password given");
-                Application.Exit();
-                return;
-            }
-            else
-            {
-                password = password.Replace("password=", string.Empty);
+                apiKey = apiKey.Replace("apikey=", string.Empty);
             }
 
             this.errors = new BindingListInvokable<string>(this);
@@ -68,13 +56,13 @@
             if (apiUrl == null)
             {
                 this.Text = string.Format(this.Text, "LIVE");
-                this.apiClient = new Api.Client.Client(username, password, Wdsf.Api.Client.WdsfEndpoint.Services);
+                this.apiClient = new Api.Client.Client(apiKey, Wdsf.Api.Client.WdsfEndpoint.Services);
             }
             else
             {
                 apiUrl = apiUrl.Replace("apiurl=", string.Empty);
                 this.Text = string.Format(this.Text, apiUrl);
-                this.apiClient = new Api.Client.Client(username, password, apiUrl);
+                this.apiClient = new Api.Client.Client(apiKey, new Uri(apiUrl));
             }
 
             ((Api.Client.Client)this.apiClient).ContentType = ContentTypes.Xml;

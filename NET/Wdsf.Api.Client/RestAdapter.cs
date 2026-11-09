@@ -20,11 +20,10 @@
 
         private readonly HttpClient client;
 
-        public RestAdapter(string username, string password, string onBehalfOf = null)
+        public RestAdapter(string apiKey, string onBehalfOf = null)
         {
             HttpMessageHandler handler = new HttpClientHandler()
             {
-                PreAuthenticate = true,
                 AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
             };
             this.client = new HttpClient(handler);
@@ -33,8 +32,7 @@
             client.DefaultRequestHeaders.Add("Accept-Encoding", "gzip");
             client.DefaultRequestHeaders.Add("User-Agent", "WDSF API Client");
 
-            var auth = "Basic " + Convert.ToBase64String(Encoding.Default.GetBytes(username + ":" + password));
-            client.DefaultRequestHeaders.Add("Authorization", auth);
+            client.DefaultRequestHeaders.Add(Client.ApiKeyHeaderName, apiKey);
             client.Timeout = TimeSpan.FromSeconds(600);
 
             if (!string.IsNullOrEmpty(onBehalfOf))
@@ -58,7 +56,23 @@
             using (var response = GetResponse(resourceUri))
             {
                 this.IsBusy = false;
-                var contentTypeHeader = response.Content.Headers.ContentType.ToString();
+
+                if (response == null)
+                {
+                    throw new Exception("Connection failed");
+                }
+
+                if (response.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    throw new UnauthorizedException("GET", resourceUri);
+                }
+
+                var contentTypeHeader = response.Content.Headers.ContentType?.ToString();
+                if (contentTypeHeader == null)
+                {
+                    throw NoContent(response);
+                }
+
                 var receivedType = TypeHelper.GetApiModelType(contentTypeHeader);
 
                 if (receivedType == null)
@@ -67,10 +81,7 @@
                 }
 
                 var serializer = SerializerFactory.GetSerializer(this.ContentType);
-                var result = serializer.Deserialize(receivedType, response.Content.ReadAsStreamAsync().Result);
-
-                response.Dispose();
-                return result;
+                return serializer.Deserialize(receivedType, response.Content.ReadAsStreamAsync().Result);
             }
         }
 
@@ -130,6 +141,11 @@
             {
                 this.IsBusy = false;
 
+                if (response == null)
+                {
+                    throw new Exception("Connection failed");
+                }
+
                 if (response.StatusCode == HttpStatusCode.Unauthorized)
                 {
                     throw new UnauthorizedException("PUT", resourceUri);
@@ -161,6 +177,11 @@
             {
                 this.IsBusy = false;
 
+                if (response == null)
+                {
+                    throw new Exception("Connection failed");
+                }
+
                 if (response.StatusCode == HttpStatusCode.Unauthorized)
                 {
                     throw new UnauthorizedException("POST", resourceUri);
@@ -190,6 +211,11 @@
             {
                 this.IsBusy = false;
 
+                if (response == null)
+                {
+                    throw new Exception("Connection failed");
+                }
+
                 if (response.StatusCode == HttpStatusCode.Unauthorized)
                 {
                     throw new UnauthorizedException("DELETE", resourceUri);
@@ -210,26 +236,107 @@
         /// <param name="response">The response containing a content-type header</param>
         private void CheckResourceType<T>(HttpResponseMessage response) where T : class
         {
-            var contentTypeHeader = response.Content.Headers.ContentType.ToString();
+            var contentTypeHeader = response.Content.Headers.ContentType?.ToString();
+            if (contentTypeHeader == null)
+            {
+                throw NoContent(response);
+            }
+
             var receivedType = TypeHelper.GetApiModelType(contentTypeHeader);
 
             if (receivedType == null)
             {
-                var content = new StreamReader(response.Content.ReadAsStringAsync().Result).ReadToEnd();
+                var content = response.Content.ReadAsStringAsync().Result;
                 throw new UnknownMediaTypeException(contentTypeHeader, content);
             }
 
-            if (receivedType != typeof(T))
+            if (receivedType == typeof(T))
             {
-                if (receivedType == typeof(StatusMessage))
+                return;
+            }
+
+            if (receivedType == typeof(StatusMessage))
+            {
+                var message = ReadReponseBody<StatusMessage>(response);
+                throw new RestException(message);
+            }
+
+            throw new UnexpectedMediaTypeException(typeof(T), receivedType);
+        }
+
+        /// <summary>
+        /// The exception for a response without a body (e.g. 406 without an Accept header, 404 for an unknown route).
+        /// </summary>
+        private static RestException NoContent(HttpResponseMessage response)
+        {
+            return new RestException($"The API answered {(int)response.StatusCode} {response.ReasonPhrase} without content.", (int)response.StatusCode, 0);
+        }
+
+        /// <summary>
+        /// Downloads a file (participant music). Returns null when the server answers 304 Not Modified.
+        /// A HEAD request returns the file's headers without its content.
+        /// </summary>
+        public ApiFile GetFile(Uri resourceUri, bool headersOnly, DateTimeOffset? ifModifiedSince)
+        {
+            CheckAndSetBusy();
+
+            try
+            {
+                SetAcceptHeader();
+
+                using (var request = new HttpRequestMessage(headersOnly ? HttpMethod.Head : HttpMethod.Get, resourceUri))
                 {
-                    var message = ReadReponseBody<StatusMessage>(response);
-                    throw new RestException(message);
+                    if (ifModifiedSince.HasValue)
+                    {
+                        request.Headers.IfModifiedSince = ifModifiedSince;
+                    }
+
+                    HttpResponseMessage response;
+                    try
+                    {
+                        response = client.SendAsync(request).Result;
+                    }
+                    catch (AggregateException ex) when (ex.InnerException is HttpRequestException)
+                    {
+                        throw new Exception("Connection failed", ex.InnerException);
+                    }
+
+                    using (response)
+                    {
+                        if (response.StatusCode == HttpStatusCode.NotModified)
+                        {
+                            return null;
+                        }
+
+                        if (response.StatusCode == HttpStatusCode.Unauthorized)
+                        {
+                            throw new UnauthorizedException(request.Method.Method, resourceUri);
+                        }
+
+                        var headers = response.Content.Headers;
+                        if (!response.IsSuccessStatusCode)
+                        {
+                            if (TypeHelper.GetApiModelType(headers.ContentType?.ToString()) == typeof(StatusMessage))
+                            {
+                                throw new RestException(ReadReponseBody<StatusMessage>(response));
+                            }
+
+                            throw NoContent(response);
+                        }
+
+                        return new ApiFile
+                        {
+                            Content = headersOnly ? null : response.Content.ReadAsByteArrayAsync().Result,
+                            ContentType = headers.ContentType?.MediaType,
+                            FileName = headers.ContentDisposition?.FileNameStar ?? headers.ContentDisposition?.FileName?.Trim('"'),
+                            LastModified = headers.LastModified,
+                        };
+                    }
                 }
-                else
-                {
-                    throw new UnexpectedMediaTypeException(typeof(T), receivedType);
-                }
+            }
+            finally
+            {
+                this.IsBusy = false;
             }
         }
 
@@ -246,9 +353,16 @@
             }
         }
 
+        private void SetAcceptHeader()
+        {
+            // The adapter is reused: replace the header, don't add another value per request.
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.ParseAdd(GetAcceptType());
+        }
+
         private HttpResponseMessage GetResponse(Uri resourceUri)
         {
-            client.DefaultRequestHeaders.Add("Accept", GetAcceptType());
+            SetAcceptHeader();
 
             HttpResponseMessage response;
             try
@@ -265,7 +379,7 @@
 
         private HttpResponseMessage GetResponse<T>(Uri resourceUri, string method, string contentType = null, T data = default) where T : class
         {
-            client.DefaultRequestHeaders.Add("Accept", GetAcceptType());
+            SetAcceptHeader();
 
             HttpResponseMessage response;
             try

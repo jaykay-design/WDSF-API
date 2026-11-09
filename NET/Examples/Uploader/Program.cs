@@ -9,10 +9,8 @@ namespace Uploader
         public record Options
         {
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-            [Option('u', "username", Required = true, HelpText = "Your WDSF API username.")]
-            public string Username { get; init; }
-            [Option('p', "password", Required = true, HelpText = "Your WDSF API password.")]
-            public string Password { get; init; }
+            [Option('k', "apiKey", Required = true, HelpText = "Your WDSF API key (a token from My WDSF, My API Tokens).")]
+            public string ApiKey { get; init; }
             [Option('i', "competitionId", Required = true, HelpText = "The WDSF competition ID.")]
             public int CompetitionId { get; init; }
             [Option('t', "resultType", Required = true, HelpText = "Trivium, ThreeFold or PreSeed.")]
@@ -31,7 +29,7 @@ namespace Uploader
                                .WithParsed(o =>
                                {
                                    Console.WriteLine("Breaking data uploader");
-                                   Console.WriteLine($"Current Arguments: -u {o.Username} -p {o.Password} -i    {o.CompetitionId} -t {o.DataKind} -p {o.Path}");
+                                   Console.WriteLine($"Current Arguments: -i    {o.CompetitionId} -t {o.DataKind} -p {o.Path}");
 
                                    Run(o);
                                });
@@ -64,8 +62,7 @@ namespace Uploader
 
             //            var client = new Client(o.Username, o.Password, "http://localhost:50350/API/1/");
             var client = new Client(
-                o.Username,
-                o.Password,
+                o.ApiKey,
                 o.UseSandbox ? WdsfEndpoint.Sandbox : WdsfEndpoint.Services);
 
             IClientHandler handler;

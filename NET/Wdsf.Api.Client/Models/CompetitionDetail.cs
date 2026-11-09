@@ -15,6 +15,10 @@
         [JsonProperty("id")]
         public int Id { get; set; }
 
+        [XmlElement("name")]
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
         [XmlElement("location")]
         [JsonProperty("location")]
         public string Location { get; set; }
@@ -27,7 +31,7 @@
         [JsonProperty("type")]
         public string CompetitionType { get; set; }
 
-        [XmlElement("date")]
+        [XmlElement("date", DataType = "date")]
         [JsonProperty("date")]
         public DateTime Date { get; set; }
 
@@ -38,6 +42,13 @@
         [XmlElement("discipline")]
         [JsonProperty("discipline")]
         public string Discipline { get; set; }
+
+        /// <summary>
+        /// The dance form (its xml name). Omitted when the competition has none.
+        /// </summary>
+        [XmlElement("danceform")]
+        [JsonProperty("danceform")]
+        public string DanceForm { get; set; }
 
         [XmlElement("division")]
         [JsonProperty("division")]
@@ -54,6 +65,20 @@
         [XmlElement("lastmodifiedDate")]
         [JsonProperty("lastmodifiedDate")]
         public DateTime LastModifiedDate { get; set; }
+
+        /// <summary>
+        /// The id of the competition's event.
+        /// </summary>
+        [XmlElement("eventId")]
+        [JsonProperty("eventId")]
+        public int EventId { get; set; }
+
+        /// <summary>
+        /// The id of the competition's event group.
+        /// </summary>
+        [XmlElement("groupId")]
+        [JsonProperty("groupId")]
+        public int GroupId { get; set; }
 
     }
 }

@@ -1,5 +1,6 @@
-import os
-from datetime import datetime
+import posixpath
+from datetime import date, datetime
+from decimal import Decimal
 from typing import Any
 
 import pytest
@@ -27,7 +28,7 @@ class TestCompetitionProvider:
         self, config: WdsfHttpClientConfig, expected_params: dict[str, Any]
     ) -> None:
         responses.get(
-            url=os.path.join(str(config.url), "competition"),
+            url=posixpath.join(str(config.url), "competition"),
             match=[
                 matchers.header_matcher(EXPECTED_HEADERS),
                 matchers.query_param_matcher(params=expected_params),
@@ -45,6 +46,15 @@ class TestCompetitionProvider:
                     "id": 2,
                     "name": "comp-name-2",
                     "lastmodifiedDate": "2024-02-01T11:12:13",
+                    "discipline": "Breaking",
+                    "age": "Adult",
+                    "coefficient": 1.5,
+                    "date": "2024-02-01",
+                    "status": "InProgress",
+                    "division": "Breaking",
+                    "country": "GER",
+                    "location": "Berlin",
+                    "competitionType": "World Championship",
                 },
             ],
         )
@@ -91,5 +101,14 @@ class TestCompetitionProvider:
                 id=2,
                 name="comp-name-2",
                 last_modified_date=datetime(2024, 2, 1, 11, 12, 13),
+                discipline="Breaking",
+                age="Adult",
+                coefficient=Decimal("1.5"),
+                date=date(2024, 2, 1),
+                status=CompetitionStatus.IN_PROGRESS,
+                division=CompetitionDivision.BREAKING,
+                country="GER",
+                location="Berlin",
+                competition_type="World Championship",
             ),
         ]

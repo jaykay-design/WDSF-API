@@ -19,6 +19,10 @@
 ### Fixed
 - `HttpClient.build_url` joined paths with `\` on Windows
 
+### Dependencies
+- pydantic >= 2.14.3, requests >= 2.34.2; every locked package at its current release (urllib3 2.8.0,
+  certifi 2026.10.23, ...); dev tools pytest 9, ruff 0.17
+
 ## [0.1.0]
 
 ### Added

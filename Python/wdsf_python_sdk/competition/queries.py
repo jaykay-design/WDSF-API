@@ -1,7 +1,7 @@
-from datetime import datetime
 from dataclasses import dataclass
+from datetime import datetime
 
-from wdsf_python_sdk.competition.models import CompetitionStatus, CompetitionDivision
+from wdsf_python_sdk.competition.models import CompetitionDivision, CompetitionStatus
 from wdsf_python_sdk.lib.datetime import serialize_date, serialize_datetime
 from wdsf_python_sdk.lib.serialisation import Serializer
 

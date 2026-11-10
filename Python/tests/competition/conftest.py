@@ -2,8 +2,8 @@ from datetime import datetime
 
 import pytest
 
+from wdsf_python_sdk.competition.models import CompetitionDivision, CompetitionStatus
 from wdsf_python_sdk.competition.queries import CompetitionQuery
-from wdsf_python_sdk.competition.models import CompetitionStatus, CompetitionDivision
 
 
 @pytest.fixture

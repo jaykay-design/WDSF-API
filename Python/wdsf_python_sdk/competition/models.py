@@ -1,8 +1,9 @@
-from datetime import date as date_, datetime
+from datetime import date as date_
+from datetime import datetime
 from decimal import Decimal
 from enum import StrEnum
 
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class CompetitionStatus(StrEnum):

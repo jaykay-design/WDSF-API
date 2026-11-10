@@ -122,6 +122,7 @@
 			# The Accept header was repeated on every request of a reused connection
 			# The SecureString constructor sent the text "System.Security.SecureString" as password
 			# Competition dates are read from XML date-only values
+3.0.1.0		# Security update: Newtonsoft.Json 13.0.4; the uploader examples use CommandLineParser 2.9.1
 
 WDSF Checkin
 

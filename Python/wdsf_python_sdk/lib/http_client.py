@@ -7,7 +7,6 @@ from requests import Session
 
 from wdsf_python_sdk.config import HttpConfig
 
-
 API_KEY_HEADER = "X-WDSF-API-Key"
 
 

@@ -9,9 +9,9 @@ from responses import matchers
 
 from tests.conftest import EXPECTED_HEADERS
 from wdsf_python_sdk.competition.models import (
+    Competition,
     CompetitionDivision,
     CompetitionStatus,
-    Competition,
 )
 from wdsf_python_sdk.competition.provider import CompetitionProvider
 from wdsf_python_sdk.competition.queries import CompetitionQuery

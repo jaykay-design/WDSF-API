@@ -1,5 +1,5 @@
 import posixpath
-from datetime import datetime, date
+from datetime import date, datetime
 from decimal import Decimal
 
 import pytest
@@ -7,11 +7,11 @@ import responses
 from responses import matchers
 
 from tests.conftest import EXPECTED_HEADERS
-from wdsf_python_sdk.competition.models import CompetitionDivision, CompetitionStatus
 from wdsf_python_sdk.competition.details.models import CompetitionDetails
 from wdsf_python_sdk.competition.details.provider import (
     CompetitionDetailsProvider,
 )
+from wdsf_python_sdk.competition.models import CompetitionDivision, CompetitionStatus
 from wdsf_python_sdk.config import WdsfHttpClientConfig
 from wdsf_python_sdk.lib.http_client import HttpClient
 

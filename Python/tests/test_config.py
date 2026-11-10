@@ -1,8 +1,8 @@
 from pydantic import HttpUrl, SecretStr
 
 from wdsf_python_sdk.config import (
-    WdsfHttpClientConfig,
     HttpConfig,
+    WdsfHttpClientConfig,
 )
 
 

@@ -1,6 +1,6 @@
 [project]
 name = "wdsf-python-sdk"
-version = "0.1.0"
+version = "0.1.1"
 description = "Python client SDK for World DanceSport Federation API"
 authors = [
     {name = "Alibek Cholponbaev", email = "Volume99917@gmail.com"}

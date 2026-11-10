@@ -73,6 +73,7 @@
 2.11.0.0	+ Added Routine property to WdsfBreakingScore
 2.12.0.0	+ Added OnScaleTcpsScore and OnScaleTvoemScore models
 2.13.0.0	+ Added properties on PesonDetail model
+2.13.1.0	# Security update: Newtonsoft.Json 13.0.4
 
 WDSF Checkin
 
